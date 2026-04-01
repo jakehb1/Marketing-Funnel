@@ -15,8 +15,8 @@ RUN apk add --no-cache \
 # RUN pip3 install openai-whisper
 
 # Copy backend
-COPY backend/package*.json ./
-RUN npm ci --only=production
+COPY backend/package.json ./
+RUN npm install --only=production
 
 COPY backend .
 
