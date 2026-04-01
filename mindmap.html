@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Marketing Funnel Map</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --healer: #6BAE9B;
+      --untrained: #E8A44A;
+      --patient: #7C6BC4;
+      --referral: #C4775A;
+      --owned: #5A8FC4;
+      --dark: #1A1A2E;
+      --bg: #F5F3EE;
+      --border: #E8E4DE;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow: hidden;
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .control-group button {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .control-group button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .control-group button.active {
+      background: var(--patient);
+    }
+
+    .zoom-display {
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      min-width: 60px;
+      text-align: right;
+    }
+
+    #canvas {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: var(--bg);
+      cursor: grab;
+    }
+
+    #canvas:active {
+      cursor: grabbing;
+    }
+
+    .panel {
+      position: fixed;
+      right: 0;
+      top: 60px;
+      width: 360px;
+      height: calc(100vh - 60px);
+      background: white;
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px;
+      z-index: 50;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .panel.open {
+      transform: translateX(0);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-header h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .panel-close:hover {
+      color: var(--dark);
+    }
+
+    .node-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .node-badge.healer { background: rgba(107, 174, 155, 0.1); color: var(--healer); }
+    .node-badge.untrained { background: rgba(232, 164, 74, 0.1); color: var(--untrained); }
+    .node-badge.patient { background: rgba(124, 107, 196, 0.1); color: var(--patient); }
+    .node-badge.referral { background: rgba(196, 119, 90, 0.1); color: var(--referral); }
+    .node-badge.owned { background: rgba(90, 143, 196, 0.1); color: var(--owned); }
+
+    .panel-section {
+      margin-bottom: 24px;
+    }
+
+    .panel-section h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .panel-section p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .copy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .copy-item {
+      background: #F8F6F3;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-item:hover {
+      background: #EEE9E3;
+    }
+
+    .copy-btn {
+      background: var(--patient);
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.8;
+    }
+
+    .legend {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      z-index: 40;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .legend-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .hint {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #666;
+      z-index: 40;
+      max-width: 200px;
+    }
+
+    @media (max-width: 768px) {
+      #canvas {
+        height: calc(100vh - 50px);
+      }
+
+      .panel {
+        width: 100%;
+        top: 50px;
+        height: calc(100vh - 50px);
+      }
+
+      header {
+        padding: 12px 16px;
+      }
+
+      header h1 {
+        font-size: 16px;
+      }
+
+      .controls {
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🌿 ENNIE Funnel Map</h1>
+  </div>
+  <div class="controls">
+    <div class="control-group">
+      <button id="zoomIn">+ Zoom</button>
+      <button id="zoomOut">- Zoom</button>
+      <button id="zoomReset">Reset</button>
+      <span class="zoom-display" id="zoomDisplay">100%</span>
+    </div>
+    <div class="control-group">
+      <button id="filterAll" class="active">All</button>
+      <button id="filterHealer">Healer</button>
+      <button id="filterPatient">Patient</button>
+    </div>
+  </div>
+</header>
+
+<canvas id="canvas"></canvas>
+
+<div class="hint">
+  <strong>How to use:</strong><br>
+  • Drag to pan<br>
+  • Scroll to zoom<br>
+  • Click nodes for details
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background: var(--healer);"></div> Experienced Healer</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--untrained);"></div> Untrained Potential</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--patient);"></div> Chronic Pain Patient</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--referral);"></div> Referral Loop</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--owned);"></div> Charlie's Owned</div>
+</div>
+
+<div id="panel" class="panel">
+  <div class="panel-header">
+    <h2 id="panelTitle"></h2>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div id="panelContent"></div>
+</div>
+
+<script>
+  // FUNNEL DATA
+  const funnels = {
+    healer: {
+      name: "Experienced Healer",
+      color: "#6BAE9B",
+      stages: [
+        { id: "h1", name: "Awareness", desc: "Cold email, ads, social", x: 100, y: 100 },
+        { id: "h2", name: "Landing", desc: "Charlie's story, income", x: 100, y: 200 },
+        { id: "h3", name: "Waitlist", desc: "Referral link issued", x: 100, y: 300 },
+        { id: "h4", name: "Nurture", desc: "8 emails over 5 months", x: 100, y: 400 },
+        { id: "h5", name: "Assessment", desc: "Remote healing test", x: 100, y: 500 },
+        { id: "h6", name: "Pass", desc: "Join vetted network", x: 100, y: 600 },
+        { id: "h7", name: "Get Paid", desc: "Weekly payouts", x: 100, y: 700 }
+      ],
+      messaging: {
+        h1: "Do they take someone from 10 out of 10 pain to zero within minutes?",
+        h2: "Your ability is real. Get paid for it.",
+        h3: "Top referrers win a trip to learn from Charlie",
+        h4: "Something real is being built. You're part of it.",
+        h5: "Time to find out if you've got it.",
+        h6: "You're verified. Your clients are waiting.",
+        h7: "Weekly payouts from international clients"
+      }
+    },
+    untrained: {
+      name: "Untrained Potential",
+      color: "#E8A44A",
+      stages: [
+        { id: "u1", name: "Discovery", desc: "Meta, TikTok, FB groups", x: 300, y: 100 },
+        { id: "u2", name: "Landing", desc: "Free training hook", x: 300, y: 200 },
+        { id: "u3", name: "Waitlist", desc: "Charlie's welcome", x: 300, y: 300 },
+        { id: "u4", name: "Training", desc: "Free course from Charlie", x: 300, y: 400 },
+        { id: "u5", name: "Test", desc: "Prove your ability", x: 300, y: 500 },
+        { id: "u6", name: "Pass", desc: "Join network + story", x: 300, y: 600 },
+        { id: "u7", name: "Earn", desc: "International clients", x: 300, y: 700 }
+      ],
+      messaging: {
+        u1: "You might have a gift you've never explored",
+        u2: "Charlie will teach you for free",
+        u3: "No experience needed. Start from zero.",
+        u4: "Learn the fundamentals from Charlie",
+        u5: "Show what you can do",
+        u6: "Your story becomes marketing content",
+        u7: "Earn from worldwide clients"
+      }
+    },
+    patient: {
+      name: "Chronic Pain Patient",
+      color: "#7C6BC4",
+      stages: [
+        { id: "p1", name: "Awareness", desc: "Google, Meta, communities", x: 500, y: 100 },
+        { id: "p2", name: "Landing", desc: "Evidence-based, private", x: 500, y: 200 },
+        { id: "p3", name: "Waitlist", desc: "Referral link + leaderboard", x: 500, y: 300 },
+        { id: "p4", name: "Nurture", desc: "4 credibility-building emails", x: 500, y: 400 },
+        { id: "p5", name: "Early Access", desc: "Matched with healer", x: 500, y: 500 },
+        { id: "p6", name: "First Session", desc: "Remote healing, outcomes tracked", x: 500, y: 600 },
+        { id: "p7", name: "Paying", desc: "Subscription + word of mouth", x: 500, y: 700 }
+      ],
+      messaging: {
+        p1: "2 billion people in chronic pain. Conventional solutions aren't working.",
+        p2: "Tested. Private. No hype.",
+        p3: "Join early, move up the queue",
+        p4: "Science is catching up. Here's what studies show.",
+        p5: "Matched with verified healer",
+        p6: "Measurable relief. Track your progress.",
+        p7: "You become our best ambassador"
+      }
+    },
+    referral: {
+      name: "Referral Loop",
+      color: "#C4775A",
+      stages: [
+        { id: "r1", name: "Signup Trigger", desc: "Auto-triggered", x: 700, y: 100 },
+        { id: "r2", name: "Welcome + Link", desc: "Grand prize announced", x: 700, y: 200 },
+        { id: "r3", name: "Share", desc: "FB groups, WhatsApp, socials", x: 700, y: 300 },
+        { id: "r4", name: "Friend Signs Up", desc: "Both move up queue", x: 700, y: 400 },
+        { id: "r5", name: "Tier Unlock", desc: "5 refs = Founding, 15 = Shout-out", x: 700, y: 500 },
+        { id: "r6", name: "Charlie Posts", desc: "Weekly leaderboard to 470k", x: 700, y: 600 },
+        { id: "r7", name: "Grand Prize", desc: "Trip to meet/learn from Charlie", x: 700, y: 700 }
+      ],
+      messaging: {
+        r1: "Every referral moves both of you up",
+        r2: "Top referrers win a trip to meet Charlie",
+        r3: "Share your unique link",
+        r4: "Instant queue jump for both",
+        r5: "Unlock tiers and rewards",
+        r6: "See yourself on the leaderboard",
+        r7: "Life-changing grand prize"
+      }
+    },
+    owned: {
+      name: "Charlie's Owned Audience",
+      color: "#5A8FC4",
+      stages: [
+        { id: "o1", name: "Announce", desc: "Email to 60k + all socials", x: 900, y: 100 },
+        { id: "o2", name: "Click", desc: "8-15% click rate expected", x: 900, y: 200 },
+        { id: "o3", name: "Choose Path", desc: "Healer or Patient", x: 900, y: 300 },
+        { id: "o4", name: "Signup", desc: "Warm audience conversion", x: 900, y: 400 },
+        { id: "o5", name: "Custom Audiences", desc: "Feed paid campaigns", x: 900, y: 500 },
+        { id: "o6", name: "Content", desc: "Ongoing posts & updates", x: 900, y: 600 },
+        { id: "o7", name: "Launch Spike", desc: "All 470k followers announce", x: 900, y: 700 }
+      ],
+      messaging: {
+        o1: "This is the inside track",
+        o2: "Charlie announces Ennie",
+        o3: "Choose your path (healer or patient)",
+        o4: "Trusted audience conversion",
+        o5: "Build lookalike audiences",
+        o6: "Weekly leaderboards & updates",
+        o7: "Launch day amplification"
+      }
+    }
+  };
+
+  // CANVAS & STATE
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let panX = 0, panY = 0, zoom = 1, selectedNode = null, isDragging = false, dragStart = {};
+  let filter = 'all';
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 60;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // DRAWING
+  function drawFunnels() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#F5F3EE';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw connections first
+    Object.values(funnels).forEach(funnel => {
+      if (shouldShowFunnel(funnel.name)) {
+        for (let i = 0; i < funnel.stages.length - 1; i++) {
+          const stage1 = funnel.stages[i];
+          const stage2 = funnel.stages[i + 1];
+          drawConnection(stage1, stage2, funnel.color);
+        }
+      }
+    });
+
+    // Draw nodes
+    Object.values(funnels).forEach(funnel => {
+      if (shouldShowFunnel(funnel.name)) {
+        funnel.stages.forEach(stage => {
+          drawNode(stage, funnel.color, stage === selectedNode);
+        });
+      }
+    });
+  }
+
+  function drawConnection(from, to, color) {
+    const x1 = from.x * zoom + panX;
+    const y1 = from.y * zoom + panY;
+    const x2 = to.x * zoom + panX;
+    const y2 = to.y * zoom + panY;
+
+    ctx.strokeStyle = color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1 + 25);
+    ctx.lineTo(x2, y2 - 25);
+    ctx.stroke();
+
+    // Arrow
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const arrowSize = 10;
+    ctx.fillStyle = color + '80';
+    ctx.beginPath();
+    ctx.moveTo(x2 - arrowSize * Math.cos(angle - Math.PI / 6), y2 - arrowSize * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x2 - arrowSize * Math.cos(angle + Math.PI / 6), y2 - arrowSize * Math.sin(angle + Math.PI / 6));
+    ctx.fill();
+  }
+
+  function drawNode(stage, color, selected) {
+    const x = stage.x * zoom + panX;
+    const y = stage.y * zoom + panY;
+    const size = 50;
+
+    // Shadow
+    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 2;
+
+    // Circle
+    ctx.fillStyle = selected ? color : color + 'cc';
+    ctx.beginPath();
+    ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Border
+    ctx.strokeStyle = selected ? '#000' : color;
+    ctx.lineWidth = selected ? 3 : 2;
+    ctx.stroke();
+
+    ctx.shadowColor = 'transparent';
+
+    // Text
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(stage.name, x, y - 8);
+
+    ctx.font = '10px sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.fillText(stage.desc, x, y + 8);
+
+    // Store hit area
+    stage._x = x;
+    stage._y = y;
+    stage._size = size / 2;
+  }
+
+  // EVENT LISTENERS
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left - panX) / zoom;
+    const y = (e.clientY - rect.top - panY) / zoom;
+
+    // Check if clicked on a node
+    let clickedNode = null;
+    Object.values(funnels).forEach(funnel => {
+      funnel.stages.forEach(stage => {
+        const dist = Math.hypot(stage.x - x, stage.y - y);
+        if (dist < stage._size + 10) {
+          clickedNode = stage;
+        }
+      });
+    });
+
+    if (clickedNode) {
+      selectedNode = clickedNode;
+      showPanel(clickedNode);
+      draw();
+    } else {
+      isDragging = true;
+      dragStart = { x: e.clientX, y: e.clientY, panX, panY };
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      panX = dragStart.panX + (e.clientX - dragStart.x);
+      panY = dragStart.panY + (e.clientY - dragStart.y);
+      draw();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const oldZoom = zoom;
+    zoom *= e.deltaY < 0 ? 1.1 : 0.9;
+    zoom = Math.max(0.5, Math.min(2, zoom));
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    panX = x - (x - panX) * (zoom / oldZoom);
+    panY = y - (y - panY) * (zoom / oldZoom);
+
+    updateZoomDisplay();
+    draw();
+  });
+
+  // ZOOM CONTROLS
+  document.getElementById('zoomIn').addEventListener('click', () => {
+    zoom = Math.min(2, zoom * 1.2);
+    updateZoomDisplay();
+    draw();
+  });
+
+  document.getElementById('zoomOut').addEventListener('click', () => {
+    zoom = Math.max(0.5, zoom / 1.2);
+    updateZoomDisplay();
+    draw();
+  });
+
+  document.getElementById('zoomReset').addEventListener('click', () => {
+    zoom = 1;
+    panX = panY = 0;
+    updateZoomDisplay();
+    draw();
+  });
+
+  function updateZoomDisplay() {
+    document.getElementById('zoomDisplay').textContent = Math.round(zoom * 100) + '%';
+  }
+
+  // FILTERS
+  document.getElementById('filterAll').addEventListener('click', () => {
+    filter = 'all';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    draw();
+  });
+
+  document.getElementById('filterHealer').addEventListener('click', () => {
+    filter = 'healer';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    draw();
+  });
+
+  document.getElementById('filterPatient').addEventListener('click', () => {
+    filter = 'patient';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    draw();
+  });
+
+  function updateFilterButtons() {
+    document.querySelectorAll('.control-group button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.getElementById('filter' + (filter === 'all' ? 'All' : filter.charAt(0).toUpperCase() + filter.slice(1))).classList.add('active');
+  }
+
+  function shouldShowFunnel(name) {
+    if (filter === 'all') return true;
+    if (filter === 'healer') return ['Experienced Healer', 'Untrained Potential', 'Referral Loop', "Charlie's Owned"].includes(name);
+    if (filter === 'patient') return ['Chronic Pain Patient', 'Referral Loop', "Charlie's Owned"].includes(name);
+    return true;
+  }
+
+  // PANEL
+  function showPanel(stage) {
+    const funnel = Object.values(funnels).find(f => f.stages.includes(stage));
+    const panel = document.getElementById('panel');
+    const panelTitle = document.getElementById('panelTitle');
+    const panelContent = document.getElementById('panelContent');
+
+    panelTitle.textContent = stage.name;
+
+    let html = `<div class="node-badge ${funnel.name.toLowerCase().replace(/\s+/g, '-').replace(/'/g, '')}">${funnel.name}</div>`;
+
+    html += `<div class="panel-section">
+      <h3>Description</h3>
+      <p>${stage.desc}</p>
+    </div>`;
+
+    html += `<div class="panel-section">
+      <h3>Key Message</h3>
+      <p style="font-style: italic; color: #666;">"${funnel.messaging[stage.id]}"</p>
+    </div>`;
+
+    panelContent.innerHTML = html;
+    panel.classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('panel').classList.remove('open');
+  }
+
+  // INIT
+  updateZoomDisplay();
+  const draw = () => drawFunnels();
+  draw();
+</script>
+
+</body>
+</html>
