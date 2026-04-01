@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Marketing Funnel Map — Full Content</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --healer: #6BAE9B;
+      --untrained: #E8A44A;
+      --patient: #7C6BC4;
+      --referral: #C4775A;
+      --owned: #5A8FC4;
+      --dark: #1A1A2E;
+      --bg: #F5F3EE;
+      --border: #E8E4DE;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow: hidden;
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .control-group button {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .control-group button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .control-group button.active {
+      background: var(--patient);
+    }
+
+    #canvas {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: var(--bg);
+      cursor: grab;
+    }
+
+    #canvas:active {
+      cursor: grabbing;
+    }
+
+    .panel {
+      position: fixed;
+      right: 0;
+      top: 60px;
+      width: 420px;
+      height: calc(100vh - 60px);
+      background: white;
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 0;
+      z-index: 50;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .panel.open {
+      transform: translateX(0);
+    }
+
+    .panel-header {
+      position: sticky;
+      top: 0;
+      background: var(--dark);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .panel-header h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .panel-close:hover {
+      opacity: 0.8;
+    }
+
+    .panel-content {
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+      background: white;
+      position: sticky;
+      top: 0;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tabs button.active {
+      color: var(--dark);
+      border-bottom-color: var(--patient);
+    }
+
+    .tabs button:hover {
+      color: var(--dark);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .section p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .quote {
+      background: #F8F6F3;
+      padding: 12px;
+      border-left: 3px solid var(--patient);
+      font-style: italic;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      border-radius: 4px;
+    }
+
+    .copy-box {
+      background: #F8F6F3;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: 'Monaco', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #333;
+      margin-bottom: 12px;
+      word-wrap: break-word;
+      position: relative;
+    }
+
+    .copy-box-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--patient);
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.8;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      margin-right: 6px;
+    }
+
+    .badge.healer { background: rgba(107, 174, 155, 0.15); color: var(--healer); }
+    .badge.untrained { background: rgba(232, 164, 74, 0.15); color: var(--untrained); }
+    .badge.patient { background: rgba(124, 107, 196, 0.15); color: var(--patient); }
+    .badge.referral { background: rgba(196, 119, 90, 0.15); color: var(--referral); }
+    .badge.owned { background: rgba(90, 143, 196, 0.15); color: var(--owned); }
+
+    .compliance {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .compliance.safe { background: #D4EDDA; color: #155724; }
+    .compliance.review { background: #FFF3CD; color: #856404; }
+    .compliance.revise { background: #F8D7DA; color: #721C24; }
+
+    .legend {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      z-index: 40;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .legend-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .hint {
+      position: fixed;
+      top: 80px;
+      left: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #666;
+      z-index: 40;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🌿 ENNIE Funnel Map + Scripts</h1>
+  </div>
+  <div class="controls">
+    <div class="control-group">
+      <button id="zoomIn">+ Zoom</button>
+      <button id="zoomOut">- Zoom</button>
+      <button id="zoomReset">Reset</button>
+    </div>
+    <div class="control-group">
+      <button id="filterAll" class="active">All</button>
+      <button id="filterHealer">Healer</button>
+      <button id="filterPatient">Patient</button>
+    </div>
+  </div>
+</header>
+
+<canvas id="canvas"></canvas>
+
+<div class="hint">
+  <strong>Click any node</strong> to see full scripts, copy, and content.
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background: var(--healer);"></div> Experienced Healer</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--untrained);"></div> Untrained Potential</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--patient);"></div> Chronic Pain Patient</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--referral);"></div> Referral Loop</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--owned);"></div> Charlie's Owned</div>
+</div>
+
+<div id="panel" class="panel">
+  <div class="panel-header">
+    <div>
+      <h2 id="panelTitle"></h2>
+      <span id="panelFunnel" class="badge"></span>
+    </div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-content">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="overview">Overview</button>
+      <button class="tab-btn" data-tab="copy">Copy</button>
+      <button class="tab-btn" data-tab="email">Email</button>
+      <button class="tab-btn" data-tab="ad">Ad Copy</button>
+      <button class="tab-btn" data-tab="quote">Quotes</button>
+    </div>
+
+    <div id="overview" class="tab-pane active">
+      <div class="section">
+        <h3>Description</h3>
+        <p id="desc"></p>
+      </div>
+      <div class="section">
+        <h3>Key Message</h3>
+        <p style="font-style: italic; color: #666;" id="keyMsg"></p>
+      </div>
+      <div class="section">
+        <h3>Conversion Rate</h3>
+        <p id="convRate"></p>
+      </div>
+    </div>
+
+    <div id="copy" class="tab-pane">
+      <div class="section">
+        <h3>Landing Page Headline</h3>
+        <div class="copy-box">
+          <div class="copy-box-label">Headline</div>
+          <span id="lpHeadline"></span>
+          <button class="copy-btn" onclick="copyToClipboard(document.getElementById('lpHeadline').textContent)">Copy</button>
+        </div>
+      </div>
+      <div class="section">
+        <h3>Hero Copy</h3>
+        <div class="copy-box">
+          <span id="lpCopy"></span>
+          <button class="copy-btn" onclick="copyToClipboard(document.getElementById('lpCopy').textContent)">Copy</button>
+        </div>
+      </div>
+      <div class="section">
+        <h3>CTA</h3>
+        <p id="cta"></p>
+      </div>
+    </div>
+
+    <div id="email" class="tab-pane">
+      <div id="emailContent"></div>
+    </div>
+
+    <div id="ad" class="tab-pane">
+      <div id="adContent"></div>
+    </div>
+
+    <div id="quote" class="tab-pane">
+      <div id="quoteContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // COMPREHENSIVE CONTENT DATA
+  const contentData = {
+    h1: {
+      funnel: "Experienced Healer",
+      stage: "Awareness",
+      desc: "Cold email, Meta ads, TikTok, Facebook groups. First touchpoint for experienced healers.",
+      keyMsg: "Do they take someone from 10 out of 10 pain to zero within minutes?",
+      convRate: "~2.5% click-through",
+      lpHeadline: "Your Ability Is Real. Time to Prove It.",
+      lpCopy: "You've spent years perfecting your craft. We want to test your ability objectively and match you with clients worldwide.",
+      cta: "Join Healer Waitlist",
+      emails: [
+        { subject: "Subject: Your ability is real. Time to prove it.", body: "Hi [Name],\n\nI found you because of your healing practice. For the last decade, I've been studying healing ability — measuring it, testing it, publishing on it.\n\nWhat matters is outcomes. Can you move pain? How quickly? How consistently?\n\nThat's why we built Ennie.\n\nCharlieGoldsmith" }
+      ],
+      ads: [
+        { platform: "Meta", copy: "Your ability is real. Now prove it. Ennie tests healers on outcomes, not credentials." },
+        { platform: "Cold Email", copy: "Hi [NAME], I found your [reiki/energy healing] practice in [LOCATION]. I'm building Ennie to find the best healers. Worth a conversation?" }
+      ],
+      quotes: [
+        "Do they take someone from 10 out of 10 pain to zero within minutes? And then how long do those results last?",
+        "People who have this talent will be affecting eight out of 10 people in a very dramatic way."
+      ]
+    },
+    h2: {
+      funnel: "Experienced Healer",
+      stage: "Landing Page",
+      desc: "Healer landing page with Charlie's credentials, proof, and income potential.",
+      keyMsg: "Your ability is real. Get paid for it.",
+      convRate: "~35% sign up",
+      lpHeadline: "Your Ability Is Real. Get Paid For It.",
+      lpCopy: "Join the Ennie healer network. Test your ability. Earn income. We test healers on measurable outcomes, not credentials. You know your work creates change — now it can be measured and rewarded globally.",
+      cta: "Join Healer Waitlist",
+      emails: [],
+      ads: [
+        { platform: "Meta", copy: "Reiki. Energy healing. Pranic healing. If you're good, Ennie will find you. And pay you." }
+      ],
+      quotes: [
+        "If you ever felt like you had a hidden superpower, we would like to help you find out.",
+        "We are looking for people with the same talent as mine or maybe even better than mine."
+      ]
+    },
+    h3: {
+      funnel: "Experienced Healer",
+      stage: "Waitlist Signup",
+      desc: "Signs up, gets referral link, enters leaderboard, receives welcome email.",
+      keyMsg: "Top referrers win a trip to learn from Charlie",
+      convRate: "Day 0",
+      lpHeadline: "Welcome to Ennie",
+      lpCopy: "You're in. You've just been added to the healer waitlist. Here's your referral link — share it and move up the priority queue. Top referrers get an all-expenses trip to learn from Charlie in person.",
+      cta: "View Your Referral Link",
+      emails: [
+        { subject: "Subject: Welcome to Ennie + your referral link", body: "Hi [Name],\n\nYou're in the healer waitlist. Here's what happens next:\n\n1. Share your referral link with other healers\n2. Every person you refer moves both of you up the priority queue\n3. Top referrers win a trip to learn from me in person\n\nLet's build this together.\nCharlie" }
+      ],
+      ads: [],
+      quotes: [
+        "The world is actually full of healers that don't even know it.",
+        "And that's because there's this long history where we have been killing off these talents."
+      ]
+    },
+    h4: {
+      funnel: "Experienced Healer",
+      stage: "Nurture",
+      desc: "8-email sequence over 5 months. Insider updates, Charlie stories, referral pushes, social proof.",
+      keyMsg: "Something real is being built. You're part of it.",
+      convRate: "40-65% open rate",
+      lpHeadline: "Inside Ennie",
+      lpCopy: "We're building something real. Here's what's happening behind the scenes, and why you're critical to making it work.",
+      cta: "Check Email",
+      emails: [
+        { subject: "Email #2: The test is different", body: "Most certifications don't measure ability. We do.\n\nWhen you get a Reiki certificate, you learned something. But that certificate doesn't tell us about your outcomes.\n\nOn Ennie, we measure what actually matters: your results." },
+        { subject: "Email #3: What verified healers earn", body: "Here's the flow:\n\n1. You take the Ennie assessment\n2. We track your outcomes on real patients\n3. If you're consistent, you join the vetted network\n4. Clients matched with you actively chose your type of healing\n5. You earn per session, weekly payouts\n\nEarnings: £500-2000+/month depending on availability." }
+      ],
+      ads: [],
+      quotes: [
+        "The only way to find out if you actually have healing ability is to practice and see your results and measure them over time.",
+        "And be really objective about what you're seeing."
+      ]
+    },
+    h5: {
+      funnel: "Experienced Healer",
+      stage: "Assessment",
+      desc: "Invited to take the remote healing test. Anonymous real-world sessions on the app.",
+      keyMsg: "Time to find out if you've got it.",
+      convRate: "~70% accept invite",
+      lpHeadline: "Your Assessment Is Ready",
+      lpCopy: "Time to prove your ability. Take the Ennie healing assessment — remote, anonymous, real patients. We measure your outcomes objectively.",
+      cta: "Download App & Start Assessment",
+      emails: [
+        { subject: "Subject: Assessment invite — Your test is ready", body: "Hi [Name],\n\nYou're invited to the Ennie healing assessment. Here's what happens:\n\n1. Download the app\n2. Complete remote healing sessions with real clients\n3. We measure outcomes objectively\n4. Consistent results = join the vetted network\n\nReady?\n\nCharlie" }
+      ],
+      ads: [],
+      quotes: [
+        "The way you test someone's healing ability scientifically is a blinded study where you have two groups.",
+        "And really that is the gold standard of evidence to see what happens."
+      ]
+    },
+    h6: {
+      funnel: "Experienced Healer",
+      stage: "Join Network",
+      desc: "Consistent performers join the vetted network. Profile goes live. Matched with clients.",
+      keyMsg: "You're verified. Your clients are waiting.",
+      convRate: "~30% of tested",
+      lpHeadline: "Welcome to the Verified Network",
+      lpCopy: "You passed. Your healing ability is proven. Your profile is now live. Clients actively seeking your modality are being matched with you.",
+      cta: "View Your Profile",
+      emails: [
+        { subject: "Subject: You're verified. Clients start matching tomorrow.", body: "Congratulations. You passed the assessment. Your profile goes live tomorrow.\n\nClients have been waiting for verified healers. You're one of them.\n\nExpect first matches within 48 hours.\n\nCharlie" }
+      ],
+      ads: [],
+      quotes: [
+        "If you are very good at it, you're the one we want to study."
+      ]
+    },
+    h7: {
+      funnel: "Experienced Healer",
+      stage: "Get Paid",
+      desc: "Healer completes sessions, earns income, builds reputation. Career path begins.",
+      keyMsg: "Weekly payouts from international clients",
+      convRate: "🎯 Goal achieved",
+      lpHeadline: "You're Earning",
+      lpCopy: "Your first client matched. Your first session completed. Your first payout pending. This is the beginning of your new income stream.",
+      cta: "Track Earnings",
+      emails: [],
+      ads: [],
+      quotes: [
+        "There are nearly 2 billion people at this moment in chronic pain around the world.",
+        "And what that says to me is that the current solutions are not working."
+      ]
+    },
+    p1: {
+      funnel: "Chronic Pain Patient",
+      stage: "Awareness",
+      desc: "Google search, Meta ads, chronic pain communities, podcast, press coverage.",
+      keyMsg: "2 billion people in chronic pain. Conventional solutions aren't working.",
+      convRate: "High intent search",
+      lpHeadline: "Chronic Pain. Tested. Private. No Hype.",
+      lpCopy: "2 billion people live with chronic pain. Conventional medicine often isn't enough. On Ennie, you're matched with verified healers and your progress is tracked.",
+      cta: "Join Patient Waitlist",
+      emails: [],
+      ads: [
+        { platform: "Google", copy: "Chronic Pain Relief | Verified Energy Healers | Measurable Results" },
+        { platform: "Meta", copy: "Tried everything for your chronic pain? Verified healers + measurable results. Private & evidence-based." }
+      ],
+      quotes: [
+        "There are nearly 2 billion people at this moment in chronic pain around the world.",
+        "And what that says to me is that the current solutions that people lean to are not working."
+      ]
+    },
+    p2: {
+      funnel: "Chronic Pain Patient",
+      stage: "Landing Page",
+      desc: "Separate page from healers. Tone: empathetic, credible, private.",
+      keyMsg: "Tested. Private. No hype.",
+      convRate: "~25% sign up",
+      lpHeadline: "Chronic Pain. Tested. Private. No Hype.",
+      lpCopy: "You've tried the drugs, the injections, the physical therapy. Maybe some helped. Maybe they didn't. We built Ennie for exactly this situation. Verified energy healers with measurable results. Complete privacy. No belief required.",
+      cta: "Join Patient Waitlist",
+      emails: [],
+      ads: [
+        { platform: "Meta", copy: "For people who've tried everything. Chronic pain relief from verified healers. Private. Measurable. Science-backed." }
+      ],
+      quotes: [
+        "Energy healing is a medicine in its own right, and it continues to be put in these categories where it simply doesn't belong.",
+        "But the truth is the energy healing is a medicine in its own right."
+      ]
+    },
+    u1: {
+      funnel: "Untrained Potential",
+      stage: "Discovery",
+      desc: "Meta ads, TikTok, Facebook groups, Charlie's social. Discovery-focused.",
+      keyMsg: "You might have a gift you've never explored",
+      convRate: "Curiosity click",
+      lpHeadline: "You Might Have a Gift You've Never Tried",
+      lpCopy: "Some people are born with a healing ability they never discover. Because they never tried. We're offering something new: free training from Charlie Goldsmith, then a real test of your ability.",
+      cta: "Learn More",
+      emails: [],
+      ads: [
+        { platform: "TikTok", copy: "POV: You have a healing ability you've never tried #hiddensuperpower" },
+        { platform: "Meta", copy: "You might have a healing gift you've never explored. Free training. Real test. Real income if you pass." }
+      ],
+      quotes: [
+        "If you ever felt like you had a hidden superpower, we would like to help you find out.",
+        "I woke up one day when I was 18 and discovered I had this ability and you could have the same ability too."
+      ]
+    },
+    r1: {
+      funnel: "Referral Loop",
+      stage: "Signup Trigger",
+      desc: "Auto-triggered when any healer or patient signs up.",
+      keyMsg: "Every referral moves both of you up",
+      convRate: "Automatic",
+      lpHeadline: "Refer & Win",
+      lpCopy: "You're in. Now refer other healers or patients. Every person you refer moves both of you up the priority queue and puts you on the leaderboard.",
+      cta: "Get Your Referral Link",
+      emails: [],
+      ads: [],
+      quotes: [
+        "Top referrers win a trip to learn from Charlie in person.",
+        "It's gamified. It works."
+      ]
+    },
+    o1: {
+      funnel: "Charlie's Owned Audience",
+      stage: "Announce",
+      desc: "Charlie announces Ennie to 60k email + 470k social followers.",
+      keyMsg: "This is the inside track",
+      convRate: "Warmest audience",
+      lpHeadline: "Charlie's Building Ennie. And He Wants You In It From Day One.",
+      lpCopy: "Before Ennie launches publicly, founding members shape the platform. Whether you're a healer or a patient, this is your moment to be part of something real.",
+      cta: "Join Founding Community",
+      emails: [
+        { subject: "Subject: I'm building Ennie. I want you to be part of it.", body: "Hi [Name],\n\nI've spent the last decade studying and measuring healing ability. What I've learned has led me to build something new.\n\nIt's called Ennie. And I want you to be part of it from day one.\n\nWhether you're a healer looking to get discovered and paid, or someone living with chronic pain looking for real solutions, this is for you.\n\nCharlie" }
+      ],
+      ads: [
+        { platform: "Facebook", copy: "Charlie's building Ennie. Be part of the inside track. Founding members only." }
+      ],
+      quotes: [
+        "This is real. Let's go.",
+        "The world is actually full of healers that don't even know it."
+      ]
+    }
+  };
+
+  // CANVAS & STATE
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let panX = 0, panY = 0, zoom = 1, selectedNode = null, isDragging = false, dragStart = {};
+  let filter = 'all';
+
+  const nodes = [
+    // Healer funnel
+    { id: "h1", name: "Awareness", funnel: "Experienced Healer", x: 100, y: 100, color: "#6BAE9B" },
+    { id: "h2", name: "Landing", funnel: "Experienced Healer", x: 100, y: 170, color: "#6BAE9B" },
+    { id: "h3", name: "Waitlist", funnel: "Experienced Healer", x: 100, y: 240, color: "#6BAE9B" },
+    { id: "h4", name: "Nurture", funnel: "Experienced Healer", x: 100, y: 310, color: "#6BAE9B" },
+    { id: "h5", name: "Assessment", funnel: "Experienced Healer", x: 100, y: 380, color: "#6BAE9B" },
+    { id: "h6", name: "Verified", funnel: "Experienced Healer", x: 100, y: 450, color: "#6BAE9B" },
+    { id: "h7", name: "Paid", funnel: "Experienced Healer", x: 100, y: 520, color: "#6BAE9B" },
+    
+    // Untrained funnel
+    { id: "u1", name: "Discovery", funnel: "Untrained Potential", x: 300, y: 100, color: "#E8A44A" },
+    { id: "u2", name: "Landing", funnel: "Untrained Potential", x: 300, y: 170, color: "#E8A44A" },
+    { id: "u3", name: "Waitlist", funnel: "Untrained Potential", x: 300, y: 240, color: "#E8A44A" },
+    { id: "u4", name: "Training", funnel: "Untrained Potential", x: 300, y: 310, color: "#E8A44A" },
+    { id: "u5", name: "Test", funnel: "Untrained Potential", x: 300, y: 380, color: "#E8A44A" },
+    
+    // Patient funnel
+    { id: "p1", name: "Awareness", funnel: "Chronic Pain Patient", x: 500, y: 100, color: "#7C6BC4" },
+    { id: "p2", name: "Landing", funnel: "Chronic Pain Patient", x: 500, y: 170, color: "#7C6BC4" },
+    { id: "p3", name: "Waitlist", funnel: "Chronic Pain Patient", x: 500, y: 240, color: "#7C6BC4" },
+    { id: "p4", name: "Nurture", funnel: "Chronic Pain Patient", x: 500, y: 310, color: "#7C6BC4" },
+    
+    // Referral
+    { id: "r1", name: "Referral", funnel: "Referral Loop", x: 700, y: 100, color: "#C4775A" },
+    
+    // Owned
+    { id: "o1", name: "Announce", funnel: "Charlie's Owned", x: 900, y: 100, color: "#5A8FC4" }
+  ];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 60;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#F5F3EE';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw connections
+    for (let i = 0; i < nodes.length - 1; i++) {
+      if (nodes[i].funnel === nodes[i+1].funnel) {
+        drawArrow(nodes[i], nodes[i+1], nodes[i].color);
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(node => {
+      drawNode(node, node === selectedNode);
+    });
+  }
+
+  function drawArrow(from, to, color) {
+    const x1 = from.x * zoom + panX;
+    const y1 = from.y * zoom + panY;
+    const x2 = to.x * zoom + panX;
+    const y2 = to.y * zoom + panY;
+
+    ctx.strokeStyle = color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1 + 20);
+    ctx.lineTo(x2, y2 - 20);
+    ctx.stroke();
+
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.fillStyle = color + '80';
+    ctx.beginPath();
+    ctx.moveTo(x2 - 8 * Math.cos(angle - Math.PI / 6), y2 - 8 * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x2 - 8 * Math.cos(angle + Math.PI / 6), y2 - 8 * Math.sin(angle + Math.PI / 6));
+    ctx.fill();
+  }
+
+  function drawNode(node, selected) {
+    const x = node.x * zoom + panX;
+    const y = node.y * zoom + panY;
+    const size = 40;
+
+    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+    ctx.shadowBlur = 8;
+
+    ctx.fillStyle = selected ? node.color : node.color + 'cc';
+    ctx.beginPath();
+    ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = selected ? '#000' : node.color;
+    ctx.lineWidth = selected ? 3 : 2;
+    ctx.stroke();
+
+    ctx.shadowColor = 'transparent';
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(node.name, x, y);
+
+    node._x = x;
+    node._y = y;
+    node._size = size / 2;
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left - panX) / zoom;
+    const y = (e.clientY - rect.top - panY) / zoom;
+
+    let clicked = null;
+    nodes.forEach(node => {
+      if (Math.hypot(node.x - x, node.y - y) < node._size + 10) {
+        clicked = node;
+      }
+    });
+
+    if (clicked) {
+      selectedNode = clicked;
+      showPanel(clicked);
+      drawCanvas();
+    } else {
+      isDragging = true;
+      dragStart = { x: e.clientX, y: e.clientY, panX, panY };
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      panX = dragStart.panX + (e.clientX - dragStart.x);
+      panY = dragStart.panY + (e.clientY - dragStart.y);
+      drawCanvas();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const oldZoom = zoom;
+    zoom *= e.deltaY < 0 ? 1.1 : 0.9;
+    zoom = Math.max(0.5, Math.min(2, zoom));
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    panX = x - (x - panX) * (zoom / oldZoom);
+    panY = y - (y - panY) * (zoom / oldZoom);
+
+    drawCanvas();
+  });
+
+  // ZOOM CONTROLS
+  document.getElementById('zoomIn').addEventListener('click', () => {
+    zoom = Math.min(2, zoom * 1.2);
+    drawCanvas();
+  });
+
+  document.getElementById('zoomOut').addEventListener('click', () => {
+    zoom = Math.max(0.5, zoom / 1.2);
+    drawCanvas();
+  });
+
+  document.getElementById('zoomReset').addEventListener('click', () => {
+    zoom = 1;
+    panX = panY = 0;
+    drawCanvas();
+  });
+
+  // PANEL
+  function showPanel(node) {
+    const data = contentData[node.id];
+    if (!data) return;
+
+    document.getElementById('panelTitle').textContent = node.name;
+    document.getElementById('panelFunnel').textContent = data.funnel;
+    document.getElementById('panelFunnel').className = 'badge ' + data.funnel.toLowerCase().split(' ')[0];
+
+    document.getElementById('desc').textContent = data.desc;
+    document.getElementById('keyMsg').textContent = data.keyMsg;
+    document.getElementById('convRate').textContent = data.convRate;
+
+    document.getElementById('lpHeadline').textContent = data.lpHeadline;
+    document.getElementById('lpCopy').textContent = data.lpCopy;
+    document.getElementById('cta').textContent = data.cta;
+
+    // Emails
+    let emailHtml = '';
+    if (data.emails.length > 0) {
+      data.emails.forEach((email, idx) => {
+        emailHtml += `
+          <div class="section">
+            <h3>${email.subject}</h3>
+            <div class="copy-box">
+              ${email.body}
+              <button class="copy-btn" onclick="copyToClipboard(\`${email.body.replace(/`/g, '\\`')}\`)">Copy</button>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      emailHtml = '<p style="color: #999;">No email copy for this stage.</p>';
+    }
+    document.getElementById('emailContent').innerHTML = emailHtml;
+
+    // Ads
+    let adHtml = '';
+    if (data.ads.length > 0) {
+      data.ads.forEach(ad => {
+        adHtml += `
+          <div class="section">
+            <h3>${ad.platform}</h3>
+            <div class="copy-box">
+              ${ad.copy}
+              <button class="copy-btn" onclick="copyToClipboard(\`${ad.copy.replace(/`/g, '\\`')}\`)">Copy</button>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      adHtml = '<p style="color: #999;">No ad copy for this stage.</p>';
+    }
+    document.getElementById('adContent').innerHTML = adHtml;
+
+    // Quotes
+    let quoteHtml = '';
+    data.quotes.forEach(quote => {
+      quoteHtml += `<div class="quote">"${quote}"</div>`;
+    });
+    document.getElementById('quoteContent').innerHTML = quoteHtml;
+
+    // Setup tab clicks
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        btn.classList.add('active');
+      });
+    });
+
+    document.getElementById('panel').classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('panel').classList.remove('open');
+    selectedNode = null;
+    drawCanvas();
+  }
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied to clipboard!');
+    });
+  }
+
+  // INIT
+  drawCanvas();
+</script>
+
+</body>
+</html>
