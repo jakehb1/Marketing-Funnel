@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Interactive Strategy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F3EE;
+      color: #1A1A2E;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #E8E4DE;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    header a {
+      color: #7C6BC4;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    .funnel-row {
+      margin-bottom: 60px;
+    }
+
+    .funnel-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .funnel-title h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .funnel-stages {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+
+    .stage {
+      flex: 1;
+      min-width: 140px;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .stage:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .stage.active {
+      border-color: #1A1A2E;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    }
+
+    .stage-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11px;
+      color: white;
+    }
+
+    .stage-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* COLORS */
+    .healer .stage { background: #D4EDE9; }
+    .healer .stage-number { background: #6BAE9B; }
+
+    .untrained .stage { background: #FDF0DC; }
+    .untrained .stage-number { background: #E8A44A; }
+
+    .patient .stage { background: #EDE9F9; }
+    .patient .stage-number { background: #7C6BC4; }
+
+    /* WORKFLOW MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-close:hover {
+      color: #1A1A2E;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #E8E4DE;
+    }
+
+    .modal-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .modal-stage-name {
+      font-size: 20px;
+      color: #7C6BC4;
+    }
+
+    .workflow-section {
+      margin-bottom: 32px;
+    }
+
+    .workflow-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .workflow-step {
+      background: #F8F6F3;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #7C6BC4;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin: 0 auto 8px;
+    }
+
+    .step-text {
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .metric-item {
+      background: #F8F6F3;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 600;
+      color: #7C6BC4;
+    }
+
+    .trigger-box {
+      background: #EDE9F9;
+      border-left: 4px solid #7C6BC4;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .trigger-box strong {
+      color: #7C6BC4;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-size: 12px;
+      margin-top: 60px;
+      border-top: 1px solid #E8E4DE;
+    }
+
+    @media (max-width: 768px) {
+      .stage {
+        min-width: 100px;
+        padding: 12px 8px;
+        font-size: 10px;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+
+      .modal-header h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>ENNIE Interactive Strategy</h2>
+  <a href="index.html">← Back to Hub</a>
+</header>
+
+<div class="container">
+  <h1>🌿 Click any stage to see the end-to-end workflow</h1>
+
+  <!-- PATIENT FUNNEL (simplified for demo) -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <h2>💜 Chronic Pain Patient Funnel</h2>
+      <div style="margin-left: auto; font-size: 13px; color: #666;">Click any stage to see workflow →</div>
+    </div>
+    <div class="funnel-stages patient">
+      <div class="stage" onclick="showWorkflow('patient', 1, 'Awareness', 'Google Ads, Meta, communities discover ENNIE', '3.2% CTR expected', '1.2M impressions')">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Awareness</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 2, 'Landing', 'Evidence-based page builds credibility', '25% conversion', 'Patient funnel-specific copy')">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Landing</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 3, 'Nurture', '4-email credibility sequence', '52% open rate', 'Email 1, 7, 14, 30')">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Nurture</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 4, 'Early Access', 'Matched with verified healer', 'Instant matching', 'App session created')">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Early Access</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 5, 'Session', 'Remote healing from verified healer', '40% repeat booking', 'Outcomes tracked')">
+        <div class="stage-number">5</div>
+        <div class="stage-name">Session</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 6, 'Retention', 'Follow-ups + repeat booking automation', '60% 30-day retention', 'Churn prevention')">
+        <div class="stage-number">6</div>
+        <div class="stage-name">Retention</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+      <div class="stage" onclick="showWorkflow('patient', 7, 'Paying', 'Subscription + lifetime value', '£22k/mo revenue', 'Referral loop activated')">
+        <div class="stage-number">7</div>
+        <div class="stage-name">Paying</div>
+        <div style="font-size: 11px;">Click to explore →</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align: center; margin-top: 40px; color: #666; font-size: 14px;">
+    💡 Try clicking the stages above to see the detailed workflow, triggers, agents involved, and metrics for each stage.
+  </p>
+</div>
+
+<!-- WORKFLOW MODAL -->
+<div id="workflowModal" class="modal" onclick="closeWorkflow(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeWorkflow()">✕</button>
+    
+    <div class="modal-header">
+      <span id="modalStageNum" style="font-size: 32px;"></span>
+      <div>
+        <div style="font-size: 12px; color: #999;">Stage</div>
+        <h2 id="modalStageName" class="modal-stage-name" style="margin: 0;"></h2>
+      </div>
+    </div>
+
+    <!-- WORKFLOW STEPS -->
+    <div class="workflow-section">
+      <h3>🔄 5-Step Agent Workflow</h3>
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Ingest</strong><br>PostHog data pulled</div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Reason</strong><br>Claude decides action</div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Execute</strong><br>APIs called</div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Log</strong><br>Action recorded</div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">5</div>
+          <div class="step-text"><strong>Escalate</strong><br>Alert if needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRIGGER -->
+    <div class="workflow-section">
+      <h3>⚡ Trigger</h3>
+      <div id="modalTrigger" class="trigger-box"></div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="workflow-section">
+      <h3>📝 What Happens</h3>
+      <p id="modalDescription" style="line-height: 1.7; color: #666;"></p>
+    </div>
+
+    <!-- METRICS -->
+    <div class="workflow-section">
+      <h3>📊 Metrics</h3>
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <div class="metric-label">Key Metric</div>
+          <div id="modalMetric1" class="metric-value"></div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-label">Success Rate</div>
+          <div id="modalMetric2" class="metric-value"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENTS INVOLVED -->
+    <div class="workflow-section">
+      <h3>🤖 Agents Involved</h3>
+      <div style="background: #F8F6F3; padding: 16px; border-radius: 8px;">
+        <p style="font-size: 13px; line-height: 1.6;">
+          <strong>Growth Agent</strong> — Manages funnel progression, email sequences, and user state<br>
+          <strong>Voice Agent</strong> — Creates all messaging and copy in Charlie's voice<br>
+          <strong>Participant Outreach</strong> — Handles acquisition and matching
+        </p>
+      </div>
+    </div>
+
+    <!-- NEXT STEP -->
+    <div class="workflow-section">
+      <h3>➡️ Next Stage</h3>
+      <p id="modalNextStep" style="font-size: 13px; color: #666; line-height: 1.6;"></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>ENNIE Interactive Strategy — End-to-end workflow visualization for the Patient Funnel automation system</p>
+  <p style="margin-top: 12px; opacity: 0.5;">All 7 stages are interactive. See the full automation playbook in the hub's documentation.</p>
+</footer>
+
+<script>
+  const workflows = {
+    patient: {
+      1: {
+        name: "Awareness",
+        description: "Patients discover ENNIE through targeted channels. High-intent search: \"chronic pain\" + \"alternative solutions.\" Cold audience via Meta retargeting.",
+        trigger: "Daily at 06:00 UTC — Growth Agent checks PostHog for new leads, triggers ad spending allocation",
+        metric1: "1.2M impressions/mo",
+        metric2: "3.2% CTR",
+        nextStep: "Qualified clicks land on Evidence-based Landing Page. Conversion funnel begins."
+      },
+      2: {
+        name: "Landing",
+        description: "Evidence-based copy emphasizes science, credibility, and privacy. Charlie's credentials front-and-center. Focus on measurable results over hype.",
+        trigger: "Real-time personalization — Growth Agent adjusts headline based on traffic source (Google vs Meta vs Organic)",
+        metric1: "25% signup",
+        metric2: "32% bounce rate",
+        nextStep: "Converts to waitlist. Automated welcome email sent immediately. Referral link activated."
+      },
+      3: {
+        name: "Nurture",
+        description: "4-email sequence builds credibility. Email 1: How sessions work. Email 2: Science behind healing. Email 3: Patient story (social proof). Email 4: Early access offer.",
+        trigger: "Scheduled emails at Day 1, 7, 14, 30 — Loops integration triggers emails automatically",
+        metric1: "52% open rate",
+        metric2: "18% click-through",
+        nextStep: "Top engagers move to Early Access. Others stay in nurture loop or drop off (churn prevention triggered)."
+      },
+      4: {
+        name: "Early Access",
+        description: "Intake form collected (pain type, severity, history). Matching algorithm pairs with best-fit healer. Session booked instantly on app.",
+        trigger: "Event-driven — When patient clicks \"Book Now,\" matching agent runs immediately",
+        metric1: "2.1 days",
+        metric2: "90% book",
+        nextStep: "Session scheduled. Confirmation email sent. Healer notified. 24-hour reminder."
+      },
+      5: {
+        name: "Session",
+        description: "Anonymous remote healing session via app. Outcomes tracked: pain level before/after, session duration, healer rating. Data feeds optimization loops.",
+        trigger: "Session scheduled time — App sends join reminder 15 mins before",
+        metric1: "40% repeat",
+        metric2: "4.2/5 healer rating",
+        nextStep: "Post-session: Outcome survey. If pain reduced, upsell next session. If churn risk detected, special offer triggered."
+      },
+      6: {
+        name: "Retention",
+        description: "Follow-up sequence encourages re-booking. Churn prevention: if 7 days inactive, \"We miss you\" email + 20% discount. Referral rewards activated.",
+        trigger: "Every 7 days of inactivity — Retention Agent checks user state in PostHog",
+        metric1: "60% 30-day",
+        metric2: "£150 LTV",
+        nextStep: "Paying customer or churned. If paying: loyalty loop. If churn: re-engagement campaign launched."
+      },
+      7: {
+        name: "Paying",
+        description: "Subscription active. Weekly sessions booked. Revenue flowing to healers (70%) and platform (30%). Referral program earns them free sessions.",
+        trigger: "Continuous — Subscription renewal every 30 days. Healer matching algorithm optimizes for repeat bookings",
+        metric1: "£22k/mo",
+        metric2: "3.2 sessions/mo",
+        nextStep: "Lifetime value grows. Referral rewards unlock. Customer becomes brand advocate. Loop closes."
+      }
+    }
+  };
+
+  function showWorkflow(funnel, stage, name, description, metric1, metric2) {
+    const data = workflows[funnel][stage];
+    
+    document.getElementById('modalStageNum').textContent = stage;
+    document.getElementById('modalStageName').textContent = name;
+    document.getElementById('modalDescription').textContent = data.description;
+    document.getElementById('modalTrigger').innerHTML = `<strong>When:</strong> ${data.trigger}`;
+    document.getElementById('modalMetric1').textContent = data.metric1;
+    document.getElementById('modalMetric2').textContent = data.metric2;
+    document.getElementById('modalNextStep').textContent = data.nextStep;
+    
+    document.getElementById('workflowModal').classList.add('active');
+  }
+
+  function closeWorkflow(event) {
+    if (event && event.target.id !== 'workflowModal') return;
+    document.getElementById('workflowModal').classList.remove('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeWorkflow();
+  });
+</script>
+
+</body>
+</html>
