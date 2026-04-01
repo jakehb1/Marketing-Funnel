@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Marketing Strategy - Visual</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F3EE;
+      color: #1A1A2E;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #E8E4DE;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    header a {
+      color: #7C6BC4;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    /* FUNNEL VISUALIZATION */
+    .funnel-row {
+      margin-bottom: 60px;
+    }
+
+    .funnel-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .funnel-icon {
+      font-size: 28px;
+    }
+
+    .funnel-title h2 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .funnel-title .desc {
+      font-size: 13px;
+      color: #666;
+      margin-left: auto;
+      max-width: 400px;
+      text-align: right;
+    }
+
+    .funnel-stages {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+
+    .stage {
+      flex: 1;
+      min-width: 140px;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .stage:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .stage-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 11px;
+      color: white;
+    }
+
+    .stage-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .stage-metric {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    /* COLORS BY FUNNEL */
+    .healer .stage { background: #D4EDE9; }
+    .healer .stage-number { background: #6BAE9B; }
+    .healer .stage { color: #1A1A2E; }
+
+    .untrained .stage { background: #FDF0DC; }
+    .untrained .stage-number { background: #E8A44A; }
+
+    .patient .stage { background: #EDE9F9; }
+    .patient .stage-number { background: #7C6BC4; }
+
+    .referral .stage { background: #FAE8E0; }
+    .referral .stage-number { background: #C4775A; }
+
+    .owned .stage { background: #DDE9F5; }
+    .owned .stage-number { background: #5A8FC4; }
+
+    /* ARROW BETWEEN FUNNELS */
+    .funnel-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 30px;
+      color: #7C6BC4;
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    /* METRICS GRID */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 2px solid #E8E4DE;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #E8E4DE;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 600;
+      color: #7C6BC4;
+      margin-bottom: 4px;
+    }
+
+    .metric-note {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* STRATEGY BOXES */
+    .strategy-section {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 2px solid #E8E4DE;
+    }
+
+    .strategy-section h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .strategy-boxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .strategy-box {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #E8E4DE;
+    }
+
+    .strategy-box h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .strategy-box p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    .strategy-box ul {
+      margin: 12px 0 0 20px;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #666;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-size: 12px;
+      margin-top: 60px;
+      border-top: 1px solid #E8E4DE;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 24px 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .funnel-title {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .funnel-title .desc {
+        margin-left: 0;
+        text-align: left;
+      }
+
+      .stage {
+        min-width: 100px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>ENNIE Marketing Strategy</h2>
+  <a href="index.html">← Back to Hub</a>
+</header>
+
+<div class="container">
+  <h1>🌿 5 Marketing Funnels — Visual Strategy</h1>
+
+  <!-- FUNNEL 1: HEALER -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">🌿</div>
+      <h2>Experienced Healer</h2>
+      <div class="desc">Cold outreach to trained practitioners. Target: 120k tested, 193 earning.</div>
+    </div>
+    <div class="funnel-stages healer">
+      <div class="stage">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Awareness</div>
+        <div class="stage-metric">Cold email, ads</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Landing</div>
+        <div class="stage-metric">Credibility</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Waitlist</div>
+        <div class="stage-metric">Referral activated</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Nurture</div>
+        <div class="stage-metric">8 emails</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">5</div>
+        <div class="stage-name">Assessment</div>
+        <div class="stage-metric">70% accept</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">6</div>
+        <div class="stage-name">Verified</div>
+        <div class="stage-metric">30% pass</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">7</div>
+        <div class="stage-name">Paid</div>
+        <div class="stage-metric">£11.5k/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL 2: UNTRAINED -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">✨</div>
+      <h2>Untrained Potential</h2>
+      <div class="desc">Discovery + free training. Target: 40k tested, 12k earning.</div>
+    </div>
+    <div class="funnel-stages untrained">
+      <div class="stage">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Discovery</div>
+        <div class="stage-metric">Meta, TikTok</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Landing</div>
+        <div class="stage-metric">Free training</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Waitlist</div>
+        <div class="stage-metric">Charlie welcome</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Training</div>
+        <div class="stage-metric">Video course</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">5</div>
+        <div class="stage-name">Test</div>
+        <div class="stage-metric">Prove ability</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">6</div>
+        <div class="stage-name">Verified</div>
+        <div class="stage-metric">20% pass</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">7</div>
+        <div class="stage-name">Earn</div>
+        <div class="stage-metric">Global clients</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL 3: PATIENT -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">💜</div>
+      <h2>Chronic Pain Patient</h2>
+      <div class="desc">High-intent demand. Target: 1M paying customers in 12 months. <strong>FULLY AUTOMATED</strong></div>
+    </div>
+    <div class="funnel-stages patient">
+      <div class="stage">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Awareness</div>
+        <div class="stage-metric">Google, Meta, search</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Landing</div>
+        <div class="stage-metric">Evidence-based</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Waitlist</div>
+        <div class="stage-metric">25% conversion</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Nurture</div>
+        <div class="stage-metric">4 emails</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">5</div>
+        <div class="stage-name">Early Access</div>
+        <div class="stage-metric">Healer match</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">6</div>
+        <div class="stage-name">Session</div>
+        <div class="stage-metric">40% repeat</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">7</div>
+        <div class="stage-name">Paying</div>
+        <div class="stage-metric">£22k/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL 4: REFERRAL -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">🏆</div>
+      <h2>Referral Loop</h2>
+      <div class="desc">Gamification + leaderboard. Target: 70k free signups from referrals.</div>
+    </div>
+    <div class="funnel-stages referral">
+      <div class="stage">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Trigger</div>
+        <div class="stage-metric">Auto on signup</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Link + Leaderboard</div>
+        <div class="stage-metric">Welcome email</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Share & Win</div>
+        <div class="stage-metric">Tier rewards</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Grand Prize</div>
+        <div class="stage-metric">Trip to Charlie</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL 5: OWNED AUDIENCE -->
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">⚡</div>
+      <h2>Charlie's Owned Audience</h2>
+      <div class="desc">470k warm followers. Target: 29k zero-cost signups pre-launch.</div>
+    </div>
+    <div class="funnel-stages owned">
+      <div class="stage">
+        <div class="stage-number">1</div>
+        <div class="stage-name">Announce</div>
+        <div class="stage-metric">Email + socials</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">2</div>
+        <div class="stage-name">Click</div>
+        <div class="stage-metric">8-15% CTR</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">3</div>
+        <div class="stage-name">Choose Path</div>
+        <div class="stage-metric">Healer or patient</div>
+      </div>
+      <div class="stage">
+        <div class="stage-number">4</div>
+        <div class="stage-name">Custom Audience</div>
+        <div class="stage-metric">Feed paid campaigns</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERALL METRICS -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Total Waitlist</div>
+      <div class="metric-value">400k+</div>
+      <div class="metric-note">Across all 5 funnels</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Content Assets</div>
+      <div class="metric-value">2,407</div>
+      <div class="metric-note">Production-ready copy variations</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Autonomous</div>
+      <div class="metric-value">1 Funnel</div>
+      <div class="metric-note">Patient funnel fully automated</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Paid Budget</div>
+      <div class="metric-value">£40k/mo</div>
+      <div class="metric-note">Monthly marketing spend</div>
+    </div>
+  </div>
+
+  <!-- STRATEGY BREAKDOWN -->
+  <div class="strategy-section">
+    <h3>🎯 Execution Strategy</h3>
+    <div class="strategy-boxes">
+      <div class="strategy-box">
+        <h4>📊 Phase 1: Foundation (Week 1-2)</h4>
+        <p>Build landing pages, activate Charlie's owned audience, launch cold email to healer list (150k), set up referral program via Viral Loops.</p>
+      </div>
+      <div class="strategy-box">
+        <h4>💰 Phase 2: Paid Acquisition (Week 3-8)</h4>
+        <p>Meta ads to all 5 audiences, Google Ads (SEM), retargeting, nurture sequences in Loops. Track every conversion with PostHog.</p>
+      </div>
+      <div class="strategy-box">
+        <h4>🤖 Phase 3: Automation (Week 8-12)</h4>
+        <p>Agents take over Patient funnel. 95% autonomous. Email, retargeting, matching, retention all automated. Humans review escalations only.</p>
+      </div>
+      <div class="strategy-box">
+        <h4>🔄 Phase 4: Optimization (Month 4+)</h4>
+        <p>PostHog feedback loops. A/B test copy. Shift budget to top-performing channels. Scale healer/patient matching. Referral program fuels growth.</p>
+      </div>
+      <div class="strategy-box">
+        <h4>👥 Team</h4>
+        <ul>
+          <li><strong>Jake:</strong> Strategy, founder narrative</li>
+          <li><strong>Jess & Felix:</strong> Ads, compliance, funnel optimization</li>
+          <li><strong>Agents:</strong> Execution at scale</li>
+          <li><strong>Charlie:</strong> Credibility + content</li>
+        </ul>
+      </div>
+      <div class="strategy-box">
+        <h4>📈 Success Metrics</h4>
+        <ul>
+          <li>Healer: 193 earning (30% of tested)</li>
+          <li>Patient: 100k pre-launch, 1M in 12 months</li>
+          <li>CAC: &lt;£3 per healer, &lt;£2 per patient</li>
+          <li>Referral: 70k free signups</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>ENNIE Marketing Strategy — 5 Funnels, 400k+ Waitlist, 1 Fully Automated Patient Funnel, 2,407 Content Assets</p>
+  <p style="margin-top: 12px; opacity: 0.5;">All dashboards, documentation, and automation configs available at the hub.</p>
+</footer>
+
+</body>
+</html>
