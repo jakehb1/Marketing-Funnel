@@ -268,22 +268,55 @@
       }
     }
 
+    /* MOBILE HAMBURGER */
+    .hamburger {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 2000;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #7C6BC4;
+    }
+
+    .hamburger.active {
+      display: block;
+    }
+
     @media (max-width: 768px) {
       .container {
-        flex-direction: column;
+        position: relative;
+      }
+
+      .hamburger {
+        display: block;
       }
 
       .sidebar {
-        width: 100%;
-        height: auto;
-        max-height: 200px;
-        border-bottom: 1px solid #E8E4DE;
-        border-right: none;
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        border-right: 1px solid #E8E4DE;
+        z-index: 1999;
+        transition: left 0.3s;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      }
+
+      .sidebar.mobile-open {
+        left: 0;
       }
 
       .main {
-        height: auto;
-        overflow-y: auto;
+        width: 100%;
+      }
+
+      .header {
+        padding: 20px 60px 20px 20px;
       }
 
       .card-grid {
@@ -295,8 +328,11 @@
 <body>
 
 <div class="container">
+  <!-- HAMBURGER MENU -->
+  <button class="hamburger" id="hamburger">☰</button>
+
   <!-- SIDEBAR NAVIGATION -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h1> ENNIE</h1>
       <p>Marketing Command Center</p>
@@ -596,7 +632,30 @@
       'ad-ops': 'Ad Operations'
     };
     document.querySelector('.header h2').textContent = titles[viewId] || viewId;
+
+    // Close mobile menu after selection
+    if (window.innerWidth <= 768) {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('hamburger').textContent = '☰';
+    }
   }
+
+  // Mobile hamburger menu
+  document.getElementById('hamburger').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('mobile-open');
+    this.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById('sidebar');
+    const hamburger = document.getElementById('hamburger');
+    if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
+      sidebar.classList.remove('mobile-open');
+      hamburger.textContent = '☰';
+    }
+  });
 </script>
 
 </body>
