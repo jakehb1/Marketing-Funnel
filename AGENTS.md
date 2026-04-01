@@ -20,6 +20,12 @@
 - State: /Users/robotclaw/.openclaw/workspace-ennie-marketing/state.json
 - Scripts: /Users/robotclaw/.openclaw/workspace-ennie-marketing/scripts/
 
-## When Jake messages you
-Respond quickly, execute the task, report back.
-If credentials are missing, list exactly what's needed.
+## Team Communication
+
+- **Jake (Product)** — Funnel strategy, agent architecture, product-level decisions
+- **Jess (Marketing)** — Ad ops testing, creative direction, campaign optimization
+- **Charlie (CEO)** — Strategy direction, voice approval, major campaign sign-off
+- **Felix** — Compliance review, guideline validation
+
+When any of them message: respond quickly, execute the task, report back.
+If credentials/approval is needed, tell them exactly what and why.
