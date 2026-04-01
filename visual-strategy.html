@@ -95,12 +95,91 @@
       gap: 8px;
       align-items: center;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s;
+      border: 2px solid transparent;
     }
 
     .stage:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .stage.active {
+      border-color: #1A1A2E;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-close:hover {
+      color: #1A1A2E;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #E8E4DE;
+    }
+
+    .modal-header h2 {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 0;
+      color: #7C6BC4;
+    }
+
+    .modal-body h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 24px 0 12px 0;
+    }
+
+    .modal-body p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #666;
+      margin-bottom: 16px;
     }
 
     .stage-number {
@@ -554,6 +633,96 @@
   <p>ENNIE Marketing Strategy — 5 Funnels, 400k+ Waitlist, 1 Fully Automated Patient Funnel, 2,407 Content Assets</p>
   <p style="margin-top: 12px; opacity: 0.5;">All dashboards, documentation, and automation configs available at the hub.</p>
 </footer>
+
+<div id="stageModal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-header">
+      <div style="font-size: 32px;" id="modalIcon"></div>
+      <h2 id="modalTitle"></h2>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  const stageData = {
+    healer: {
+      1: { title: "Awareness", description: "Cold email & ads reach trained practitioners. 150k targeted.", icon: "📧" },
+      2: { title: "Landing", description: "Credibility page. Charlie's track record. Proof of earnings.", icon: "🌐" },
+      3: { title: "Waitlist", description: "Free to join. Referral link activated on signup.", icon: "📝" },
+      4: { title: "Nurture", description: "8-email sequence. Success stories. How to earn.", icon: "💌" },
+      5: { title: "Assessment", description: "Video submission. Verify credentials. 70% accept.", icon: "✅" },
+      6: { title: "Verified", description: "Background check + review. 30% pass rate.", icon: "🔐" },
+      7: { title: "Paid", description: "On platform earning. 193 healers at £11.5k/mo.", icon: "💰" }
+    },
+    untrained: {
+      1: { title: "Discovery", description: "Meta & TikTok ads. Free training hook.", icon: "🔍" },
+      2: { title: "Landing", description: "Free training offer. Charlie's story. Energy healing 101.", icon: "🌟" },
+      3: { title: "Waitlist", description: "Charlie welcome email. Personalized path.", icon: "📬" },
+      4: { title: "Training", description: "Video course. 8 modules. Certification path.", icon: "🎓" },
+      5: { title: "Test", description: "Practical assessment. Prove your ability.", icon: "🧪" },
+      6: { title: "Verified", description: "Approved instructor. 20% pass rate.", icon: "⭐" },
+      7: { title: "Earn", description: "Global client access. Recurring revenue.", icon: "🌍" }
+    },
+    patient: {
+      1: { title: "Awareness", description: "Google + Meta ads. Chronic pain relief keywords.", icon: "📺" },
+      2: { title: "Landing", description: "Evidence-based benefits. Testimonials. How it works.", icon: "📖" },
+      3: { title: "Nurture", description: "4-email credibility sequence. Science + social proof.", icon: "📧" },
+      4: { title: "Early Access", description: "Intake form. Instant healer matching.", icon: "🎯" },
+      5: { title: "Session", description: "Remote healing session. Pain level tracked. 40% rebook.", icon: "🧘" },
+      6: { title: "Retention", description: "Follow-ups. Churn prevention. Loyalty rewards.", icon: "🔄" },
+      7: { title: "Paying", description: "Subscription active. £22k/mo platform revenue.", icon: "💳" }
+    }
+  };
+
+  function showStage(funnel, stage, title, description, icon) {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalBody').innerHTML = `
+      <h3>What Happens</h3>
+      <p>${description}</p>
+      
+      <h3>Key Metric</h3>
+      <p style="font-size: 18px; color: #7C6BC4; font-weight: 600;">Stage ${stage} of ${Object.keys(stageData[funnel]).length}</p>
+      
+      <h3>Agents Involved</h3>
+      <p style="background: #F8F6F3; padding: 12px; border-radius: 8px; font-size: 12px;">
+        <strong>Growth Agent</strong> — Manages funnel progression<br>
+        <strong>Voice Agent</strong> — Creates messaging<br>
+        <strong>Participant Outreach</strong> — Direct engagement
+      </p>
+    `;
+    document.getElementById('stageModal').classList.add('active');
+  }
+
+  function closeModal(event) {
+    if (event && event.target.id !== 'stageModal') return;
+    document.getElementById('stageModal').classList.remove('active');
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Make all stages clickable
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.stage').forEach(stage => {
+      stage.addEventListener('click', (e) => {
+        const funnel = e.target.closest('.funnel-stages').className.split(' ')[1];
+        const stageNum = parseInt(e.target.closest('.stage').querySelector('.stage-number').textContent);
+        const stageName = e.target.closest('.stage').querySelector('.stage-name').textContent;
+        const stageDesc = e.target.closest('.stage').querySelector('.stage-metric').textContent;
+        
+        // Get icon from parent
+        const funnelRow = e.target.closest('.funnel-row');
+        const icon = funnelRow.querySelector('.funnel-icon').textContent;
+        
+        showStage(funnel, stageNum, stageName, stageDesc, icon);
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
