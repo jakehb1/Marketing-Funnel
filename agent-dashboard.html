@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Agent-Native Marketing Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --healer: #6BAE9B;
+      --untrained: #E8A44A;
+      --patient: #7C6BC4;
+      --referral: #C4775A;
+      --owned: #5A8FC4;
+      --dark: #1A1A2E;
+      --bg: #F5F3EE;
+      --border: #E8E4DE;
+      --safe: #28A745;
+      --review: #FFC107;
+      --revise: #DC3545;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      overflow: hidden;
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+
+    .control-group button {
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .control-group button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .control-group button.active {
+      background: var(--patient);
+    }
+
+    #canvas {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: var(--bg);
+      cursor: grab;
+    }
+
+    #canvas:active {
+      cursor: grabbing;
+    }
+
+    .panel {
+      position: fixed;
+      right: 0;
+      top: 60px;
+      width: 480px;
+      height: calc(100vh - 60px);
+      background: white;
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 0;
+      z-index: 50;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .panel.open {
+      transform: translateX(0);
+    }
+
+    .panel-header {
+      position: sticky;
+      top: 0;
+      background: var(--dark);
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .panel-title {
+      flex: 1;
+    }
+
+    .panel-title h2 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .panel-title p {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .panel-close:hover {
+      opacity: 0.8;
+    }
+
+    .panel-content {
+      padding: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tabs button.active {
+      color: var(--dark);
+      border-bottom-color: var(--patient);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h3 {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .section p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+
+    .badge.agent {
+      background: #E3F2FD;
+      color: #1976D2;
+    }
+
+    .badge.voice {
+      background: #F3E5F5;
+      color: #7B1FA2;
+    }
+
+    .compliance {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .compliance.safe {
+      background: #C8E6C9;
+      color: #2E7D32;
+    }
+
+    .compliance.review {
+      background: #FFE0B2;
+      color: #F57C00;
+    }
+
+    .compliance.revise {
+      background: #FFCDD2;
+      color: #C62828;
+    }
+
+    .workflow {
+      background: #F8F6F3;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+
+    .workflow-step {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .workflow-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .workflow-num {
+      background: var(--patient);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .workflow-text {
+      flex: 1;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .kpi-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .kpi-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .kpi-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--patient);
+      margin-bottom: 4px;
+    }
+
+    .kpi-note {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .legend {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 11px;
+      z-index: 40;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .legend-section {
+      margin-bottom: 12px;
+    }
+
+    .legend-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .legend-title {
+      font-weight: 600;
+      color: #999;
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .panel {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🤖 ENNIE Agent-Native Marketing Dashboard</h1>
+  </div>
+  <div class="controls">
+    <div class="control-group">
+      <button id="viewFlow" class="active">Flow</button>
+      <button id="viewAgents">Agents</button>
+      <button id="viewCompliance">Compliance</button>
+    </div>
+    <div class="control-group">
+      <button id="filterAll" class="active">All</button>
+      <button id="filterHealer">Healer</button>
+      <button id="filterPatient">Patient</button>
+    </div>
+  </div>
+</header>
+
+<canvas id="canvas"></canvas>
+
+<div class="legend">
+  <div class="legend-section">
+    <div class="legend-title">Funnels</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--healer);"></div> Healer</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--untrained);"></div> Untrained</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--patient);"></div> Patient</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--referral);"></div> Referral</div>
+    <div class="legend-item"><div class="legend-dot" style="background: var(--owned);"></div> Owned</div>
+  </div>
+  <div class="legend-section">
+    <div class="legend-title">Compliance</div>
+    <div class="legend-item"><div class="legend-box" style="background: var(--safe);"></div> Safe</div>
+    <div class="legend-item"><div class="legend-box" style="background: var(--review);"></div> Review</div>
+    <div class="legend-item"><div class="legend-box" style="background: var(--revise);"></div> Revise</div>
+  </div>
+</div>
+
+<div id="panel" class="panel">
+  <div class="panel-header">
+    <div class="panel-title">
+      <h2 id="panelTitle"></h2>
+      <p id="panelFunnel"></p>
+    </div>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-content">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="overview">Overview</button>
+      <button class="tab-btn" data-tab="agent">Agent</button>
+      <button class="tab-btn" data-tab="workflow">Workflow</button>
+      <button class="tab-btn" data-tab="compliance">Compliance</button>
+      <button class="tab-btn" data-tab="metrics">Metrics</button>
+    </div>
+
+    <div id="overview" class="tab-pane active">
+      <div class="section">
+        <h3>Stage Description</h3>
+        <p id="desc"></p>
+      </div>
+      <div class="section">
+        <h3>Key Message</h3>
+        <p style="font-style: italic; color: #666;" id="keyMsg"></p>
+      </div>
+      <div class="section">
+        <h3>Voice Consistency</h3>
+        <span id="voiceBadge" class="badge voice"></span>
+      </div>
+    </div>
+
+    <div id="agent" class="tab-pane">
+      <div class="section">
+        <h3>Owning Agent</h3>
+        <span id="agentBadge" class="badge agent"></span>
+        <p id="agentDesc"></p>
+      </div>
+      <div class="section">
+        <h3>Responsibilities</h3>
+        <p id="agentDuties"></p>
+      </div>
+      <div class="section">
+        <h3>Tools</h3>
+        <p id="agentTools"></p>
+      </div>
+    </div>
+
+    <div id="workflow" class="tab-pane">
+      <div class="section">
+        <h3>Agent Workflow (5-Step Orchestration)</h3>
+        <div class="workflow">
+          <div class="workflow-step">
+            <div class="workflow-num">1</div>
+            <div class="workflow-text"><strong>Ingest</strong> — Pull data from PostHog, Loops, app events</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-num">2</div>
+            <div class="workflow-text"><strong>Reason</strong> — Claude determines next action based on context</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-num">3</div>
+            <div class="workflow-text"><strong>Execute</strong> — API calls to Buffer, Loops, Canva, ElevenLabs</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-num">4</div>
+            <div class="workflow-text"><strong>Log</strong> — Every action recorded for audit & optimization</div>
+          </div>
+          <div class="workflow-step">
+            <div class="workflow-num">5</div>
+            <div class="workflow-text"><strong>Escalate</strong> — Hit boundary? Route to Slack for review</div>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h3>Automation Trigger</h3>
+        <p id="trigger"></p>
+      </div>
+    </div>
+
+    <div id="compliance" class="tab-pane">
+      <div class="section">
+        <h3>Compliance Status</h3>
+        <span id="complianceBadge" class="compliance"></span>
+      </div>
+      <div class="section">
+        <h3>Health Claim Validation</h3>
+        <p id="complianceNote"></p>
+      </div>
+      <div class="section">
+        <h3>Jurisdictions</h3>
+        <p style="font-size: 12px; line-height: 1.6;">
+          ✓ Australia<br>
+          ✓ USA<br>
+          ✓ UK<br>
+          ✓ EU<br>
+          ✓ Canada<br>
+          ✓ India (TBD)
+        </p>
+      </div>
+    </div>
+
+    <div id="metrics" class="tab-pane">
+      <div class="section">
+        <h3>PostHog Metrics</h3>
+        <div id="metricsContent"></div>
+      </div>
+      <div class="section">
+        <h3>Feedback Loop</h3>
+        <p style="font-size: 12px;">Analytics feed back into agent system. Agent optimizes based on: CTR, signup rate, conversion rate, churn prevention triggers, cohort attribution.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // COMPREHENSIVE NODE DATA WITH AGENT INFO
+  const nodes = [
+    // HEALER FUNNEL
+    {
+      id: "h1", name: "Awareness", funnel: "Healer", x: 100, y: 100, color: "#6BAE9B",
+      agent: "Participant Outreach Agent", agentShort: "PO",
+      desc: "Cold email, Meta ads, TikTok, Facebook groups. Healer discovers Ennie.",
+      keyMsg: "Do they take someone from 10/10 pain to zero within minutes?",
+      voice: "✓ Approved",
+      agentDesc: "Top-of-funnel hunter. Executes cold outreach campaigns.",
+      agentDuties: "Manages email lists, ad targeting, community discovery",
+      agentTools: "RocketReach, BookYourData, Buffer, Meta API",
+      trigger: "Daily at 09:00 UTC — pulls new healer leads from RocketReach",
+      compliance: "safe",
+      complianceNote: "Direct quote from Charlie. No medical claims.",
+      metrics: [
+        { label: "Email sent", value: "150k+", note: "Cold email list size" },
+        { label: "Expected CTR", value: "2.5%", note: "Click-through rate" },
+        { label: "Target", value: "3,750", note: "Expected clicks" }
+      ]
+    },
+    {
+      id: "h2", name: "Landing", funnel: "Healer", x: 100, y: 170, color: "#6BAE9B",
+      agent: "Voice Agent", agentShort: "V",
+      desc: "Healer lands on page. Charlie's credentials, proof, income potential.",
+      keyMsg: "Your ability is real. Get paid for it.",
+      voice: "✓ Charlie-voice",
+      agentDesc: "Creates all customer-facing content. Maintains voice consistency.",
+      agentDuties: "Landing page copy, website optimization, messaging consistency",
+      agentTools: "Webflow, Claude API, ElevenLabs",
+      trigger: "On page load — dynamically personalizes copy based on source",
+      compliance: "safe",
+      complianceNote: "Income claims are factual. No medical claims.",
+      metrics: [
+        { label: "Page views", value: "3,750", note: "From awareness CTR" },
+        { label: "Signup rate", value: "35%", note: "Expected conversion" },
+        { label: "Target", value: "1,313", note: "Expected signups" }
+      ]
+    },
+    {
+      id: "h3", name: "Waitlist", funnel: "Healer", x: 100, y: 240, color: "#6BAE9B",
+      agent: "Growth Agent", agentShort: "G",
+      desc: "Signup. Referral link issued. Welcome email sent.",
+      keyMsg: "Top referrers win a trip to learn from Charlie",
+      voice: "✓ Charlie-voice",
+      agentDesc: "Manages funnel mechanics and nurture sequences.",
+      agentDuties: "Waitlist signup flow, referral link generation, welcome sequence",
+      agentTools: "Loops, Viral Loops, PostHog",
+      trigger: "Instant — auto-triggered on signup",
+      compliance: "safe",
+      complianceNote: "Referral program terms are clear.",
+      metrics: [
+        { label: "Signups", value: "1,313", note: "From landing page" },
+        { label: "Referral activation", value: "40%", note: "Share referral link" },
+        { label: "Target", value: "525", note: "Active referrers" }
+      ]
+    },
+    {
+      id: "h4", name: "Nurture", funnel: "Healer", x: 100, y: 310, color: "#6BAE9B",
+      agent: "Growth Agent", agentShort: "G",
+      desc: "8-email sequence over 5 months. Insider updates, referral pushes.",
+      keyMsg: "Something real is being built. You're part of it.",
+      voice: "✓ Charlie-voice",
+      agentDesc: "Manages email sequences and retention.",
+      agentDuties: "Email scheduling, personalization, A/B testing",
+      agentTools: "Loops, Klaviyo, PostHog",
+      trigger: "Day 1, 7, 14, 30, 60, 90, 120, 150 after signup",
+      compliance: "safe",
+      complianceNote: "All emails reference evidence or personal story.",
+      metrics: [
+        { label: "Email 1 open", value: "52%", note: "Welcome email" },
+        { label: "Email sequence completion", value: "65%", note: "Through all 8" },
+        { label: "Referral from nurture", value: "3.2", note: "Avg per person" }
+      ]
+    },
+    {
+      id: "h5", name: "Assessment", funnel: "Healer", x: 100, y: 380, color: "#6BAE9B",
+      agent: "Growth Agent", agentShort: "G",
+      desc: "Invited to remote healing assessment. Anonymous real-world sessions.",
+      keyMsg: "Time to find out if you've got it.",
+      voice: "✓ Approved",
+      agentDesc: "Manages assessment queue and invitations.",
+      agentDuties: "Queue prioritization, invite scheduling, session coordination",
+      agentTools: "PostHog, Loops, Ennie app API",
+      trigger: "Assessment invite sent when queue position reached",
+      compliance: "safe",
+      complianceNote: "Testing protocol is clinical and objective.",
+      metrics: [
+        { label: "Assessment invites", value: "918", note: "65% of waitlist" },
+        { label: "Acceptance rate", value: "70%", note: "Take the test" },
+        { label: "Completing", value: "643", note: "Will attempt assessment" }
+      ]
+    },
+    {
+      id: "h6", name: "Verified", funnel: "Healer", x: 100, y: 450, color: "#6BAE9B",
+      agent: "Growth Agent", agentShort: "G",
+      desc: "Consistent outcomes → joins vetted network. Profile goes live.",
+      keyMsg: "You're verified. Your clients are waiting.",
+      voice: "✓ Charlie-voice",
+      agentDesc: "Onboards verified healers and manages profiles.",
+      agentDuties: "Healer verification, profile publishing, client matching",
+      agentTools: "Ennie app, PostHog, Loops",
+      trigger: "Pass assessment → instant verification & profile publication",
+      compliance: "safe",
+      complianceNote: "Verified status is outcome-based, not credential-based.",
+      metrics: [
+        { label: "Pass rate", value: "30%", note: "Of those tested" },
+        { label: "Verified healers", value: "193", note: "From this cohort" },
+        { label: "Time to first client", value: "2.1d", note: "After verification" }
+      ]
+    },
+    {
+      id: "h7", name: "Paid", funnel: "Healer", x: 100, y: 520, color: "#6BAE9B",
+      agent: "Participant Outreach", agentShort: "PO",
+      desc: "Completes sessions, earns income. Weekly payouts.",
+      keyMsg: "Weekly payouts from international clients",
+      voice: "✓ Approved",
+      agentDesc: "Drives healer earnings through client matching.",
+      agentDuties: "Client matching, session quality, payout processing",
+      agentTools: "Stripe, PostHog, Ennie app",
+      trigger: "Continuous — new clients matched daily",
+      compliance: "safe",
+      complianceNote: "Income is transparent and outcome-based.",
+      metrics: [
+        { label: "Active healers", value: "193", note: "Earning sessions" },
+        { label: "Avg sessions/month", value: "12", note: "Per healer" },
+        { label: "Total payouts", value: "£11.5k/mo", note: "Across network" }
+      ]
+    },
+
+    // PATIENT FUNNEL (simplified in this view)
+    {
+      id: "p1", name: "Awareness", funnel: "Patient", x: 500, y: 100, color: "#7C6BC4",
+      agent: "Voice Agent + Growth", agentShort: "V+G",
+      desc: "Google search, Meta ads, chronic pain communities.",
+      keyMsg: "2 billion in chronic pain. Solutions aren't working.",
+      voice: "✓ Evidence-first",
+      agentDesc: "Demand generation for patient side.",
+      agentDuties: "SEM, paid social, organic content",
+      agentTools: "Google Ads, Buffer, PostHog",
+      trigger: "Daily budget allocation based on performance",
+      compliance: "safe",
+      complianceNote: "Fact-based messaging. No health claims.",
+      metrics: [
+        { label: "Google impressions", value: "1.2M/mo", note: "SEM campaign" },
+        { label: "Expected CTR", value: "3.2%", note: "High-intent search" },
+        { label: "Target signups", value: "2,400", note: "From paid" }
+      ]
+    },
+    {
+      id: "p2", name: "Landing", funnel: "Patient", x: 500, y: 170, color: "#7C6BC4",
+      agent: "Voice Agent", agentShort: "V",
+      desc: "Patient landing page. Empathetic, credible, private.",
+      keyMsg: "Tested. Private. No hype.",
+      voice: "✓ Charlie-voice",
+      agentDesc: "Converts patient awareness to signups.",
+      agentDuties: "Landing page optimization, A/B testing",
+      agentTools: "Webflow, VWO, Claude API",
+      trigger: "Real-time personalization based on traffic source",
+      compliance: "safe",
+      complianceNote: "Balanced tone. Emphasizes evidence over emotion.",
+      metrics: [
+        { label: "Conversion rate", value: "25%", note: "Click to signup" },
+        { label: "Expected signups", value: "600", note: "From landing" },
+        { label: "Bounce rate", value: "32%", note: "Target: <30%" }
+      ]
+    },
+    {
+      id: "p3", name: "Waitlist", funnel: "Patient", x: 500, y: 240, color: "#7C6BC4",
+      agent: "Growth Agent", agentShort: "G",
+      desc: "Waitlist signup. Referral link + leaderboard access.",
+      keyMsg: "Join early. Move up the queue.",
+      voice: "✓ Approved",
+      agentDesc: "Patient funnel mechanics.",
+      agentDuties: "Signup flow, referral activation, leaderboard",
+      agentTools: "Loops, Viral Loops",
+      trigger: "Instant on signup",
+      compliance: "safe",
+      complianceNote: "Referral program is transparent.",
+      metrics: [
+        { label: "Signups", value: "600", note: "From landing" },
+        { label: "Referral rate", value: "35%", note: "Share link" },
+        { label: "Total referred", value: "210", note: "From referrals" }
+      ]
+    }
+  ];
+
+  // CANVAS & STATE
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let panX = 0, panY = 0, zoom = 1, selectedNode = null, isDragging = false, dragStart = {};
+  let filter = 'all', view = 'flow';
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 60;
+  }
+
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#F5F3EE';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw connections
+    for (let i = 0; i < nodes.length - 1; i++) {
+      if (nodes[i].funnel === nodes[i+1].funnel && shouldShowNode(nodes[i])) {
+        drawArrow(nodes[i], nodes[i+1]);
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(node => {
+      if (shouldShowNode(node)) {
+        drawNode(node, node === selectedNode);
+      }
+    });
+  }
+
+  function shouldShowNode(node) {
+    if (filter === 'all') return true;
+    if (filter === 'healer') return node.funnel === 'Healer';
+    if (filter === 'patient') return node.funnel === 'Patient';
+    return true;
+  }
+
+  function drawArrow(from, to) {
+    const x1 = from.x * zoom + panX;
+    const y1 = from.y * zoom + panY;
+    const x2 = to.x * zoom + panX;
+    const y2 = to.y * zoom + panY;
+
+    ctx.strokeStyle = from.color + '40';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1 + 20);
+    ctx.lineTo(x2, y2 - 20);
+    ctx.stroke();
+
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    ctx.fillStyle = from.color + '80';
+    ctx.beginPath();
+    ctx.moveTo(x2 - 8 * Math.cos(angle - Math.PI / 6), y2 - 8 * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x2 - 8 * Math.cos(angle + Math.PI / 6), y2 - 8 * Math.sin(angle + Math.PI / 6));
+    ctx.fill();
+  }
+
+  function drawNode(node, selected) {
+    const x = node.x * zoom + panX;
+    const y = node.y * zoom + panY;
+    const size = 40;
+
+    ctx.shadowColor = 'rgba(0,0,0,0.2)';
+    ctx.shadowBlur = 8;
+
+    // Compliance ring
+    if (view === 'compliance') {
+      ctx.strokeStyle = node.compliance === 'safe' ? '#28A745' : node.compliance === 'review' ? '#FFC107' : '#DC3545';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(x, y, size / 2 + 6, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = selected ? node.color : node.color + 'cc';
+    ctx.beginPath();
+    ctx.arc(x, y, size / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = selected ? '#000' : node.color;
+    ctx.lineWidth = selected ? 3 : 2;
+    ctx.stroke();
+
+    ctx.shadowColor = 'transparent';
+
+    // Agent badge if agents view
+    if (view === 'agents') {
+      ctx.fillStyle = '#E3F2FD';
+      ctx.fillRect(x - 8, y + 18, 16, 12);
+      ctx.strokeStyle = '#1976D2';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x - 8, y + 18, 16, 12);
+      
+      ctx.fillStyle = '#1976D2';
+      ctx.font = '9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(node.agentShort, x, y + 24);
+    }
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(node.name, x, y - 2);
+
+    ctx.font = '9px sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+    ctx.fillText(node.funnel.split(' ')[0], x, y + 8);
+
+    node._x = x;
+    node._y = y;
+    node._size = size / 2;
+  }
+
+  // INTERACTIONS
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left - panX) / zoom;
+    const y = (e.clientY - rect.top - panY) / zoom;
+
+    let clicked = null;
+    nodes.forEach(node => {
+      if (shouldShowNode(node) && Math.hypot(node.x - x, node.y - y) < node._size + 10) {
+        clicked = node;
+      }
+    });
+
+    if (clicked) {
+      selectedNode = clicked;
+      showPanel(clicked);
+      drawCanvas();
+    } else {
+      isDragging = true;
+      dragStart = { x: e.clientX, y: e.clientY, panX, panY };
+    }
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      panX = dragStart.panX + (e.clientX - dragStart.x);
+      panY = dragStart.panY + (e.clientY - dragStart.y);
+      drawCanvas();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const oldZoom = zoom;
+    zoom *= e.deltaY < 0 ? 1.1 : 0.9;
+    zoom = Math.max(0.5, Math.min(2, zoom));
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    panX = x - (x - panX) * (zoom / oldZoom);
+    panY = y - (y - panY) * (zoom / oldZoom);
+
+    drawCanvas();
+  });
+
+  // CONTROLS
+  document.getElementById('viewFlow').addEventListener('click', () => {
+    view = 'flow';
+    updateViewButtons();
+    drawCanvas();
+  });
+
+  document.getElementById('viewAgents').addEventListener('click', () => {
+    view = 'agents';
+    updateViewButtons();
+    drawCanvas();
+  });
+
+  document.getElementById('viewCompliance').addEventListener('click', () => {
+    view = 'compliance';
+    updateViewButtons();
+    drawCanvas();
+  });
+
+  document.getElementById('filterAll').addEventListener('click', () => {
+    filter = 'all';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    drawCanvas();
+  });
+
+  document.getElementById('filterHealer').addEventListener('click', () => {
+    filter = 'healer';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    drawCanvas();
+  });
+
+  document.getElementById('filterPatient').addEventListener('click', () => {
+    filter = 'patient';
+    updateFilterButtons();
+    selectedNode = null;
+    closePanel();
+    drawCanvas();
+  });
+
+  function updateViewButtons() {
+    document.querySelectorAll('.control-group button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    if (view === 'flow') document.getElementById('viewFlow').classList.add('active');
+    else if (view === 'agents') document.getElementById('viewAgents').classList.add('active');
+    else if (view === 'compliance') document.getElementById('viewCompliance').classList.add('active');
+  }
+
+  function updateFilterButtons() {
+    document.querySelectorAll('.control-group:last-child button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.getElementById('filter' + (filter === 'all' ? 'All' : filter.charAt(0).toUpperCase() + filter.slice(1))).classList.add('active');
+  }
+
+  // PANEL
+  function showPanel(node) {
+    document.getElementById('panelTitle').textContent = node.name;
+    document.getElementById('panelFunnel').textContent = node.funnel;
+
+    document.getElementById('desc').textContent = node.desc;
+    document.getElementById('keyMsg').textContent = node.keyMsg;
+    document.getElementById('voiceBadge').textContent = node.voice;
+
+    document.getElementById('agentBadge').textContent = node.agent;
+    document.getElementById('agentDesc').textContent = node.agentDesc;
+    document.getElementById('agentDuties').textContent = node.agentDuties;
+    document.getElementById('agentTools').textContent = node.agentTools;
+
+    document.getElementById('trigger').textContent = node.trigger;
+
+    document.getElementById('complianceBadge').textContent = '✓ ' + node.compliance.toUpperCase();
+    document.getElementById('complianceBadge').className = 'compliance ' + node.compliance;
+    document.getElementById('complianceNote').textContent = node.complianceNote;
+
+    let metricsHtml = '';
+    node.metrics.forEach(m => {
+      metricsHtml += `
+        <div class="kpi-box">
+          <div class="kpi-label">${m.label}</div>
+          <div class="kpi-value">${m.value}</div>
+          <div class="kpi-note">${m.note}</div>
+        </div>
+      `;
+    });
+    document.getElementById('metricsContent').innerHTML = metricsHtml;
+
+    // Setup tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(btn.dataset.tab).classList.add('active');
+        btn.classList.add('active');
+      });
+    });
+
+    document.getElementById('panel').classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('panel').classList.remove('open');
+    selectedNode = null;
+    drawCanvas();
+  }
+
+  // INIT
+  drawCanvas();
+</script>
+
+</body>
+</html>
