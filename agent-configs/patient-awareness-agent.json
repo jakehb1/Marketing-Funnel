@@ -1,0 +1,427 @@
+{
+  "agent": {
+    "id": "patient-awareness-agent",
+    "name": "Patient Awareness Agent",
+    "role": "Lead generation and acquisition",
+    "description": "Manages paid advertising (Google Ads, Meta Ads) and organic discovery to identify and capture high-intent chronic pain patients. Optimizes ad spend for lowest cost per lead while maintaining lead quality.",
+    "owner": "Growth Lead",
+    "status": "ready_for_production",
+    "created_at": "2026-04-01",
+    "version": "1.0"
+  },
+  "responsibilities": [
+    "Manage Google Ads campaigns for chronic pain search keywords",
+    "Manage Meta Ads (Facebook/Instagram) for awareness and retargeting",
+    "Monitor organic lead sources (SEO, referral, direct)",
+    "Capture leads from landing pages and form submissions",
+    "Score lead quality based on pain level, intent, and source",
+    "Optimize ad spend and bids based on conversion signals",
+    "A/B test ad creative, landing pages, and messaging",
+    "Tag and segment leads for downstream nurture agents",
+    "Monitor ROAS and cost per lead (CPL) against targets",
+    "Escalate creative/messaging issues to growth team"
+  ],
+  "workflow": {
+    "stages": [
+      {
+        "name": "Ingest",
+        "description": "Collect advertising and behavioral data from all sources",
+        "steps": [
+          "Listen for PostHog events: page_view, landing_page_submission, form_submission",
+          "Consume Google Ads API: conversions, clicks, impressions, cost",
+          "Consume Meta Marketing API: conversions, impressions, spend",
+          "Consume landing page analytics: traffic source, referrer, device type",
+          "Match user IDs across platforms (Google Analytics ID, Meta pixel, email)"
+        ],
+        "data_sources": [
+          "PostHog (events)",
+          "Google Ads API",
+          "Meta Marketing API",
+          "Landing page form submissions",
+          "Email subscription source",
+          "UTM parameters from ads"
+        ]
+      },
+      {
+        "name": "Reason",
+        "description": "Analyze data to determine lead quality and next actions",
+        "steps": [
+          "Calculate lead quality score (0-100) based on: pain type (keyword intent), location match, device type, time spent on page",
+          "Determine traffic source quality (paid vs. organic)",
+          "Assess ad performance: CTR, conversion rate, ROAS",
+          "Identify underperforming ad sets or keywords",
+          "Segment leads by quality tier: high (>75), medium (50-75), low (<50)",
+          "Determine if CPL is trending above/below target"
+        ],
+        "decision_logic": {
+          "if_lead_quality_high": "Fast-track to nurture sequence, assign highest email priority",
+          "if_lead_quality_medium": "Standard nurture sequence",
+          "if_lead_quality_low": "Retargeting ads, nurture with lower email frequency",
+          "if_roas_below_target": "Reduce spend on underperforming keywords/ads, reallocate to high performers",
+          "if_cpl_above_target": "A/B test new creative or landing page variant",
+          "if_organic_lead_high_quality": "Scale organic investments (SEO, content), tag source"
+        }
+      },
+      {
+        "name": "Execute",
+        "description": "Perform advertising and lead management actions",
+        "steps": [
+          "Adjust Google Ads bid multipliers based on quality signals (device, location, time of day)",
+          "Create/update Meta lookalike audiences from high-quality lead cohorts",
+          "Add qualified lead to Loops with source tag (google_ads, meta_ads, organic)",
+          "Set lead quality score and pain type in Loops",
+          "Trigger landing page variant based on traffic source",
+          "Queue first nurture email immediately (triggered by Loops automation)",
+          "Log lead capture event to PostHog with all metadata",
+          "Update ad account performance metrics to dashboard"
+        ]
+      },
+      {
+        "name": "Log",
+        "description": "Record all actions and metrics for tracking and optimization",
+        "steps": [
+          "Log lead_captured event: email, source, quality_score, pain_type, location",
+          "Track cost_per_lead (cumulative by source)",
+          "Track lead_quality_score distribution",
+          "Track conversion_rate by source (landing page → email captured)",
+          "Track ROAS by campaign",
+          "Track A/B test results (control vs. variant CTR, conversion rate)",
+          "Append all logs to agent execution history (PostHog custom events)"
+        ],
+        "metrics_tracked": [
+          "daily_leads_captured",
+          "cost_per_lead",
+          "lead_quality_score_avg",
+          "roas_by_source",
+          "landing_page_ctr",
+          "landing_page_conversion_rate",
+          "ad_ctr",
+          "impressions",
+          "spend"
+        ]
+      },
+      {
+        "name": "Escalate",
+        "description": "Route issues and high-value decisions to humans",
+        "steps": [
+          "If ROAS < 1.5 for 3 consecutive days → Flag for growth team review (creative needs refresh)",
+          "If CPL > $15 for 3 consecutive days → Flag for bid/targeting adjustment",
+          "If landing page conversion rate drops >15% → Escalate to product/marketing team",
+          "If >10% of leads bounce immediately (high bounce rate) → Review landing page quality",
+          "If unusual traffic pattern detected (10x normal volume) → Alert fraud detection team",
+          "If paid source quality drops suddenly → Review ad account for policy violations"
+        ],
+        "escalation_triggers": [
+          "roas_below_threshold_3_days",
+          "cpl_above_threshold_3_days",
+          "landing_page_quality_drop",
+          "unusual_traffic_pattern",
+          "ad_policy_violation",
+          "lead_quality_collapse"
+        ]
+      }
+    ]
+  },
+  "triggers": [
+    {
+      "name": "hourly_metrics_review",
+      "description": "Review advertising metrics hourly for quality and spend efficiency",
+      "frequency": "every_1_hour",
+      "condition": "Always (scheduled)",
+      "action": "Execute Ingest → Reason → Execute → Log → Escalate cycle"
+    },
+    {
+      "name": "daily_budget_check",
+      "description": "Ensure daily ad spend is within budget and hitting targets",
+      "frequency": "daily_at_8am",
+      "condition": "Daily",
+      "action": "Review total spend, ROAS, CPL; adjust bids if needed"
+    },
+    {
+      "name": "weekly_ab_test_launch",
+      "description": "Launch new creative or landing page A/B tests",
+      "frequency": "every_monday_at_9am",
+      "condition": "Growth team has new variants ready",
+      "action": "Set up A/B test in ad platform, allocate 10% traffic to variant"
+    },
+    {
+      "name": "ad_policy_violation",
+      "description": "Monitor for ad policy violations (banned keywords, creative issues)",
+      "frequency": "continuous",
+      "condition": "Ad platform reports violation",
+      "action": "Alert growth team, pause offending ads, request review"
+    }
+  ],
+  "data_sources": {
+    "inbound": [
+      {
+        "name": "PostHog",
+        "type": "event_stream",
+        "endpoint": "https://api.posthog.com/capture/",
+        "auth": "api_key",
+        "events": ["page_view", "landing_page_submission", "form_start", "form_complete"],
+        "frequency": "real_time",
+        "required_fields": ["user_id", "source", "event_type", "timestamp", "utm_params"]
+      },
+      {
+        "name": "Google Ads API",
+        "type": "rest_api",
+        "endpoint": "https://googleads.googleapis.com/v12/",
+        "auth": "oauth2",
+        "resources": ["campaigns", "ad_groups", "ads", "conversions", "performance_reports"],
+        "frequency": "hourly",
+        "required_credentials": ["client_id", "client_secret", "refresh_token", "developer_token"]
+      },
+      {
+        "name": "Meta Marketing API",
+        "type": "rest_api",
+        "endpoint": "https://graph.instagram.com/v12.0/",
+        "auth": "access_token",
+        "resources": ["campaigns", "adsets", "ads", "insights"],
+        "frequency": "hourly",
+        "required_credentials": ["access_token", "ad_account_id"]
+      },
+      {
+        "name": "Landing Page Form Submissions",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/form_submit",
+        "auth": "api_key",
+        "frequency": "real_time",
+        "required_fields": ["email", "name", "pain_level", "location", "source_url", "utm_params"]
+      }
+    ],
+    "outbound": [
+      {
+        "name": "Loops API",
+        "type": "rest_api",
+        "endpoint": "https://api.loops.so/api/v1/",
+        "auth": "api_key",
+        "actions": ["upsert_contact", "add_to_audience", "set_custom_field", "trigger_email"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Google Ads API",
+        "type": "rest_api",
+        "endpoint": "https://googleads.googleapis.com/v12/",
+        "auth": "oauth2",
+        "actions": ["update_campaign", "update_ad_group", "update_bid_modifiers"],
+        "required_credentials": ["client_id", "client_secret", "refresh_token"]
+      },
+      {
+        "name": "PostHog API",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "actions": ["capture_event"],
+        "required_credentials": ["api_key"]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "system": "Google Ads",
+      "type": "read_write",
+      "endpoints": [
+        "GET /campaigns (read performance metrics)",
+        "POST /campaigns (create test campaigns)",
+        "PATCH /bidding_strategies (update bids based on performance)"
+      ],
+      "rate_limit": "1000 requests/hour",
+      "fallback": "If API down, use manual Google Ads UI; escalate to growth team"
+    },
+    {
+      "system": "Meta Marketing API",
+      "type": "read_write",
+      "endpoints": [
+        "GET /insights (read campaign performance)",
+        "POST /campaigns (create test campaigns)",
+        "PATCH /adsets (update budgets/targeting)"
+      ],
+      "rate_limit": "500 requests/hour",
+      "fallback": "If API down, use manual Ads Manager; escalate to growth team"
+    },
+    {
+      "system": "Loops Email",
+      "type": "write",
+      "endpoints": [
+        "POST /contacts (create/update leads)",
+        "POST /contacts/{id}/add_to_audience (segment leads)"
+      ],
+      "rate_limit": "10000 requests/hour",
+      "fallback": "If API fails, queue events in message buffer; retry hourly until success"
+    },
+    {
+      "system": "PostHog Analytics",
+      "type": "read_write",
+      "endpoints": [
+        "GET /api/event (read events)",
+        "POST /capture (send events)"
+      ],
+      "rate_limit": "unlimited (batch up to 100 events)",
+      "fallback": "If API down, queue events locally; retry when available"
+    }
+  ],
+  "success_criteria": {
+    "functional": [
+      "All leads captured with complete data (email, source, pain type)",
+      "Lead quality scoring consistent and accurate (validated against manual review)",
+      "Ads serve without policy violations",
+      "CTR and conversion rates match ad platform reporting (within 1%)",
+      "ROAS calculated correctly and matches historical performance"
+    ],
+    "performance": [
+      "Cost per lead < $12",
+      "Lead quality score > 65/100 on average",
+      "Landing page conversion rate > 8%",
+      "ROAS > 2.0",
+      "Agent response time < 5 seconds (from event to action)"
+    ],
+    "reliability": [
+      "99.5% uptime",
+      "<0.5% error rate in lead capture",
+      ">95% email delivery to Loops",
+      "All triggers fire within 1 minute of event"
+    ]
+  },
+  "error_handling": {
+    "policy": "Fail safely, escalate issues, retry transient failures",
+    "error_cases": [
+      {
+        "error": "API authentication failure (Google Ads, Meta)",
+        "handling": "Log error, alert engineering team, pause campaign changes (read-only mode)",
+        "retry": "Exponential backoff (5s, 30s, 5m) up to 3x",
+        "escalation": "If >30 min unresolved, escalate to CTO"
+      },
+      {
+        "error": "Rate limit hit (API throttling)",
+        "handling": "Backoff immediately, queue requests in buffer",
+        "retry": "Exponential backoff, respect Retry-After header",
+        "escalation": "If consistent rate limiting, request quota increase"
+      },
+      {
+        "error": "Form submission validation fails (invalid email)",
+        "handling": "Reject submission, return error to user, log for monitoring",
+        "retry": "User retries manually",
+        "escalation": "If >5% rejection rate, flag to product team"
+      },
+      {
+        "error": "Lead quality scoring fails (missing data)",
+        "handling": "Default to medium quality (score=50), capture as much data as available",
+        "retry": "Re-score if missing data arrives later",
+        "escalation": "None (graceful degradation)"
+      },
+      {
+        "error": "Ad platform reports policy violation",
+        "handling": "Pause affected ad immediately, log violation details",
+        "retry": "N/A (requires human review)",
+        "escalation": "Alert growth team immediately for manual review + fix"
+      },
+      {
+        "error": "Unusual traffic pattern (10x normal spike)",
+        "handling": "Log event, alert monitoring system, may be fraud",
+        "retry": "N/A",
+        "escalation": "Alert security team, may pause campaign temporarily"
+      }
+    ]
+  },
+  "performance_metrics": {
+    "to_track": [
+      {
+        "metric": "daily_leads_captured",
+        "target": "100+",
+        "frequency": "daily",
+        "dashboard": "Lead Gen Dashboard"
+      },
+      {
+        "metric": "cost_per_lead",
+        "target": "<$12",
+        "frequency": "daily",
+        "dashboard": "Lead Gen Dashboard"
+      },
+      {
+        "metric": "lead_quality_score_avg",
+        "target": ">65",
+        "frequency": "daily",
+        "dashboard": "Lead Gen Dashboard"
+      },
+      {
+        "metric": "landing_page_conversion_rate",
+        "target": ">8%",
+        "frequency": "daily",
+        "dashboard": "Lead Gen Dashboard"
+      },
+      {
+        "metric": "roas_by_campaign",
+        "target": ">2.0",
+        "frequency": "daily",
+        "dashboard": "Ad Performance Dashboard"
+      },
+      {
+        "metric": "agent_response_time",
+        "target": "<5sec",
+        "frequency": "hourly",
+        "dashboard": "Agent Health Dashboard"
+      },
+      {
+        "metric": "error_rate",
+        "target": "<0.5%",
+        "frequency": "hourly",
+        "dashboard": "Agent Health Dashboard"
+      },
+      {
+        "metric": "api_availability",
+        "target": ">99.8%",
+        "frequency": "hourly",
+        "dashboard": "System Health Dashboard"
+      }
+    ]
+  },
+  "configuration": {
+    "environment": "production",
+    "execution_mode": "continuous",
+    "schedule": {
+      "ingest": "continuous (real-time events) + hourly batch (ad metrics)",
+      "reason": "hourly",
+      "execute": "continuous (triggered by events) + hourly (scheduled jobs)",
+      "log": "continuous",
+      "escalate": "continuous (triggered by conditions)"
+    },
+    "resource_limits": {
+      "max_concurrent_api_calls": 10,
+      "max_queue_size": 10000,
+      "timeout_seconds": 30
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "initial_backoff_seconds": 5,
+      "max_backoff_seconds": 300,
+      "exponential_base": 2
+    },
+    "alerting": {
+      "alert_channel": "slack_channel:marketing_ops",
+      "escalation_contact": "Growth Lead",
+      "critical_alert_sms": true
+    }
+  },
+  "deployment": {
+    "dockerfile_required": true,
+    "environment_variables": [
+      "GOOGLE_ADS_DEVELOPER_TOKEN",
+      "GOOGLE_ADS_CLIENT_ID",
+      "GOOGLE_ADS_CLIENT_SECRET",
+      "GOOGLE_ADS_REFRESH_TOKEN",
+      "META_ACCESS_TOKEN",
+      "META_AD_ACCOUNT_ID",
+      "LOOPS_API_KEY",
+      "POSTHOG_API_KEY",
+      "ENNIE_API_KEY"
+    ],
+    "startup_checklist": [
+      "Verify all API credentials loaded",
+      "Test connection to all data sources",
+      "Verify Loops audience exists",
+      "Verify dashboard accessible",
+      "Perform dry-run of first workflow cycle"
+    ]
+  }
+}

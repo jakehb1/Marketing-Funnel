@@ -1,0 +1,555 @@
+{
+  "agent": {
+    "id": "patient-nurture-agent",
+    "name": "Patient Nurture Agent",
+    "role": "Lead qualification and engagement",
+    "description": "Manages email nurture sequences, engagement scoring, and segmentation to move warm leads from awareness to high-intent (ready to book). Optimizes email timing, content variants, and frequency based on engagement signals.",
+    "owner": "Growth Lead",
+    "status": "ready_for_production",
+    "created_at": "2026-04-01",
+    "version": "1.0"
+  },
+  "responsibilities": [
+    "Manage email nurture sequences for all new leads",
+    "Select email variants based on engagement and pain type",
+    "Calculate engagement scores for each lead",
+    "Monitor email open rates, click rates, and bounces",
+    "Segment leads by engagement tier (high, medium, low)",
+    "Trigger retargeting ads for low-engagement leads",
+    "Identify and fast-track high-engagement leads to early access",
+    "Manage win-back campaigns for cold leads",
+    "A/B test email subject lines, content, and send times",
+    "Escalate patient inquiries and replies to support team",
+    "Monitor email deliverability and list health"
+  ],
+  "workflow": {
+    "stages": [
+      {
+        "name": "Ingest",
+        "description": "Collect email engagement and behavioral data",
+        "steps": [
+          "Listen for Loops webhook events: email_opened, email_clicked, email_bounced, email_unsubscribed",
+          "Listen for PostHog events: landing_page_visit, video_view, return_visitor",
+          "Listen for Loops contact updates: custom fields (pain type, location, quality score)",
+          "Poll Loops API hourly for contact status (sequence progress, engagement score)",
+          "Consume retargeting pixel data: ads_viewed, ads_clicked"
+        ],
+        "data_sources": [
+          "Loops webhooks (email events)",
+          "Loops API (contact data, sequence status)",
+          "PostHog (behavioral events)",
+          "Meta retargeting pixel",
+          "Mailbox provider bounce responses"
+        ]
+      },
+      {
+        "name": "Reason",
+        "description": "Analyze engagement and determine next nurture action",
+        "steps": [
+          "Calculate engagement score for each contact (0-100):",
+          "  - Email opened: +10 points",
+          "  - Email clicked: +25 points",
+          "  - Landing page revisit: +5 points",
+          "  - Video watched >60%: +15 points",
+          "  - Hard bounce: -100 (remove from list)",
+          "  - No action for 7 days: -5 points (decay)",
+          "Determine engagement tier: High (>70), Medium (40-70), Low (<40)",
+          "Identify optimal send time based on historical opens",
+          "Select email variant: standard, alternative, incentive-based",
+          "Detect churners: No action in 14 days = at-risk",
+          "Identify fast-trackers: >70 engagement + clicked CTA = ready for Early Access"
+        ],
+        "decision_logic": {
+          "if_engagement_high": "Send next email immediately, mention booking CTA, move to Early Access after 2nd sequence email",
+          "if_engagement_medium": "Send next email in 3-4 days, test alternative subject line",
+          "if_engagement_low": "Pause sequence, trigger retargeting ads, send win-back email after 7 days",
+          "if_hard_bounce": "Remove from all sequences, mark as invalid",
+          "if_no_action_14_days": "Escalate to win-back campaign, offer special incentive",
+          "if_patient_replies": "Route to human support immediately",
+          "if_unsubscribe": "Honor immediately, remove from all sequences"
+        ]
+      },
+      {
+        "name": "Execute",
+        "description": "Send emails and trigger follow-up actions",
+        "steps": [
+          "Segment contacts by engagement tier and pain type",
+          "Send next email from sequence based on variant selection",
+          "Include personalization: first name, pain type, healer specialty reference",
+          "Set send time based on optimal engagement window",
+          "For low-engagement leads: trigger retargeting ads (Meta, Google)",
+          "Update contact engagement score in Loops",
+          "Log email sent event (subject, variant, segment, timestamp)",
+          "Queue next email with calculated delay (depends on engagement tier)",
+          "For high-engagement leads: queue Early Access invitation email (different sequence)"
+        ]
+      },
+      {
+        "name": "Log",
+        "description": "Track email performance and engagement metrics",
+        "steps": [
+          "Log email_sent event: contact_id, sequence_name, variant, segment, send_time",
+          "Track email_opened: timestamp, device type, client",
+          "Track email_clicked: timestamp, link_url, device type",
+          "Track engagement_score change: before, after, reason",
+          "Track sequence_progress: current_email, total_emails, completion_rate",
+          "Track deliverability: opens/clicks per email, open rate trend",
+          "Aggregate metrics: daily open rate, click rate, unsubscribe rate, hard bounce rate"
+        ],
+        "metrics_tracked": [
+          "email_open_rate",
+          "email_click_rate",
+          "email_unsubscribe_rate",
+          "email_bounce_rate",
+          "engagement_score_avg",
+          "sequence_completion_rate",
+          "time_to_engagement",
+          "nurture_to_early_access_conversion"
+        ]
+      },
+      {
+        "name": "Escalate",
+        "description": "Route issues and special cases to humans",
+        "steps": [
+          "If patient replies to email → Route to customer support immediately",
+          "If hard bounce rate >2% → Alert email deliverability team",
+          "If unsubscribe rate >1% → Review email content quality",
+          "If open rate drops >20% from baseline → Test new subject lines",
+          "If click rate <5% → Test new email content/CTA",
+          "If contact hasn't engaged in 30 days → Escalate to win-back specialist",
+          "If bounce message indicates GDPR opt-out → Honor immediately, escalate for legal review",
+          "If contact requests special accommodation → Escalate to support"
+        ],
+        "escalation_triggers": [
+          "patient_reply",
+          "high_bounce_rate",
+          "high_unsubscribe_rate",
+          "low_engagement_30_days",
+          "email_deliverability_issue",
+          "gdpr_opt_out_request",
+          "special_accommodation_request"
+        ]
+      }
+    ]
+  },
+  "triggers": [
+    {
+      "name": "email_opened",
+      "description": "Lead opened nurture email",
+      "frequency": "real_time",
+      "condition": "Loops webhook fires for email_opened",
+      "action": "Increment engagement score, send next email immediately if high engagement"
+    },
+    {
+      "name": "email_clicked",
+      "description": "Lead clicked link in nurture email",
+      "frequency": "real_time",
+      "condition": "Loops webhook fires for email_clicked",
+      "action": "Increase engagement score significantly, evaluate for fast-track to Early Access"
+    },
+    {
+      "name": "email_not_opened_48h",
+      "description": "Lead hasn't opened email after 48 hours",
+      "frequency": "every_24_hours",
+      "condition": "Lead in sequence AND no open event in 48h",
+      "action": "Send alternative subject line variant, trigger retargeting ads"
+    },
+    {
+      "name": "no_engagement_7_days",
+      "description": "Lead shows no engagement for 7 days",
+      "frequency": "daily",
+      "condition": "No opens or clicks for 7+ days AND in sequence",
+      "action": "Pause sequence, tag as low-engagement, trigger win-back campaign"
+    },
+    {
+      "name": "high_engagement_detected",
+      "description": "Lead engagement score exceeds threshold",
+      "frequency": "real_time",
+      "condition": "Engagement score > 70",
+      "action": "Fast-track to Early Access, send onboarding/intake form email immediately"
+    },
+    {
+      "name": "patient_reply",
+      "description": "Patient replies to nurture email",
+      "frequency": "real_time",
+      "condition": "Email reply received in mailbox",
+      "action": "Flag for immediate human review, pause automation for this contact"
+    },
+    {
+      "name": "unsubscribe_request",
+      "description": "Lead unsubscribes from email list",
+      "frequency": "real_time",
+      "condition": "Loops webhook fires for unsubscribe",
+      "action": "Remove from all sequences immediately, honor request, log for compliance"
+    },
+    {
+      "name": "daily_metrics_review",
+      "description": "Review nurture metrics for trending issues",
+      "frequency": "daily_at_8am",
+      "condition": "Scheduled daily review",
+      "action": "Calculate aggregated open rate, click rate, unsubscribe rate; alert if trending down"
+    }
+  ],
+  "data_sources": {
+    "inbound": [
+      {
+        "name": "Loops Webhooks",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/loops",
+        "auth": "api_key",
+        "events": ["email_opened", "email_clicked", "email_bounced", "email_unsubscribed", "email_replied"],
+        "frequency": "real_time",
+        "required_fields": ["contact_id", "email", "event_type", "timestamp"]
+      },
+      {
+        "name": "Loops API",
+        "type": "rest_api",
+        "endpoint": "https://api.loops.so/api/v1/",
+        "auth": "api_key",
+        "resources": ["contacts", "contact_histories", "sequences", "audiences"],
+        "frequency": "hourly_batch",
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "PostHog",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "events": ["landing_page_visit", "video_view", "page_scroll", "form_interaction"],
+        "frequency": "real_time",
+        "required_fields": ["user_id", "event_type", "timestamp"]
+      },
+      {
+        "name": "Meta Retargeting Pixel",
+        "type": "pixel_api",
+        "endpoint": "https://graph.instagram.com/v12.0/",
+        "auth": "access_token",
+        "events": ["pixel_view", "pixel_lead", "pixel_click"],
+        "frequency": "real_time",
+        "required_credentials": ["pixel_id", "access_token"]
+      }
+    ],
+    "outbound": [
+      {
+        "name": "Loops API",
+        "type": "rest_api",
+        "endpoint": "https://api.loops.so/api/v1/",
+        "auth": "api_key",
+        "actions": ["send_email", "update_contact", "add_to_audience", "remove_from_sequence"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Meta Marketing API",
+        "type": "rest_api",
+        "endpoint": "https://graph.instagram.com/v12.0/",
+        "auth": "access_token",
+        "actions": ["create_custom_audience", "add_to_audience"],
+        "required_credentials": ["access_token", "ad_account_id"]
+      },
+      {
+        "name": "PostHog API",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "actions": ["capture_event"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Internal Support Queue",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/support/queue",
+        "auth": "api_key",
+        "actions": ["create_ticket", "assign_to_team"],
+        "required_credentials": ["api_key"]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "system": "Loops Email Platform",
+      "type": "read_write",
+      "endpoints": [
+        "GET /contacts (read contact data)",
+        "PATCH /contacts/{id} (update engagement score, custom fields)",
+        "POST /send (send email)",
+        "POST /audiences (segment contacts)"
+      ],
+      "rate_limit": "10000 requests/hour",
+      "fallback": "Queue email sends in local buffer; retry hourly until success"
+    },
+    {
+      "system": "PostHog Analytics",
+      "type": "read_write",
+      "endpoints": [
+        "GET /api/event (read behavioral events)",
+        "POST /capture (send events)"
+      ],
+      "rate_limit": "unlimited",
+      "fallback": "If down, query cached event data; continue with best-known state"
+    },
+    {
+      "system": "Meta Marketing API",
+      "type": "write",
+      "endpoints": [
+        "POST /audiences (add contacts to retargeting audience)"
+      ],
+      "rate_limit": "500 requests/hour",
+      "fallback": "If down, queue audience updates locally; retry when available"
+    },
+    {
+      "system": "Support Queue",
+      "type": "write",
+      "endpoints": [
+        "POST /queue/create (create support ticket for patient replies)"
+      ],
+      "rate_limit": "unlimited",
+      "fallback": "If down, email support team directly; escalate manually"
+    }
+  ],
+  "email_sequences": {
+    "nurture_sequence_14_day": {
+      "duration_days": 14,
+      "emails": [
+        {
+          "number": 1,
+          "name": "Welcome to ENNIE",
+          "send_day": 0,
+          "subject_variants": [
+            "Welcome to ENNIE — Healing that actually works",
+            "Your journey to chronic pain relief starts here",
+            "Meet the healers who can help you feel better"
+          ],
+          "content_variants": [
+            "standard_welcome",
+            "video_focused_welcome",
+            "social_proof_welcome"
+          ],
+          "cta": "Learn about our healers"
+        },
+        {
+          "number": 2,
+          "name": "How energy healing works for chronic pain",
+          "send_day": 3,
+          "subject_variants": [
+            "What our patients say about healing (you might be surprised)",
+            "The science behind energy healing for pain relief",
+            "Real results: how our patients reduced pain"
+          ],
+          "content_variants": [
+            "testimonial_focused",
+            "educational_focused",
+            "pain_specific_focused"
+          ],
+          "cta": "See healer reviews"
+        },
+        {
+          "number": 3,
+          "name": "Ready to try your first session?",
+          "send_day": 7,
+          "subject_variants": [
+            "Limited time: first session just $29 (50% off)",
+            "Your first healing session is almost ready",
+            "Meet your perfect healer — book now"
+          ],
+          "content_variants": [
+            "discount_offer",
+            "no_pressure_offer",
+            "urgency_offer"
+          ],
+          "cta": "Get matched with a healer"
+        },
+        {
+          "number": 4,
+          "name": "Why fast-track members love ENNIE",
+          "send_day": 11,
+          "subject_variants": [
+            "Exclusive: Join our VIP early access program",
+            "The secret to faster pain relief (hint: community matters)",
+            "Unlock VIP healer access — special offer inside"
+          ],
+          "content_variants": [
+            "vip_program_offer",
+            "community_focused",
+            "exclusive_access"
+          ],
+          "cta": "Join VIP program"
+        }
+      ]
+    },
+    "win_back_sequence_7_day": {
+      "duration_days": 7,
+      "trigger": "No engagement for 14+ days",
+      "emails": [
+        {
+          "number": 1,
+          "name": "We miss you — special offer inside",
+          "send_day": 0,
+          "subject": "We noticed you might need this... [Special offer]",
+          "cta": "See what you're missing"
+        },
+        {
+          "number": 2,
+          "name": "One more thing before we let you go",
+          "send_day": 4,
+          "subject": "This might be the most important email we send you",
+          "cta": "Tell us what would help"
+        }
+      ]
+    }
+  },
+  "success_criteria": {
+    "functional": [
+      "All email opens/clicks tracked correctly (match Loops reporting)",
+      "Engagement score calculations accurate (manual spot checks)",
+      "Email variants sent to correct segments",
+      "High-engagement leads auto-moved to Early Access",
+      "Low-engagement leads receive retargeting ads",
+      "Patient replies routed to support immediately"
+    ],
+    "performance": [
+      "Email open rate > 35%",
+      "Email click rate > 8%",
+      "Nurture-to-Early Access conversion > 20%",
+      "Average days in nurture < 21 days",
+      "Unsubscribe rate < 0.5%",
+      "Hard bounce rate < 1%"
+    ],
+    "reliability": [
+      "99.5% uptime",
+      "<0.5% error rate in email sending",
+      ">99% delivery rate (inbox + spam combined)",
+      "Agent response time <10 seconds"
+    ]
+  },
+  "error_handling": {
+    "policy": "Ensure email delivery, graceful degradation, escalate critical issues",
+    "error_cases": [
+      {
+        "error": "Hard bounce on email address",
+        "handling": "Mark contact as invalid, remove from all sequences, escalate",
+        "retry": "No retry (permanent failure)",
+        "escalation": "Flag for data quality review"
+      },
+      {
+        "error": "Loops API timeout during contact update",
+        "handling": "Queue update in local buffer, retry with exponential backoff",
+        "retry": "3 attempts (5s, 30s, 5m)",
+        "escalation": "If persistent (>30 min), alert engineering"
+      },
+      {
+        "error": "Email deliverability issue (spam folder)",
+        "handling": "Monitor sender reputation, adjust send frequency",
+        "retry": "None (monitor and adjust)",
+        "escalation": "If open rate drops >20%, alert email team"
+      },
+      {
+        "error": "Patient replies to email (unexpected)",
+        "handling": "Create support ticket immediately, pause automation for this contact",
+        "retry": "N/A",
+        "escalation": "Route to human support within 15 minutes"
+      },
+      {
+        "error": "Unsubscribe request",
+        "handling": "Honor immediately, remove from all sequences",
+        "retry": "N/A",
+        "escalation": "Log for compliance audit"
+      }
+    ]
+  },
+  "performance_metrics": {
+    "to_track": [
+      {
+        "metric": "email_open_rate",
+        "target": ">35%",
+        "frequency": "daily",
+        "dashboard": "Email Metrics Dashboard"
+      },
+      {
+        "metric": "email_click_rate",
+        "target": ">8%",
+        "frequency": "daily",
+        "dashboard": "Email Metrics Dashboard"
+      },
+      {
+        "metric": "nurture_to_early_access_conversion",
+        "target": ">20%",
+        "frequency": "daily",
+        "dashboard": "Funnel Dashboard"
+      },
+      {
+        "metric": "unsubscribe_rate",
+        "target": "<0.5%",
+        "frequency": "daily",
+        "dashboard": "Email Metrics Dashboard"
+      },
+      {
+        "metric": "hard_bounce_rate",
+        "target": "<1%",
+        "frequency": "daily",
+        "dashboard": "Email Metrics Dashboard"
+      },
+      {
+        "metric": "engagement_score_avg",
+        "target": ">50",
+        "frequency": "daily",
+        "dashboard": "Lead Quality Dashboard"
+      },
+      {
+        "metric": "sequence_completion_rate",
+        "target": ">75%",
+        "frequency": "weekly",
+        "dashboard": "Sequence Performance Dashboard"
+      },
+      {
+        "metric": "agent_response_time",
+        "target": "<10sec",
+        "frequency": "hourly",
+        "dashboard": "Agent Health Dashboard"
+      }
+    ]
+  },
+  "configuration": {
+    "environment": "production",
+    "execution_mode": "continuous",
+    "schedule": {
+      "ingest": "continuous (webhooks) + hourly batch (Loops API)",
+      "reason": "continuous (on webhook) + hourly (scheduled review)",
+      "execute": "continuous (triggered by events)",
+      "log": "continuous",
+      "escalate": "continuous (triggered by conditions)"
+    },
+    "resource_limits": {
+      "max_concurrent_api_calls": 20,
+      "max_queue_size": 50000,
+      "timeout_seconds": 30
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "initial_backoff_seconds": 5,
+      "max_backoff_seconds": 300,
+      "exponential_base": 2
+    },
+    "alerting": {
+      "alert_channel": "slack_channel:marketing_ops",
+      "escalation_contact": "Growth Lead",
+      "critical_alert_sms": true
+    }
+  },
+  "deployment": {
+    "dockerfile_required": true,
+    "environment_variables": [
+      "LOOPS_API_KEY",
+      "POSTHOG_API_KEY",
+      "META_ACCESS_TOKEN",
+      "META_AD_ACCOUNT_ID",
+      "ENNIE_API_KEY"
+    ],
+    "startup_checklist": [
+      "Verify Loops API credentials loaded",
+      "Test connection to Loops API",
+      "Verify all email sequences configured in Loops",
+      "Verify PostHog integration working",
+      "Perform dry-run of email send workflow"
+    ]
+  }
+}

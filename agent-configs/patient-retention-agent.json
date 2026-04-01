@@ -1,0 +1,654 @@
+{
+  "agent": {
+    "id": "patient-retention-agent",
+    "name": "Patient Retention Agent",
+    "role": "Session management, outcome tracking, and customer lifetime value maximization",
+    "description": "Manages session execution, captures post-session outcomes, drives repeat bookings, and manages long-term customer retention and growth through loyalty programs and referrals.",
+    "owner": "Customer Success Lead",
+    "status": "ready_for_production",
+    "created_at": "2026-04-01",
+    "version": "1.0"
+  },
+  "responsibilities": [
+    "Send session reminders (48h, 24h, 2h before session)",
+    "Monitor session start/completion status",
+    "Capture post-session outcomes (pain reduction, satisfaction)",
+    "Score session effectiveness and customer satisfaction",
+    "Trigger post-session follow-up communications",
+    "Identify and support failing outcomes (offer refunds, alternatives)",
+    "Drive repeat session bookings with incentives",
+    "Manage loyalty program enrollment and rewards",
+    "Handle referral tracking and rewards",
+    "Execute win-back campaigns for inactive customers",
+    "Monitor customer lifetime value and churn indicators",
+    "Escalate safety concerns and refund requests"
+  ],
+  "workflow": {
+    "stages": [
+      {
+        "name": "Ingest",
+        "description": "Collect session and outcome data",
+        "steps": [
+          "Listen for session events: session_scheduled, session_started, session_ended, session_no_show",
+          "Listen for outcome form submissions: pain_level_post, satisfaction_score, healer_notes, patient_feedback",
+          "Listen for follow-up events: day3_checkin_response, repeat_booking_made, refund_request",
+          "Poll session database for upcoming sessions (scheduled reminders)",
+          "Monitor referral link clicks and new bookings from referrals",
+          "Track customer inactivity (days since last session)"
+        ],
+        "data_sources": [
+          "App events (session status)",
+          "Outcome form submissions",
+          "Stripe (refund requests, payment history)",
+          "PostHog (session, follow-up behaviors)",
+          "Session database (scheduled sessions)",
+          "Referral tracking database",
+          "Loyalty program database"
+        ]
+      },
+      {
+        "name": "Reason",
+        "description": "Analyze session outcomes and determine retention actions",
+        "steps": [
+          "Session Reminder Logic:",
+          "  - 48h before: Send reminder with session details, location/call link, pre-session tips",
+          "  - 24h before: Confirm both parties are ready, healer sends intake notes to patient",
+          "  - 2h before: Final confirmation, gentle nudge to join",
+          "",
+          "Outcome Evaluation (post-session):",
+          "  1. Capture pain level before and after",
+          "  2. Calculate pain reduction: (pre - post) / pre × 100%",
+          "  3. Score effectiveness:",
+          "     - Pain reduction >20%: 'Success' (effectiveness_score = pain_reduction)",
+          "     - Pain reduction 5-20%: 'Partial' (effectiveness_score = pain_reduction)",
+          "     - Pain reduction <5%: 'Minimal' (effectiveness_score = pain_reduction)",
+          "  4. Capture satisfaction score (1-10 NPS question)",
+          "  5. Extract healer rating of session",
+          "  6. Determine overall session score = (pain_reduction × 0.6) + (satisfaction × 0.4)",
+          "",
+          "Decision Logic (post-session):",
+          "  - If success (pain ↓ >20% AND satisfaction >8): 'Strong Success' → Send celebration, request testimonial",
+          "  - If success (pain ↓ >20% OR satisfaction >7): 'Good Success' → Send encouragement, suggest next session",
+          "  - If partial (pain ↓ 5-20%): 'Partial Success' → Send reassurance, recommend 2nd session with same healer",
+          "  - If minimal (pain ↓ <5% OR satisfaction <4): 'Limited Success' → Offer refund or alternative healer",
+          "  - If adverse effect reported: 'Failed' → Immediate escalation to medical advisor",
+          "",
+          "Follow-up Sequencing (Days 3, 7, 14 post-session):",
+          "  - Day 3: Check-in email: 'How are you feeling since your session?'",
+          "  - Day 7: Symptom check-in: 'Has your pain improved?'",
+          "  - Day 14: Next booking CTA: 'Ready for your next session?'",
+          "",
+          "Repeat Booking Decision:",
+          "  - If success: Auto-suggest same healer for next session",
+          "  - If partial: Suggest same healer or alternative",
+          "  - If minimal: Offer alternative healer or money-back guarantee",
+          "",
+          "Churn Detection (Long-term):",
+          "  - 30 days since last session: 'At-risk' → Send engagement email",
+          "  - 60 days since last session: 'Churning' → Send win-back offer (10% off)",
+          "  - 90+ days since last session: 'Churned' → Final win-back offer (20% off) or VIP re-engagement"
+        ],
+        "outcome_scoring_formula": "((pain_reduction × 0.6) + (satisfaction_score / 10 × 0.4)) × 100"
+      },
+      {
+        "name": "Execute",
+        "description": "Send reminders, capture feedback, drive repeat bookings",
+        "steps": [
+          "Session Reminders:",
+          "  1. 48h before: Send email + SMS option with session details, call link",
+          "  2. 24h before: Send healer confirmation request, patient pre-session tips",
+          "  3. 2h before: Final confirmation message (email/SMS)",
+          "",
+          "Post-Session (within 5 minutes):",
+          "  1. Present outcome form in-app: pain level, satisfaction, any adverse effects",
+          "  2. Wait for completion (follow up if no response after 30 min)",
+          "  3. Score session effectiveness",
+          "  4. Trigger celebration/support message based on score",
+          "",
+          "Immediate Actions (Day 0):",
+          "  - If success: Send celebration email, include testimonial request",
+          "  - If partial: Send encouragement email, remind of cumulative healing",
+          "  - If minimal: Send support email, offer alternative healer + refund option",
+          "  - If adverse: Escalate to medical advisor immediately",
+          "",
+          "Follow-up Sequence (Days 3, 7, 14):",
+          "  - Day 3: 'How are you feeling?' check-in email",
+          "  - Day 7: Pain level update request",
+          "  - Day 14: Next booking pre-filled link (discount if applicable)",
+          "",
+          "Loyalty Program Actions:",
+          "  - Track sessions attended, award loyalty points per session",
+          "  - After 3 sessions: Invite to loyalty program tier (Bronze)",
+          "  - After 10 sessions: Upgrade to Silver (10% discount on all)",
+          "  - After 25 sessions: Upgrade to Gold (15% discount + priority booking)",
+          "",
+          "Repeat Booking Incentives:",
+          "  - Send booking link pre-filled with preferred healer",
+          "  - Show loyalty discount if earned",
+          "  - Display referral bonus option",
+          "",
+          "Win-back Campaigns:",
+          "  - 30-day inactive: Automated email: 'We miss you, 10% off your next session'",
+          "  - 60-day inactive: Escalation: Special VIP offer + personal touch",
+          "  - 90-day inactive: Final offer: 20% off + customer success call"
+        ]
+      },
+      {
+        "name": "Log",
+        "description": "Track retention and lifetime value metrics",
+        "steps": [
+          "Log reminder_sent: session_id, reminder_type, timestamp, delivery_status",
+          "Log session_completed: session_id, duration, both_parties_present",
+          "Log outcome_captured: pain_pre, pain_post, satisfaction_score, effectiveness_score",
+          "Log follow_up_sent: day, email_type, timestamp",
+          "Log follow_up_response: response_type, pain_level, sentiment",
+          "Log repeat_booking: booking_id, days_since_last, discount_applied",
+          "Log loyalty_points_awarded: patient_id, points, tier_upgrade",
+          "Log referral_awarded: referrer_id, referee_id, reward_type",
+          "Log churn_event: patient_id, days_inactive, reason_if_known",
+          "Log customer_lifetime_value: patient_id, total_sessions, total_revenue, predicted_ltv",
+          "Aggregate metrics: repeat_booking_rate, loyalty_program_engagement, referral_rate"
+        ],
+        "metrics_tracked": [
+          "session_show_up_rate",
+          "session_completion_rate",
+          "average_pain_reduction",
+          "satisfaction_nps",
+          "post_session_feedback_rate",
+          "repeat_booking_rate_7d",
+          "repeat_booking_rate_30d",
+          "loyalty_program_enrollment",
+          "referral_conversion_rate",
+          "customer_lifetime_value",
+          "churn_rate_90d",
+          "nps_trend"
+        ]
+      },
+      {
+        "name": "Escalate",
+        "description": "Route issues and high-value decisions to humans",
+        "steps": [
+          "If adverse effect reported → Escalate to medical advisor immediately (< 5 min)",
+          "If refund requested → Review outcome score; auto-approve if <$100 OR effectiveness <30%",
+          "If refund >$100 → Escalate to finance for approval",
+          "If satisfaction <4/10 → Human follow-up within 2 hours",
+          "If patient doesn't show up to session → Escalate to concierge for reschedule offer",
+          "If no pain reduction AND patient wants refund → Auto-approve refund",
+          "If testimonial from highly satisfied customer → Escalate to marketing for feature request",
+          "If churn risk high (90-day inactive, high LTV customer) → Escalate for VIP re-engagement"
+        ],
+        "escalation_triggers": [
+          "adverse_effect_reported",
+          "refund_request_large",
+          "low_satisfaction_score",
+          "session_no_show",
+          "zero_effectiveness",
+          "vip_churn_risk",
+          "high_quality_testimonial"
+        ]
+      }
+    ]
+  },
+  "triggers": [
+    {
+      "name": "session_scheduled",
+      "description": "New session created, reminders should be queued",
+      "frequency": "real_time",
+      "condition": "Session booking confirmed, calendar event created",
+      "action": "Queue reminders at 48h, 24h, 2h before session start"
+    },
+    {
+      "name": "session_reminder_48h",
+      "description": "Send 48-hour pre-session reminder",
+      "frequency": "calculated",
+      "condition": "Session starts in 48 ± 1 hour",
+      "action": "Send reminder email + SMS option with session details"
+    },
+    {
+      "name": "session_reminder_24h",
+      "description": "Send 24-hour pre-session reminder",
+      "frequency": "calculated",
+      "condition": "Session starts in 24 ± 1 hour",
+      "action": "Confirm both parties, send healer intake notes"
+    },
+    {
+      "name": "session_reminder_2h",
+      "description": "Send 2-hour pre-session reminder",
+      "frequency": "calculated",
+      "condition": "Session starts in 2 ± 0.5 hours",
+      "action": "Final confirmation, call link reminder"
+    },
+    {
+      "name": "session_started",
+      "description": "Session begins (detected via app event or healer confirmation)",
+      "frequency": "real_time",
+      "condition": "Session marked as started in app or Zoom room opened",
+      "action": "Disable cancellation options, prepare outcome form"
+    },
+    {
+      "name": "session_completed",
+      "description": "Session ends, outcome form presented",
+      "frequency": "real_time",
+      "condition": "Session duration >15 min (attended) or manually marked complete",
+      "action": "Immediately request outcome feedback"
+    },
+    {
+      "name": "outcome_form_submitted",
+      "description": "Patient submits post-session feedback",
+      "frequency": "real_time",
+      "condition": "Outcome form submitted with pain level + satisfaction",
+      "action": "Score effectiveness, trigger outcome-specific follow-up"
+    },
+    {
+      "name": "strong_success_outcome",
+      "description": "Session was highly successful (pain ↓ >20%, satisfaction >8)",
+      "frequency": "real_time",
+      "condition": "Effectiveness score >75",
+      "action": "Send celebration email, request testimonial, suggest next session"
+    },
+    {
+      "name": "minimal_success_outcome",
+      "description": "Session had minimal impact (pain ↓ <5% OR satisfaction <4)",
+      "frequency": "real_time",
+      "condition": "Effectiveness score <30",
+      "action": "Offer refund + alternative healer, escalate for support"
+    },
+    {
+      "name": "adverse_effect_reported",
+      "description": "Patient reports increased pain or adverse effects",
+      "frequency": "real_time",
+      "condition": "Outcome form indicates adverse effect or pain increase",
+      "action": "Escalate to medical advisor immediately, offer refund"
+    },
+    {
+      "name": "follow_up_day_3",
+      "description": "Send Day-3 check-in (3 days post-session)",
+      "frequency": "calculated",
+      "condition": "3 days have passed since session completion",
+      "action": "Send 'How are you feeling?' email, capture response"
+    },
+    {
+      "name": "follow_up_day_7",
+      "description": "Send Day-7 follow-up",
+      "frequency": "calculated",
+      "condition": "7 days have passed since session completion",
+      "action": "Pain level check-in, monitor for churn"
+    },
+    {
+      "name": "follow_up_day_14",
+      "description": "Send Day-14 repeat booking prompt",
+      "frequency": "calculated",
+      "condition": "14 days have passed since session completion",
+      "action": "Send pre-filled booking link for next session"
+    },
+    {
+      "name": "repeat_booking_made",
+      "description": "Patient books another session",
+      "frequency": "real_time",
+      "condition": "New session created within 30 days of previous",
+      "action": "Celebrate, award loyalty points, move to Stage 7 retention focus"
+    },
+    {
+      "name": "inactive_30_days",
+      "description": "Customer hasn't booked in 30 days",
+      "frequency": "daily",
+      "condition": "No booking for 30+ days",
+      "action": "Send re-engagement email with 10% off offer"
+    },
+    {
+      "name": "inactive_60_days",
+      "description": "Customer hasn't booked in 60 days",
+      "frequency": "daily",
+      "condition": "No booking for 60+ days",
+      "action": "Escalate for VIP re-engagement call"
+    },
+    {
+      "name": "inactive_90_days",
+      "description": "Customer hasn't booked in 90 days (churned)",
+      "frequency": "daily",
+      "condition": "No booking for 90+ days",
+      "action": "Final win-back campaign (20% off + VIP offer)"
+    },
+    {
+      "name": "referral_link_clicked",
+      "description": "Someone clicks referral link from existing customer",
+      "frequency": "real_time",
+      "condition": "Referral tracking pixel fires",
+      "action": "Track source, prepare referral reward tracking"
+    },
+    {
+      "name": "referral_booking_made",
+      "description": "New customer books session from referral",
+      "frequency": "real_time",
+      "condition": "New booking tracked to referral source",
+      "action": "Award referrer loyalty points or credit"
+    },
+    {
+      "name": "daily_metrics_review",
+      "description": "Review retention metrics for trends",
+      "frequency": "daily_at_8am",
+      "condition": "Scheduled daily review",
+      "action": "Calculate repeat booking rate, churn rate, NPS; alert if trending down"
+    }
+  ],
+  "data_sources": {
+    "inbound": [
+      {
+        "name": "Session Events",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/sessions",
+        "auth": "api_key",
+        "events": ["session_scheduled", "session_started", "session_ended", "session_no_show"],
+        "frequency": "real_time",
+        "required_fields": ["session_id", "patient_id", "healer_id", "event_type", "timestamp"]
+      },
+      {
+        "name": "Outcome Form Submissions",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/outcomes",
+        "auth": "api_key",
+        "events": ["outcome_submitted"],
+        "frequency": "real_time",
+        "required_fields": ["session_id", "pain_pre", "pain_post", "satisfaction_score"]
+      },
+      {
+        "name": "PostHog Analytics",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "events": ["session_view", "booking_view", "follow_up_open", "follow_up_click"],
+        "frequency": "real_time",
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Stripe Webhooks",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/stripe",
+        "auth": "webhook_secret",
+        "events": ["charge.refunded", "charge.dispute.created"],
+        "frequency": "real_time",
+        "required_fields": ["charge_id", "amount", "event_type"]
+      },
+      {
+        "name": "Referral Tracking",
+        "type": "pixel_api",
+        "endpoint": "https://ennie-api.internal/referrals",
+        "auth": "api_key",
+        "events": ["link_clicked", "signup", "booking"],
+        "frequency": "real_time",
+        "required_fields": ["referral_code", "event_type"]
+      },
+      {
+        "name": "Session Database",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/api/sessions",
+        "auth": "api_key",
+        "resources": ["sessions", "scheduled_sessions"],
+        "frequency": "hourly_batch",
+        "required_credentials": ["api_key"]
+      }
+    ],
+    "outbound": [
+      {
+        "name": "Loops Email API",
+        "type": "rest_api",
+        "endpoint": "https://api.loops.so/api/v1/",
+        "auth": "api_key",
+        "actions": ["send_email", "update_contact"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Stripe Refunds API",
+        "type": "rest_api",
+        "endpoint": "https://api.stripe.com/v1/",
+        "auth": "api_key",
+        "actions": ["refund_charge"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "PostHog API",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "actions": ["capture_event"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Internal Support Queue",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/support/queue",
+        "auth": "api_key",
+        "actions": ["create_ticket"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Loyalty Program API",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/api/loyalty",
+        "auth": "api_key",
+        "actions": ["award_points", "redeem_points", "upgrade_tier"],
+        "required_credentials": ["api_key"]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "system": "Session Management Database",
+      "type": "read_write",
+      "endpoints": [
+        "GET /sessions/{id} (fetch session details)",
+        "PATCH /sessions/{id} (update session status)",
+        "POST /sessions/{id}/reminders (queue reminders)"
+      ],
+      "rate_limit": "5000 requests/hour",
+      "fallback": "Query cached session data; manually send reminders if API down"
+    },
+    {
+      "system": "Loops Email Platform",
+      "type": "write",
+      "endpoints": [
+        "POST /send (send emails)",
+        "PATCH /contacts/{id} (update loyalty points)"
+      ],
+      "rate_limit": "10000 requests/hour",
+      "fallback": "Queue emails in buffer; retry hourly"
+    },
+    {
+      "system": "Stripe Refunds API",
+      "type": "write",
+      "endpoints": [
+        "POST /refunds (issue refund)"
+      ],
+      "rate_limit": "100 requests/second",
+      "fallback": "Escalate to finance for manual refund processing"
+    },
+    {
+      "system": "PostHog Analytics",
+      "type": "write",
+      "endpoints": [
+        "POST /capture (send events)"
+      ],
+      "rate_limit": "unlimited",
+      "fallback": "Queue events locally; retry when available"
+    }
+  ],
+  "success_criteria": {
+    "functional": [
+      "All reminders sent at correct times (within ±15 min tolerance)",
+      "Outcome forms submitted and stored correctly",
+      "Effectiveness scoring accurate (validated against manual review)",
+      "Follow-up emails triggered automatically",
+      "Repeat booking prompts delivered",
+      "Refunds processed within 1 hour",
+      "Loyalty points awarded correctly"
+    ],
+    "performance": [
+      "Session show-up rate > 92%",
+      "Session completion rate > 95%",
+      "Average pain reduction > 15%",
+      "Satisfaction NPS > 45",
+      "Post-session feedback rate > 80%",
+      "Day-3 check-in response rate > 60%",
+      "Repeat booking rate (within 14 days) > 35%",
+      "3+ session rate > 25%",
+      "Loyalty program enrollment rate > 50% (of repeat bookers)",
+      "Referral conversion rate > 20%"
+    ],
+    "reliability": [
+      "99.5% uptime",
+      "<0.5% error rate in reminder delivery",
+      ">99% email delivery rate",
+      ">99% refund processing success"
+    ]
+  },
+  "error_handling": {
+    "policy": "Ensure reminder delivery, escalate failures, prevent double-sends",
+    "error_cases": [
+      {
+        "error": "Reminder email fails to send",
+        "handling": "Queue in buffer, retry with exponential backoff",
+        "retry": "3 attempts (5s, 30s, 5m)",
+        "escalation": "If not delivered by session time, manual escalation"
+      },
+      {
+        "error": "Outcome form submission fails",
+        "handling": "Return error to user, allow retry",
+        "retry": "User retries manually",
+        "escalation": "If form repeatedly fails, manual outcome capture by support"
+      },
+      {
+        "error": "No-show detected (session time passed, patient not in call)",
+        "handling": "Mark session as no-show, escalate to concierge",
+        "retry": "N/A",
+        "escalation": "Concierge reaches out within 1 hour"
+      },
+      {
+        "error": "Refund request (user clicks refund CTA)",
+        "handling": "If effectiveness <30%, auto-approve; else escalate",
+        "retry": "N/A",
+        "escalation": "Finance team reviews large refunds (>$100)"
+      },
+      {
+        "error": "Patient requests special accommodation",
+        "handling": "Route to support team immediately",
+        "retry": "N/A",
+        "escalation": "Customer success lead follows up"
+      },
+      {
+        "error": "Adverse effect reported",
+        "handling": "Flag immediately, don't process refund without review",
+        "retry": "N/A",
+        "escalation": "Medical advisor reviews within 5 minutes"
+      }
+    ]
+  },
+  "performance_metrics": {
+    "to_track": [
+      {
+        "metric": "session_show_up_rate",
+        "target": ">92%",
+        "frequency": "daily",
+        "dashboard": "Session Execution Dashboard"
+      },
+      {
+        "metric": "average_pain_reduction",
+        "target": ">15%",
+        "frequency": "daily",
+        "dashboard": "Outcomes Dashboard"
+      },
+      {
+        "metric": "satisfaction_nps",
+        "target": ">45",
+        "frequency": "daily",
+        "dashboard": "Outcomes Dashboard"
+      },
+      {
+        "metric": "post_session_feedback_rate",
+        "target": ">80%",
+        "frequency": "daily",
+        "dashboard": "Outcomes Dashboard"
+      },
+      {
+        "metric": "repeat_booking_rate_14d",
+        "target": ">35%",
+        "frequency": "daily",
+        "dashboard": "Retention Dashboard"
+      },
+      {
+        "metric": "three_plus_session_rate",
+        "target": ">25%",
+        "frequency": "weekly",
+        "dashboard": "Retention Dashboard"
+      },
+      {
+        "metric": "customer_lifetime_value",
+        "target": ">$180",
+        "frequency": "weekly",
+        "dashboard": "LTV Dashboard"
+      },
+      {
+        "metric": "referral_conversion_rate",
+        "target": ">20%",
+        "frequency": "weekly",
+        "dashboard": "Growth Dashboard"
+      },
+      {
+        "metric": "churn_rate_90d",
+        "target": "<35% (65% retention)",
+        "frequency": "weekly",
+        "dashboard": "Retention Dashboard"
+      },
+      {
+        "metric": "agent_response_time",
+        "target": "<10sec",
+        "frequency": "hourly",
+        "dashboard": "Agent Health Dashboard"
+      }
+    ]
+  },
+  "configuration": {
+    "environment": "production",
+    "execution_mode": "continuous",
+    "schedule": {
+      "ingest": "continuous (webhooks) + hourly batch (database)",
+      "reason": "continuous (on event) + hourly (scheduled reminders)",
+      "execute": "continuous (triggered by events) + scheduled (reminders, follow-ups)",
+      "log": "continuous",
+      "escalate": "continuous (triggered by conditions)"
+    },
+    "resource_limits": {
+      "max_concurrent_api_calls": 20,
+      "max_queue_size": 50000,
+      "timeout_seconds": 30
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "initial_backoff_seconds": 5,
+      "max_backoff_seconds": 300,
+      "exponential_base": 2
+    },
+    "alerting": {
+      "alert_channel": "slack_channel:customer_success",
+      "escalation_contact": "Customer Success Lead",
+      "critical_alert_sms": true
+    }
+  },
+  "deployment": {
+    "dockerfile_required": true,
+    "environment_variables": [
+      "LOOPS_API_KEY",
+      "STRIPE_API_KEY",
+      "POSTHOG_API_KEY",
+      "LOYALTY_PROGRAM_API_KEY",
+      "ENNIE_API_KEY"
+    ],
+    "startup_checklist": [
+      "Verify Loops API credentials loaded",
+      "Verify Stripe API credentials loaded",
+      "Test reminder email sending",
+      "Test refund processing (test mode)",
+      "Verify loyalty program database connection",
+      "Perform dry-run of full session → outcome → follow-up cycle"
+    ]
+  }
+}

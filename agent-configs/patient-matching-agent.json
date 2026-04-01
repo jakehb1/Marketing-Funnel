@@ -1,0 +1,582 @@
+{
+  "agent": {
+    "id": "patient-matching-agent",
+    "name": "Patient Matching Agent",
+    "role": "Patient onboarding, healer matching, and session booking",
+    "description": "Handles patient intake form completion, healer recommendation algorithm, and booking coordination. Matches patients with compatible healers based on pain type, preferences, location, and healer availability.",
+    "owner": "Product Lead",
+    "status": "ready_for_production",
+    "created_at": "2026-04-01",
+    "version": "1.0"
+  },
+  "responsibilities": [
+    "Deliver intake form to high-intent leads",
+    "Guide patients through intake form completion (conversational UX)",
+    "Run healer matching algorithm with patient preferences",
+    "Display healer match cards with ratings and availability",
+    "Handle healer selection and booking flow",
+    "Integrate with Stripe for secure payment processing",
+    "Sync bookings with healer calendars (Google Calendar, Calendly)",
+    "Send confirmation emails to patient and healer",
+    "Generate pre-session briefing documents",
+    "Handle booking failures and offer alternatives",
+    "Escalate edge cases (no match found, special requests)"
+  ],
+  "workflow": {
+    "stages": [
+      {
+        "name": "Ingest",
+        "description": "Collect patient intake data and healer availability",
+        "steps": [
+          "Listen for trigger: Lead reaches engagement threshold (moved to Early Access)",
+          "Fetch healer database: specialties, ratings, availability, location, experience",
+          "Listen for form events: form_started, form_field_completed, form_submitted",
+          "Listen for booking events: healer_selected, payment_submitted, calendar_sync_completed",
+          "Monitor calendar API (Calendly/Google): healer availability updates"
+        ],
+        "data_sources": [
+          "Orchestration trigger (patient ready for Early Access)",
+          "Healer database (PostgreSQL or Firebase)",
+          "App events (form interactions)",
+          "Stripe API (payment processing)",
+          "Calendar API (Calendly/Google Calendar)",
+          "Patient profile (from earlier stages)"
+        ]
+      },
+      {
+        "name": "Reason",
+        "description": "Determine matching algorithm input and booking strategy",
+        "steps": [
+          "Extract patient preferences from intake form:",
+          "  - Pain type (back, neck, chronic fatigue, migraine, etc.)",
+          "  - Preferred healing modality (reiki, sound, ayurveda, breathwork, etc.)",
+          "  - Location (city/region or remote preference)",
+          "  - Availability (flexible, weekends only, specific times)",
+          "  - Budget (hourly rate preference)",
+          "  - Healer experience preference (new, experienced, expert)",
+          "Identify matching healer candidates using algorithm:",
+          "  1. Filter by modality match (exact or related)",
+          "  2. Filter by location/remote capability",
+          "  3. Filter by availability (match calendar slots)",
+          "  4. Score by: rating (40%), reviews (20%), experience (20%), timezone convenience (10%), price (10%)",
+          "  5. Generate match quality score (0-100)",
+          "Evaluate results:",
+          "  - Best match found (score >75): Show 1 healer prominently + 2 alternatives",
+          "  - Multiple matches (score 60-75): Show top 3 healers, let patient choose",
+          "  - Weak matches (score <60): Offer waitlist or alternative modality",
+          "  - No matches: Escalate to human concierge"
+        ],
+        "matching_algorithm": {
+          "scoring_formula": "(modality_match × 0.3) + (rating × 0.3) + (availability_match × 0.25) + (location_convenience × 0.15)",
+          "modality_match": "1.0 if exact match, 0.8 if related specialty, 0.5 if different",
+          "rating": "healer_rating / 5.0 (normalized 0-1)",
+          "availability_match": "1.0 if available this week, 0.8 if next week, 0.5 if >7 days",
+          "location_convenience": "1.0 if same city, 0.9 if same region, 0.8 if remote telehealth, 0.5 if international"
+        }
+      },
+      {
+        "name": "Execute",
+        "description": "Guide patient through matching and booking",
+        "steps": [
+          "Send intake form email/SMS to patient with link",
+          "Monitor form completion; send reminders if abandoned (24h, 48h)",
+          "Once form submitted:",
+          "  1. Run matching algorithm",
+          "  2. Generate healer match cards (profile, rating, testimonials, availability)",
+          "  3. Send healer introduction email to patient",
+          "  4. Present healer cards in app with 'Book' CTA",
+          "When patient selects healer:",
+          "  1. Show available time slots (in patient's timezone)",
+          "  2. Present payment form (Stripe hosted checkout)",
+          "  3. Process payment",
+          "  4. Lock session in database",
+          "  5. Create calendar event (Calendly/Google Calendar)",
+          "  6. Send confirmation email to patient + SMS reminder option",
+          "  7. Send notification to healer with patient intake notes",
+          "  8. Set pre-session reminders (48h, 24h, 2h before)",
+          "Handle failures:",
+          "  - Payment declined: Offer alternative payment method, don't charge",
+          "  - Healer unresponsive: Auto-assign alternative healer, notify patient",
+          "  - Calendar sync failed: Manual escalation to support"
+        ]
+      },
+      {
+        "name": "Log",
+        "description": "Track intake, matching, and booking metrics",
+        "steps": [
+          "Log form_started: timestamp, patient_id",
+          "Log form_field_completion: field_name, value, timestamp",
+          "Log form_submitted: timestamp, all_responses",
+          "Log matching_algorithm_run: input_preferences, algorithm_version, results",
+          "Log healer_match_displayed: match_rank, match_score, healer_id",
+          "Log healer_selected: healer_id, selection_time",
+          "Log payment_processed: amount, status, stripe_transaction_id",
+          "Log calendar_event_created: healer_calendar, event_id, start_time",
+          "Log booking_confirmed: session_id, patient_id, healer_id, scheduled_time"
+        ],
+        "metrics_tracked": [
+          "form_completion_rate",
+          "time_to_form_completion",
+          "form_abandonment_rate",
+          "matching_success_rate",
+          "match_quality_score_avg",
+          "booking_completion_rate",
+          "payment_success_rate",
+          "time_from_match_to_booking",
+          "session_confirmation_rate"
+        ]
+      },
+      {
+        "name": "Escalate",
+        "description": "Route special cases to human concierge",
+        "steps": [
+          "If no healer match found (score <60) → Offer waitlist, escalate to concierge",
+          "If form abandoned >48 hours → Send reminder + offer 1-on-1 support call",
+          "If payment fails 2x → Escalate to payment specialist, offer manual processing",
+          "If healer doesn't confirm session within 24h → Auto-assign alternative healer + notify both parties",
+          "If patient requests special accommodation (accessibility, specific timing) → Escalate to concierge",
+          "If form data incomplete/invalid → Ask clarifying questions in-app, escalate if patient unresponsive"
+        ],
+        "escalation_triggers": [
+          "no_healer_match_found",
+          "form_abandoned_48h",
+          "payment_failure_2x",
+          "healer_unresponsive_24h",
+          "special_accommodation_request",
+          "form_data_invalid"
+        ]
+      }
+    ]
+  },
+  "triggers": [
+    {
+      "name": "patient_ready_for_early_access",
+      "description": "Patient reaches high engagement in nurture stage",
+      "frequency": "real_time",
+      "condition": "Engagement score > 70 OR clicked Early Access CTA",
+      "action": "Send intake form email, add to Early Access workflow"
+    },
+    {
+      "name": "intake_form_started",
+      "description": "Patient begins filling out intake form",
+      "frequency": "real_time",
+      "condition": "Patient opens form URL and starts typing",
+      "action": "Log start event, begin form progress tracking"
+    },
+    {
+      "name": "intake_form_abandoned",
+      "description": "Patient abandons form after starting",
+      "frequency": "every_30_minutes",
+      "condition": "Form started but not submitted for >30 min with no activity",
+      "action": "Save progress, send reminder at 24h if still abandoned"
+    },
+    {
+      "name": "intake_form_submitted",
+      "description": "Patient completes and submits intake form",
+      "frequency": "real_time",
+      "condition": "Form submit button clicked, all required fields filled",
+      "action": "Run matching algorithm, display healer matches"
+    },
+    {
+      "name": "healer_selected",
+      "description": "Patient selects healer from matches",
+      "frequency": "real_time",
+      "condition": "Patient clicks 'Book with [Healer]'",
+      "action": "Show available time slots, present payment form"
+    },
+    {
+      "name": "payment_submitted",
+      "description": "Patient submits payment",
+      "frequency": "real_time",
+      "condition": "Stripe payment form submitted",
+      "action": "Process payment, confirm with Stripe, lock session if successful"
+    },
+    {
+      "name": "payment_success",
+      "description": "Payment processed successfully",
+      "frequency": "real_time",
+      "condition": "Stripe charge succeeded",
+      "action": "Create session record, sync calendar, send confirmations"
+    },
+    {
+      "name": "payment_failure",
+      "description": "Payment failed or declined",
+      "frequency": "real_time",
+      "condition": "Stripe charge failed",
+      "action": "Notify patient, offer retry or alternative payment method"
+    },
+    {
+      "name": "calendar_sync_needed",
+      "description": "Create calendar event for scheduled session",
+      "frequency": "real_time",
+      "condition": "Payment successful, session locked",
+      "action": "Create event in healer's calendar (Calendly/Google), add to patient's calendar"
+    },
+    {
+      "name": "healer_confirmation_timeout",
+      "description": "Healer hasn't confirmed session within 24h",
+      "frequency": "every_1_hour",
+      "condition": "Session pending confirmation >24h",
+      "action": "Escalate to concierge, offer alternative healer to patient"
+    }
+  ],
+  "data_sources": {
+    "inbound": [
+      {
+        "name": "App Events (Form & Booking)",
+        "type": "webhook",
+        "endpoint": "https://ennie-api.internal/webhooks/app_events",
+        "auth": "api_key",
+        "events": ["form_started", "form_submitted", "healer_selected", "payment_submitted"],
+        "frequency": "real_time",
+        "required_fields": ["patient_id", "event_type", "timestamp", "form_data"]
+      },
+      {
+        "name": "Healer Database",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/api/healers",
+        "auth": "api_key",
+        "resources": ["healers", "specialties", "ratings", "availability"],
+        "frequency": "continuous_cache",
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Stripe API",
+        "type": "rest_api",
+        "endpoint": "https://api.stripe.com/v1/",
+        "auth": "api_key",
+        "resources": ["charges", "payment_intents"],
+        "frequency": "real_time (webhooks)",
+        "required_credentials": ["api_key", "publishable_key"]
+      },
+      {
+        "name": "Calendar API (Calendly or Google)",
+        "type": "rest_api",
+        "endpoint": "https://calendly.com/api/v1/ or https://www.googleapis.com/calendar/v3/",
+        "auth": "oauth2",
+        "resources": ["calendars", "events", "availability"],
+        "frequency": "on_demand",
+        "required_credentials": ["access_token", "calendar_id"]
+      }
+    ],
+    "outbound": [
+      {
+        "name": "Loops Email API",
+        "type": "rest_api",
+        "endpoint": "https://api.loops.so/api/v1/",
+        "auth": "api_key",
+        "actions": ["send_email", "update_contact"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Stripe API",
+        "type": "rest_api",
+        "endpoint": "https://api.stripe.com/v1/",
+        "auth": "api_key",
+        "actions": ["create_payment_intent", "retrieve_charge"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "Calendar API",
+        "type": "rest_api",
+        "endpoint": "https://calendly.com/api/v1/ or https://www.googleapis.com/calendar/v3/",
+        "auth": "oauth2",
+        "actions": ["create_event", "update_event"],
+        "required_credentials": ["access_token"]
+      },
+      {
+        "name": "Internal API (Session Management)",
+        "type": "rest_api",
+        "endpoint": "https://ennie-api.internal/api/sessions",
+        "auth": "api_key",
+        "actions": ["create_session", "update_session", "lock_session"],
+        "required_credentials": ["api_key"]
+      },
+      {
+        "name": "PostHog API",
+        "type": "rest_api",
+        "endpoint": "https://api.posthog.com/",
+        "auth": "api_key",
+        "actions": ["capture_event"],
+        "required_credentials": ["api_key"]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "system": "Stripe Payment Processing",
+      "type": "read_write",
+      "endpoints": [
+        "POST /payment_intents (create payment)",
+        "POST /charges (process charge)",
+        "GET /charges/{id} (verify charge status)"
+      ],
+      "rate_limit": "100 requests/second",
+      "fallback": "If API down, escalate to support for manual payment processing"
+    },
+    {
+      "system": "Calendar API (Calendly or Google)",
+      "type": "read_write",
+      "endpoints": [
+        "GET /calendars (fetch healer availability)",
+        "POST /events (create session event)",
+        "PATCH /events/{id} (update event)"
+      ],
+      "rate_limit": "500 requests/hour",
+      "fallback": "If API down, manually create calendar event in fallback calendar"
+    },
+    {
+      "system": "Healer Database",
+      "type": "read",
+      "endpoints": [
+        "GET /healers (fetch all healers)",
+        "GET /healers/{id}/availability (fetch availability)"
+      ],
+      "rate_limit": "5000 requests/hour",
+      "fallback": "Use cached healer data (updated every hour)"
+    },
+    {
+      "system": "Loops Email",
+      "type": "write",
+      "endpoints": [
+        "POST /send (send confirmation email)"
+      ],
+      "rate_limit": "10000 requests/hour",
+      "fallback": "Queue email in buffer; retry hourly"
+    }
+  ],
+  "matching_algorithm_details": {
+    "version": "1.0",
+    "inputs": [
+      {
+        "field": "pain_type",
+        "description": "Primary pain complaint (back, neck, migraine, chronic fatigue, etc.)",
+        "type": "enum",
+        "example": "back_pain"
+      },
+      {
+        "field": "preferred_modality",
+        "description": "Preferred healing method if specified",
+        "type": "enum",
+        "example": "reiki"
+      },
+      {
+        "field": "location",
+        "description": "Patient city/region or remote preference",
+        "type": "string",
+        "example": "San Francisco, CA"
+      },
+      {
+        "field": "timezone",
+        "description": "Patient timezone",
+        "type": "string",
+        "example": "America/Los_Angeles"
+      },
+      {
+        "field": "availability",
+        "description": "When patient prefers sessions",
+        "type": "enum",
+        "example": "weekends_flexible"
+      },
+      {
+        "field": "budget_max",
+        "description": "Maximum hourly rate (optional)",
+        "type": "number",
+        "example": 100
+      }
+    ],
+    "outputs": [
+      {
+        "field": "healer_id",
+        "description": "ID of matched healer",
+        "type": "string"
+      },
+      {
+        "field": "match_score",
+        "description": "Score 0-100 indicating match quality",
+        "type": "number"
+      },
+      {
+        "field": "match_reason",
+        "description": "Human-readable explanation of match",
+        "type": "string",
+        "example": "Expert reiki practitioner in your area, 4.9 rating, available this weekend"
+      },
+      {
+        "field": "available_slots",
+        "description": "Array of available time slots this healer has",
+        "type": "array"
+      }
+    ]
+  },
+  "success_criteria": {
+    "functional": [
+      "Intake form delivers to all high-intent leads",
+      "Form completion logic captures all required fields",
+      "Matching algorithm runs within 2 seconds of form submission",
+      "Healer matches displayed in patient app within 5 seconds",
+      "Payment form loads securely (TLS 1.3)",
+      "Calendar sync creates events in healer's calendar",
+      "Confirmation emails delivered to both parties within 5 minutes"
+    ],
+    "performance": [
+      "Form completion rate > 80%",
+      "Matching algorithm success rate > 95% (finds at least 1 match)",
+      "Average match quality score > 72/100",
+      "Time to match < 2 hours",
+      "Patient views healer within 48h of match > 85%",
+      "Booking completion rate > 75%",
+      "Payment success rate > 98%",
+      "Time from match to booking < 24h (average)"
+    ],
+    "reliability": [
+      "99.5% uptime",
+      "<0.5% error rate in form processing",
+      ">99% payment processing success",
+      ">99% calendar sync success",
+      ">98% email delivery rate"
+    ]
+  },
+  "error_handling": {
+    "policy": "Graceful degradation, escalate edge cases, never lose session data",
+    "error_cases": [
+      {
+        "error": "Form validation fails (invalid email, missing field)",
+        "handling": "Return form error to user, highlight invalid field",
+        "retry": "User retries manually",
+        "escalation": "If >5% form errors, alert product team"
+      },
+      {
+        "error": "No healer match found (score <60)",
+        "handling": "Show message, offer waitlist option, escalate to concierge",
+        "retry": "Check again after new healers added",
+        "escalation": "Concierge calls patient to find solution"
+      },
+      {
+        "error": "Payment declined by card network",
+        "handling": "Show error, offer retry or alternative payment",
+        "retry": "User can retry up to 2x",
+        "escalation": "If declined 2x, escalate to support"
+      },
+      {
+        "error": "Calendar API timeout",
+        "handling": "Lock session in database, queue calendar sync",
+        "retry": "Automatic retry with exponential backoff",
+        "escalation": "If not synced within 30 min, manual verification"
+      },
+      {
+        "error": "Healer unresponsive to session (no confirmation after 24h)",
+        "handling": "Auto-assign alternative healer, notify patient",
+        "retry": "N/A",
+        "escalation": "Flag healer for responsiveness issue"
+      },
+      {
+        "error": "Session data corruption (database error)",
+        "handling": "Roll back transaction, return error to user",
+        "retry": "Database team investigates and fixes",
+        "escalation": "Database team escalates immediately"
+      }
+    ]
+  },
+  "performance_metrics": {
+    "to_track": [
+      {
+        "metric": "form_completion_rate",
+        "target": ">80%",
+        "frequency": "daily",
+        "dashboard": "Funnel Dashboard"
+      },
+      {
+        "metric": "time_to_form_completion",
+        "target": "<10_minutes",
+        "frequency": "daily",
+        "dashboard": "Funnel Dashboard"
+      },
+      {
+        "metric": "matching_success_rate",
+        "target": ">95%",
+        "frequency": "daily",
+        "dashboard": "Matching Dashboard"
+      },
+      {
+        "metric": "match_quality_score_avg",
+        "target": ">72",
+        "frequency": "daily",
+        "dashboard": "Matching Dashboard"
+      },
+      {
+        "metric": "booking_completion_rate",
+        "target": ">75%",
+        "frequency": "daily",
+        "dashboard": "Funnel Dashboard"
+      },
+      {
+        "metric": "payment_success_rate",
+        "target": ">98%",
+        "frequency": "daily",
+        "dashboard": "Payment Dashboard"
+      },
+      {
+        "metric": "calendar_sync_success",
+        "target": ">99%",
+        "frequency": "daily",
+        "dashboard": "Integration Health Dashboard"
+      },
+      {
+        "metric": "agent_response_time",
+        "target": "<10sec",
+        "frequency": "hourly",
+        "dashboard": "Agent Health Dashboard"
+      }
+    ]
+  },
+  "configuration": {
+    "environment": "production",
+    "execution_mode": "continuous",
+    "schedule": {
+      "ingest": "continuous (webhooks) + hourly cache refresh",
+      "reason": "continuous (on webhook)",
+      "execute": "continuous (triggered by events)",
+      "log": "continuous",
+      "escalate": "continuous (triggered by conditions)"
+    },
+    "resource_limits": {
+      "max_concurrent_api_calls": 20,
+      "max_queue_size": 10000,
+      "timeout_seconds": 30
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "initial_backoff_seconds": 5,
+      "max_backoff_seconds": 300,
+      "exponential_base": 2
+    },
+    "alerting": {
+      "alert_channel": "slack_channel:product_ops",
+      "escalation_contact": "Product Lead",
+      "critical_alert_sms": true
+    }
+  },
+  "deployment": {
+    "dockerfile_required": true,
+    "environment_variables": [
+      "STRIPE_API_KEY",
+      "STRIPE_PUBLISHABLE_KEY",
+      "STRIPE_WEBHOOK_SECRET",
+      "CALENDLY_API_KEY",
+      "GOOGLE_CALENDAR_API_KEY",
+      "HEALER_DB_URL",
+      "LOOPS_API_KEY",
+      "POSTHOG_API_KEY",
+      "ENNIE_API_KEY"
+    ],
+    "startup_checklist": [
+      "Verify Stripe API keys loaded",
+      "Test Stripe payment in test mode",
+      "Verify calendar API credentials",
+      "Test calendar sync with test healer",
+      "Load healer database and verify counts",
+      "Perform dry-run of intake form → matching → booking"
+    ]
+  }
+}

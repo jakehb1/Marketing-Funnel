@@ -1,0 +1,655 @@
+{
+  "orchestration": {
+    "id": "patient-funnel-orchestration",
+    "name": "Patient Funnel Orchestration Layer",
+    "role": "Central coordination and state management",
+    "description": "Master orchestrator managing agent handoffs, trigger routing, state persistence, and cross-agent communication. Ensures no leads fall through cracks and maintains patient progression through all 7 funnel stages.",
+    "owner": "CTO / Product Lead",
+    "status": "ready_for_production",
+    "created_at": "2026-04-01",
+    "version": "1.0"
+  },
+  "responsibilities": [
+    "Manage patient state (which stage they're in, progress, attributes)",
+    "Route events to correct agent based on patient stage and event type",
+    "Persist patient data across agent transitions",
+    "Detect and handle edge cases (duplicates, missing data, timeouts)",
+    "Coordinate multi-agent workflows (e.g., matching agent → retention agent)",
+    "Handle escalations and route to correct human team",
+    "Monitor all agents for health/errors; auto-restart if needed",
+    "Implement circuit breakers for external API failures",
+    "Batch events and manage message queues",
+    "Generate audit logs and compliance records",
+    "Provide dashboard/reporting on funnel health"
+  ],
+  "funnel_state_machine": {
+    "states": [
+      {
+        "name": "prospect",
+        "description": "Not yet a lead; browsing, not engaged",
+        "entry_trigger": "Page view from ads/organic",
+        "exit_trigger": "Landing page conversion (email captured)",
+        "owned_by": "patient-awareness-agent",
+        "data_persisted": [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "device_type",
+          "location",
+          "first_page_view_time",
+          "session_id"
+        ]
+      },
+      {
+        "name": "stage_1_awareness",
+        "description": "Lead captured, email confirmed, in awareness/nurture phase",
+        "entry_trigger": "Landing page form submission with email",
+        "exit_trigger": "Engagement score >70 OR explicitly clicks 'Get Started'",
+        "owned_by": "patient-awareness-agent",
+        "data_persisted": [
+          "email",
+          "first_name",
+          "pain_type",
+          "pain_severity",
+          "lead_source",
+          "lead_quality_score",
+          "signup_timestamp"
+        ]
+      },
+      {
+        "name": "stage_2_nurture",
+        "description": "In email nurture sequence, building trust and intent",
+        "entry_trigger": "Email address captured, first email sent",
+        "exit_trigger": "High engagement signal (opened 2+ emails + clicked link)",
+        "owned_by": "patient-nurture-agent",
+        "data_persisted": [
+          "engagement_score",
+          "email_opens_count",
+          "email_clicks_count",
+          "last_engagement_time",
+          "sequence_position",
+          "variant_cohort",
+          "retarget_ads_shown"
+        ]
+      },
+      {
+        "name": "stage_3_early_access",
+        "description": "High-intent lead, invited to complete intake form and match with healer",
+        "entry_trigger": "Engagement threshold met, form invitation sent",
+        "exit_trigger": "Intake form submitted + matching algorithm run",
+        "owned_by": "patient-matching-agent",
+        "data_persisted": [
+          "form_started_time",
+          "pain_type_detailed",
+          "preferred_modality",
+          "location",
+          "timezone",
+          "availability_preference",
+          "budget_preference",
+          "healer_matches",
+          "form_completion_percentage"
+        ]
+      },
+      {
+        "name": "stage_4_booking",
+        "description": "Healer matched and shown to patient, ready to book session",
+        "entry_trigger": "Intake form complete, healer matches displayed",
+        "exit_trigger": "Payment successful, session locked in calendar",
+        "owned_by": "patient-matching-agent",
+        "data_persisted": [
+          "selected_healer_id",
+          "match_score",
+          "payment_amount",
+          "payment_status",
+          "session_id",
+          "scheduled_session_time",
+          "timezone_confirmed",
+          "calendar_event_id"
+        ]
+      },
+      {
+        "name": "stage_5_execution",
+        "description": "Session scheduled, reminders sent, session executes",
+        "entry_trigger": "Payment confirmed, session locked",
+        "exit_trigger": "Session completed, outcome form submitted",
+        "owned_by": "patient-retention-agent",
+        "data_persisted": [
+          "session_id",
+          "session_start_time",
+          "session_end_time",
+          "show_up_confirmed",
+          "pain_level_pre",
+          "pain_level_post",
+          "satisfaction_score",
+          "effectiveness_score",
+          "healer_notes",
+          "adverse_effects_reported"
+        ]
+      },
+      {
+        "name": "stage_6_post_session",
+        "description": "Session completed, follow-ups sent, repeat booking encouraged",
+        "entry_trigger": "Outcome form submitted",
+        "exit_trigger": "Decision made: repeat booking OR churn OR refund request",
+        "owned_by": "patient-retention-agent",
+        "data_persisted": [
+          "session_outcome_score",
+          "follow_up_day3_sent",
+          "follow_up_day3_response",
+          "follow_up_day7_sent",
+          "follow_up_day14_sent",
+          "testimonial_requested",
+          "repeat_booking_cta_sent",
+          "refund_approved",
+          "next_action_recommended"
+        ]
+      },
+      {
+        "name": "stage_7_retention",
+        "description": "Customer acquired, focus on repeat bookings and lifetime value",
+        "entry_trigger": "Post-session period ends (14 days), next action determined",
+        "exit_trigger": "Customer churns (90+ days inactive) OR lifetime value threshold reached",
+        "owned_by": "patient-retention-agent",
+        "data_persisted": [
+          "total_sessions_attended",
+          "total_revenue",
+          "loyalty_tier",
+          "loyalty_points",
+          "repeat_booking_count",
+          "days_since_last_session",
+          "customer_lifetime_value",
+          "referral_count",
+          "nps_score",
+          "last_contact_date",
+          "win_back_offers_sent",
+          "churn_risk_score"
+        ]
+      },
+      {
+        "name": "inactive_cold",
+        "description": "Customer inactive >90 days, archived from active funnel",
+        "entry_trigger": "No activity for 90+ days, final win-back offer sent",
+        "exit_trigger": "Customer re-engages OR archived (1+ year inactive)",
+        "owned_by": "patient-retention-agent",
+        "data_persisted": [
+          "inactivity_start_date",
+          "churn_date",
+          "churn_reason_if_known",
+          "total_lifetime_value",
+          "reactivation_offers_sent",
+          "last_attempt_date"
+        ]
+      }
+    ]
+  },
+  "event_routing_rules": [
+    {
+      "trigger": "landing_page_submission",
+      "source": "webhook from landing page",
+      "route_to": "patient-awareness-agent",
+      "workflow": "Ingest → Score lead quality → Execute (add to Loops) → Log → Escalate if needed",
+      "stage_after": "stage_1_awareness"
+    },
+    {
+      "trigger": "email_opened",
+      "source": "Loops webhook",
+      "route_to": "patient-nurture-agent",
+      "workflow": "Ingest → Calculate engagement → Determine next email → Execute send",
+      "stage_after": "stage_2_nurture (no change)"
+    },
+    {
+      "trigger": "high_engagement_detected",
+      "source": "patient-nurture-agent reasoning",
+      "route_to": "orchestration (stage transition)",
+      "workflow": "Move patient to stage_3_early_access, trigger patient-matching-agent",
+      "stage_after": "stage_3_early_access"
+    },
+    {
+      "trigger": "intake_form_submitted",
+      "source": "webhook from app",
+      "route_to": "patient-matching-agent",
+      "workflow": "Ingest form → Run matching algorithm → Display healer matches",
+      "stage_after": "stage_4_booking"
+    },
+    {
+      "trigger": "healer_selected",
+      "source": "app event",
+      "route_to": "patient-matching-agent",
+      "workflow": "Show time slots → Process payment → Lock session → Queue reminders",
+      "stage_after": "stage_4_booking (payment processing)"
+    },
+    {
+      "trigger": "payment_successful",
+      "source": "Stripe webhook",
+      "route_to": "patient-matching-agent → orchestration → patient-retention-agent",
+      "workflow": "Create session, sync calendar, notify both parties, queue reminders",
+      "stage_after": "stage_5_execution"
+    },
+    {
+      "trigger": "session_scheduled",
+      "source": "internal database",
+      "route_to": "orchestration",
+      "workflow": "Queue reminders at 48h, 24h, 2h intervals",
+      "stage_after": "stage_5_execution"
+    },
+    {
+      "trigger": "session_completed",
+      "source": "app event",
+      "route_to": "patient-retention-agent",
+      "workflow": "Request outcome form, score effectiveness, trigger follow-ups",
+      "stage_after": "stage_5_execution → stage_6_post_session"
+    },
+    {
+      "trigger": "outcome_form_submitted",
+      "source": "webhook",
+      "route_to": "patient-retention-agent",
+      "workflow": "Score effectiveness, send outcome-specific follow-up",
+      "stage_after": "stage_6_post_session"
+    },
+    {
+      "trigger": "repeat_booking_made",
+      "source": "app event (new session)",
+      "route_to": "patient-retention-agent",
+      "workflow": "Award loyalty points, update metrics, plan next repeat",
+      "stage_after": "stage_7_retention"
+    },
+    {
+      "trigger": "inactive_30_days",
+      "source": "orchestration (scheduled check)",
+      "route_to": "patient-retention-agent",
+      "workflow": "Send re-engagement email with incentive",
+      "stage_after": "stage_7_retention"
+    },
+    {
+      "trigger": "inactive_90_days",
+      "source": "orchestration (scheduled check)",
+      "route_to": "patient-retention-agent",
+      "workflow": "Final win-back offer, escalate for human outreach if high LTV",
+      "stage_after": "inactive_cold"
+    },
+    {
+      "trigger": "refund_request",
+      "source": "patient action (UI button)",
+      "route_to": "orchestration",
+      "workflow": "Auto-approve if effectiveness <30%, else escalate to finance",
+      "stage_after": "depends (may return to stage_7_retention or churn)"
+    }
+  ],
+  "agent_communication_protocol": {
+    "message_format": {
+      "message_id": "uuid",
+      "timestamp": "ISO8601",
+      "from_agent": "agent_id",
+      "to_agent": "agent_id or 'orchestration'",
+      "event_type": "string (e.g., 'patient_ready_for_stage_3')",
+      "patient_id": "string",
+      "payload": {
+        "stage_from": "string",
+        "stage_to": "string",
+        "patient_data": "object (only updated fields)",
+        "action": "string (what to do next)",
+        "timestamp": "ISO8601"
+      }
+    },
+    "message_queue": {
+      "type": "RabbitMQ or AWS SQS",
+      "queue_name": "ennie-patient-funnel-events",
+      "message_ttl": "24_hours",
+      "max_retries": 3,
+      "dead_letter_queue": "ennie-patient-funnel-dlq"
+    },
+    "inter_agent_communication": [
+      {
+        "from": "patient-awareness-agent",
+        "to": "orchestration",
+        "message": "patient_captured",
+        "includes": ["email", "lead_quality_score", "pain_type"]
+      },
+      {
+        "from": "patient-nurture-agent",
+        "to": "orchestration",
+        "message": "patient_ready_for_early_access",
+        "includes": ["engagement_score", "email_open_count", "last_engagement"]
+      },
+      {
+        "from": "orchestration",
+        "to": "patient-matching-agent",
+        "message": "move_to_stage_3",
+        "includes": ["patient_id", "email", "pain_type"]
+      },
+      {
+        "from": "patient-matching-agent",
+        "to": "orchestration",
+        "message": "session_booked",
+        "includes": ["session_id", "healer_id", "scheduled_time", "session_locked"]
+      },
+      {
+        "from": "orchestration",
+        "to": "patient-retention-agent",
+        "message": "queue_session_reminders",
+        "includes": ["session_id", "session_time", "patient_id", "healer_id"]
+      },
+      {
+        "from": "patient-retention-agent",
+        "to": "orchestration",
+        "message": "session_completed",
+        "includes": ["session_id", "effectiveness_score", "satisfaction_nps"]
+      }
+    ]
+  },
+  "state_persistence": {
+    "database": {
+      "type": "PostgreSQL or Firebase Firestore",
+      "collections": [
+        {
+          "name": "patients",
+          "schema": {
+            "patient_id": "string (primary_key)",
+            "email": "string (unique)",
+            "current_stage": "enum (stage_1 → stage_7)",
+            "created_at": "timestamp",
+            "updated_at": "timestamp",
+            "data": "jsonb (all stage-specific data)"
+          }
+        },
+        {
+          "name": "patient_events",
+          "schema": {
+            "event_id": "string (primary_key)",
+            "patient_id": "string (foreign_key)",
+            "event_type": "string",
+            "timestamp": "timestamp",
+            "data": "jsonb"
+          }
+        },
+        {
+          "name": "agent_executions",
+          "schema": {
+            "execution_id": "string (primary_key)",
+            "agent_id": "string",
+            "patient_id": "string",
+            "workflow_stage": "string",
+            "status": "enum (pending, executing, completed, failed)",
+            "timestamp": "timestamp",
+            "error_message": "string (if failed)"
+          }
+        }
+      ]
+    },
+    "backup_strategy": [
+      "Daily full backup to S3",
+      "Hourly incremental backup",
+      "Point-in-time recovery enabled (7-day window)",
+      "Cross-region replication for disaster recovery"
+    ]
+  },
+  "error_handling_and_circuit_breakers": {
+    "circuit_breaker_rules": [
+      {
+        "service": "Loops API",
+        "failure_threshold": 5,
+        "time_window_seconds": 60,
+        "fallback_action": "Queue emails locally, retry when API recovers",
+        "recovery_check_interval": 30
+      },
+      {
+        "service": "Stripe API",
+        "failure_threshold": 3,
+        "time_window_seconds": 60,
+        "fallback_action": "Hold payment processing, escalate to support",
+        "recovery_check_interval": 30
+      },
+      {
+        "service": "PostHog API",
+        "failure_threshold": 10,
+        "time_window_seconds": 60,
+        "fallback_action": "Queue events locally, continue with best-known state",
+        "recovery_check_interval": 60
+      },
+      {
+        "service": "Calendar API",
+        "failure_threshold": 5,
+        "time_window_seconds": 60,
+        "fallback_action": "Manual calendar entry, escalate for sync",
+        "recovery_check_interval": 30
+      }
+    ],
+    "timeout_rules": [
+      {
+        "operation": "API call",
+        "timeout_seconds": 30,
+        "action": "Retry with backoff"
+      },
+      {
+        "operation": "Email send",
+        "timeout_seconds": 60,
+        "action": "Queue, retry hourly"
+      },
+      {
+        "operation": "Payment processing",
+        "timeout_seconds": 120,
+        "action": "Hold, escalate, check status manually"
+      },
+      {
+        "operation": "Matching algorithm",
+        "timeout_seconds": 10,
+        "action": "Return partial results or escalate"
+      }
+    ]
+  },
+  "monitoring_and_health_checks": {
+    "agent_health_checks": {
+      "frequency": "every_1_minute",
+      "checks": [
+        {
+          "name": "agent_responsive",
+          "metric": "Response time to health check ping",
+          "threshold": "< 5 seconds"
+        },
+        {
+          "name": "error_rate",
+          "metric": "% of executions resulting in error",
+          "threshold": "< 0.5%"
+        },
+        {
+          "name": "queue_backlog",
+          "metric": "Messages pending in queue",
+          "threshold": "< 1000 messages"
+        },
+        {
+          "name": "last_successful_execution",
+          "metric": "Time since last successful workflow execution",
+          "threshold": "< 5 minutes"
+        }
+      ],
+      "actions_on_failure": [
+        "Alert ops team in Slack",
+        "Auto-restart agent (if recoverable)",
+        "Escalate to on-call engineer if restart fails",
+        "Failover to backup instance (if available)"
+      ]
+    },
+    "funnel_health_metrics": {
+      "frequency": "hourly",
+      "metrics": [
+        {
+          "name": "stage_conversion_rate",
+          "calculation": "(patients in stage N+1) / (patients in stage N)",
+          "target": "Varies by stage (see playbook)",
+          "alert_threshold": "20% below target"
+        },
+        {
+          "name": "stage_throughput",
+          "calculation": "New patients moving to stage per hour",
+          "target": "Varies",
+          "alert_threshold": "50% below rolling average"
+        },
+        {
+          "name": "stuck_patients",
+          "calculation": "Patients in stage > threshold days",
+          "target": "None",
+          "alert_threshold": "> 5 patients stuck >30 days"
+        },
+        {
+          "name": "escalation_rate",
+          "calculation": "% of patients escalated to human",
+          "target": "< 5%",
+          "alert_threshold": "> 10%"
+        }
+      ]
+    },
+    "dashboards": [
+      {
+        "name": "Funnel Overview",
+        "metrics": ["Stage conversion rates", "Throughput", "Key KPIs by stage"],
+        "update_frequency": "Real-time"
+      },
+      {
+        "name": "Agent Health",
+        "metrics": ["Agent uptime", "Error rates", "Response times", "Queue backlog"],
+        "update_frequency": "Real-time"
+      },
+      {
+        "name": "System Health",
+        "metrics": ["API availability", "Database health", "Message queue status"],
+        "update_frequency": "Real-time"
+      },
+      {
+        "name": "Escalations",
+        "metrics": ["Open escalations", "Resolution time", "Escalation reasons"],
+        "update_frequency": "Every 5 minutes"
+      }
+    ]
+  },
+  "escalation_rules": {
+    "rules": [
+      {
+        "condition": "Patient doesn't move from stage for >30 days",
+        "action": "Flag as stuck, escalate to product team",
+        "priority": "medium"
+      },
+      {
+        "condition": "Patient reports adverse effects or pain increase",
+        "action": "Escalate to medical advisor immediately",
+        "priority": "critical"
+      },
+      {
+        "condition": "Refund request with effectiveness score <30%",
+        "action": "Auto-approve refund, escalate for follow-up",
+        "priority": "high"
+      },
+      {
+        "condition": "Payment fails 2+ times",
+        "action": "Route to payment specialist, offer manual processing",
+        "priority": "high"
+      },
+      {
+        "condition": "Session no-show",
+        "action": "Notify concierge for immediate reschedule offer",
+        "priority": "high"
+      },
+      {
+        "condition": "Healer unresponsive >24 hours",
+        "action": "Find alternative healer, notify patient",
+        "priority": "high"
+      },
+      {
+        "condition": ">5 patients escalated in last hour",
+        "action": "Alert ops team, possible systemic issue",
+        "priority": "critical"
+      },
+      {
+        "condition": "Agent error rate >2% for 15 min",
+        "action": "Alert engineering, auto-restart agent",
+        "priority": "critical"
+      },
+      {
+        "condition": "External API unavailable >30 minutes",
+        "action": "Initiate incident response, activate fallback procedures",
+        "priority": "critical"
+      }
+    ],
+    "escalation_contacts": [
+      {
+        "type": "Patient Safety",
+        "contact": "Medical Advisor",
+        "sla_minutes": 5,
+        "backup": "Clinical Director"
+      },
+      {
+        "type": "Payment Issues",
+        "contact": "Finance Lead",
+        "sla_minutes": 15,
+        "backup": "Payment Specialist"
+      },
+      {
+        "type": "Session Issues",
+        "contact": "Concierge / Customer Success Lead",
+        "sla_minutes": 30,
+        "backup": "Operations Manager"
+      },
+      {
+        "type": "Technical Issues",
+        "contact": "On-Call Engineer",
+        "sla_minutes": 10,
+        "backup": "CTO"
+      },
+      {
+        "type": "Data/Compliance Issues",
+        "contact": "Security Lead",
+        "sla_minutes": 5,
+        "backup": "Legal Counsel"
+      }
+    ]
+  },
+  "deployment_configuration": {
+    "infrastructure": {
+      "container_orchestration": "Kubernetes or Docker Swarm",
+      "deployment_regions": "Primary (US-East), Secondary (US-West), Backup (EU)",
+      "failover_strategy": "Auto-failover to secondary within 30 seconds",
+      "scaling": "Auto-scale agents 2-10 replicas based on queue depth"
+    },
+    "environment_variables": [
+      "DATABASE_URL",
+      "MESSAGE_QUEUE_URL",
+      "REDIS_URL (for caching)",
+      "SENTRY_DSN (error tracking)",
+      "SLACK_WEBHOOK_URL",
+      "PAGERDUTY_INTEGRATION_KEY",
+      "LOG_LEVEL (debug|info|warn|error)"
+    ],
+    "startup_sequence": [
+      "Verify database connectivity",
+      "Verify message queue (RabbitMQ/SQS)",
+      "Load agent configurations",
+      "Connect to Redis cache",
+      "Register with service discovery",
+      "Start health check endpoint",
+      "Begin listening for events"
+    ]
+  },
+  "testing_and_validation": {
+    "pre_deployment_checklist": [
+      "All agents deployed and healthy",
+      "Message queue tested with 100+ messages",
+      "Database backup verified",
+      "Failover tested and working",
+      "Escalation contacts verified",
+      "All external API integrations tested",
+      "Monitoring dashboards accessible",
+      "Alert channels tested (Slack, SMS, PagerDuty)"
+    ],
+    "canary_deployment": [
+      "Deploy to 1 canary instance first",
+      "Route 10% of traffic to canary",
+      "Monitor for errors for 30 minutes",
+      "If no issues, expand to 50%, then 100%"
+    ],
+    "rollback_trigger": [
+      "Error rate >2% for >5 minutes",
+      "Data corruption detected",
+      "Any critical escalation triggered",
+      "Manual decision to rollback"
+    ]
+  }
+}
