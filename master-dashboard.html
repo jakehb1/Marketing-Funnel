@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Marketing Hub</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #7C6BC4;
+      --healer: #6BAE9B;
+      --patient: #7C6BC4;
+      --dark: #1A1A2E;
+      --light: #F5F3EE;
+      --border: #E8E4DE;
+      --safe: #28A745;
+      --warning: #FFC107;
+      --danger: #DC3545;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    nav {
+      display: flex;
+      gap: 0;
+    }
+
+    nav a {
+      padding: 20px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      background: rgba(124, 107, 196, 0.05);
+    }
+
+    nav a.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-badge {
+      padding: 6px 12px;
+      background: rgba(124, 107, 196, 0.1);
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .hero h1 {
+      font-size: 44px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(124, 107, 196, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-meta {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-note {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge.live {
+      background: rgba(40, 167, 69, 0.1);
+      color: #28A745;
+    }
+
+    .badge.ready {
+      background: rgba(255, 193, 7, 0.1);
+      color: #FFC107;
+    }
+
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 40px 32px;
+      margin-top: 80px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 20px;
+    }
+
+    .footer-content p {
+      opacity: 0.7;
+      line-height: 1.8;
+    }
+
+    .footer-credit {
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 16px;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .container {
+        padding: 24px 16px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">🌿 ENNIE</div>
+    <nav>
+      <a href="#" class="nav-link active" data-page="home">Dashboard</a>
+      <a href="#" class="nav-link" data-page="funnels">Funnels</a>
+      <a href="#" class="nav-link" data-page="operations">Operations</a>
+      <a href="#" class="nav-link" data-page="automation">Automation</a>
+      <a href="#" class="nav-link" data-page="resources">Resources</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <div class="user-badge">Jake's Team</div>
+  </div>
+</header>
+
+<div id="home" class="page">
+  <div class="container">
+    <div class="hero">
+      <h1>Marketing Command Center</h1>
+      <p>Unified platform for managing ENNIE's 5 marketing funnels. Interactive dashboards, agent orchestration, compliance tracking, and real-time metrics.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🎯 Quick Stats</div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Assets</div>
+          <div class="stat-value">2,407</div>
+          <div class="stat-note">Production-ready copy & creative variations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Funnels</div>
+          <div class="stat-value">5</div>
+          <div class="stat-note">Healer, Untrained, Patient, Referral, Owned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Automation Ready</div>
+          <div class="stat-value">1</div>
+          <div class="stat-note">Patient funnel fully mapped & configured</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Agent Configs</div>
+          <div class="stat-value">5</div>
+          <div class="stat-note">Production-ready JSON for OpenClaw</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📊 Interactive Dashboards</div>
+      <div class="grid">
+        <a href="index.html" class="card">
+          <div class="card-icon">📋</div>
+          <h3>Messaging Matrix</h3>
+          <p>Search and filter all marketing copy by funnel, theme, and compliance status. Copy-to-clipboard ready.</p>
+          <div class="card-meta">Start here → <span class="badge live">Live</span></div>
+        </a>
+
+        <a href="mindmap.html" class="card">
+          <div class="card-icon">🗺️</div>
+          <h3>Funnel Map</h3>
+          <p>Miro-style interactive map of all 5 funnels. Drag, zoom, pan. Click any node for details.</p>
+          <div class="card-meta">Desktop/Tablet → <span class="badge live">Live</span></div>
+        </a>
+
+        <a href="mindmap-expanded.html" class="card">
+          <div class="card-icon">📖</div>
+          <h3>Full Scripts & Copy</h3>
+          <p>Complete email sequences, ad copy, landing pages, and direct quotes for every funnel stage.</p>
+          <div class="card-meta">Copywriters → <span class="badge live">Live</span></div>
+        </a>
+
+        <a href="agent-dashboard.html" class="card">
+          <div class="card-icon">🤖</div>
+          <h3>Agent-Native View</h3>
+          <p>See which agent owns each stage. View 5-step workflows, triggers, compliance status, and metrics.</p>
+          <div class="card-meta">Operations → <span class="badge live">Live</span></div>
+        </a>
+
+        <a href="marketing-ops-hub.html" class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Operations Hub</h3>
+          <p>Team command center. Ad ops, funnel builder, live metrics, agent orchestration, compliance queue.</p>
+          <div class="card-meta">Jess & Felix → <span class="badge live">Live</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🚀 Automation System</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <h3>Automation Playbook</h3>
+          <p>Complete runbook for the Patient funnel. Triggers, workflows, metrics, testing plan, go-live checklist.</p>
+          <div class="card-meta">Download → <span class="badge ready">Ready</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Agent Configs</h3>
+          <p>5 production-ready JSON configurations for OpenClaw. Awareness, Nurture, Matching, Retention, Orchestration.</p>
+          <div class="card-meta">Deploy → <span class="badge ready">Ready</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <h3>Data Integration Map</h3>
+          <p>API endpoints, auth, data schemas, integration frequency, fallback procedures, monitoring rules.</p>
+          <div class="card-meta">Engineering → <span class="badge ready">Ready</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📚 Resources</div>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <h3>START-HERE.md</h3>
+          <p>Entry point for your team. Quick overview of the entire system and how to use each component.</p>
+          <div class="card-meta">Read First</div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Content Library</h3>
+          <p>2,407 production-ready assets organized by funnel. Email, ad copy, landing pages, social, SMS, scripts.</p>
+          <div class="card-meta">comprehensive-content.json</div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <h3>Documentation</h3>
+          <p>Complete guides for messaging matrix, automation playbook, data integration, and content library.</p>
+          <div class="card-meta">In Repository</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="funnels" class="page" style="display: none;">
+  <div class="container">
+    <h1 style="margin-bottom: 40px;">🎯 Marketing Funnels</h1>
+    <div class="grid">
+      <a href="mindmap.html" class="card">
+        <div class="card-icon">🌿</div>
+        <h3>Experienced Healer</h3>
+        <p>Cold outreach → onboarded & earning. 7 stages.</p>
+      </a>
+      <a href="mindmap.html" class="card">
+        <div class="card-icon">✨</div>
+        <h3>Untrained Potential</h3>
+        <p>Discovery → trained & earning. Free training from Charlie. 7 stages.</p>
+      </a>
+      <a href="agent-dashboard.html" class="card">
+        <div class="card-icon">💜</div>
+        <h3>Chronic Pain Patient</h3>
+        <p>Awareness → paying customer. 7 stages. Fully automated.</p>
+      </a>
+      <a href="mindmap.html" class="card">
+        <div class="card-icon">🏆</div>
+        <h3>Referral Loop</h3>
+        <p>Queue-jumping + leaderboard. Grand prize trip to Charlie. 4 stages.</p>
+      </a>
+      <a href="mindmap.html" class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Charlie's Owned Audience</h3>
+        <p>470k followers → zero-cost signups. 4 stages.</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="operations" class="page" style="display: none;">
+  <div class="container">
+    <h1 style="margin-bottom: 40px;">⚙️ Marketing Operations</h1>
+    <p style="font-size: 16px; color: #666; margin-bottom: 32px;">Unified command center for Jess, Felix, and the agent system.</p>
+    <div class="grid">
+      <a href="marketing-ops-hub.html" class="card">
+        <div class="card-icon">📊</div>
+        <h3>Operations Hub</h3>
+        <p>Ad operations, funnel builder, live metrics, agent orchestration, compliance center, collaboration.</p>
+      </a>
+      <a href="index.html" class="card">
+        <div class="card-icon">📋</div>
+        <h3>Messaging Matrix</h3>
+        <p>All copy organized by funnel. Filter by compliance, theme, and platform. Copy-to-clipboard.</p>
+      </a>
+      <a href="mindmap-expanded.html" class="card">
+        <div class="card-icon">✍️</div>
+        <h3>Scripts & Copy</h3>
+        <p>Full email sequences, ad variations, landing page copy, subject lines, CTAs, and objection handlers.</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="automation" class="page" style="display: none;">
+  <div class="container">
+    <h1 style="margin-bottom: 40px;">🤖 Automation System</h1>
+    <p style="font-size: 16px; color: #666; margin-bottom: 32px;">Complete patient funnel automation: playbook, agent configs, and data integration map.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <h3>Automation Playbook</h3>
+        <p><strong>patient-funnel-automation-playbook.md</strong></p>
+        <p style="margin-top: 8px;">68 KB complete runbook. Stages, triggers, metrics, testing plan, go-live checklist.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>Agent Configs</h3>
+        <p><strong>agent-configs/</strong></p>
+        <p style="margin-top: 8px;">5 JSON files ready to deploy: Awareness, Nurture, Matching, Retention, Orchestration.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h3>Data Integration</h3>
+        <p><strong>patient-funnel-data-integration-map.md</strong></p>
+        <p style="margin-top: 8px;">36 KB technical specs. APIs, schemas, flows, monitoring, implementation checklist.</p>
+      </div>
+    </div>
+    <div style="margin-top: 40px; padding: 24px; background: white; border-radius: 12px; border: 1px solid var(--border);">
+      <h3 style="margin-bottom: 12px;">Deployment Timeline</h3>
+      <p style="color: #666; line-height: 1.8;">
+        <strong>Week 1:</strong> Setup & testing (databases, APIs, credentials)<br>
+        <strong>Weeks 2-4:</strong> Deploy canary → 50% → 100%<br>
+        <strong>Result:</strong> 95% autonomous patient funnel, fully measurable
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="resources" class="page" style="display: none;">
+  <div class="container">
+    <h1 style="margin-bottom: 40px;">📚 Documentation & Resources</h1>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">📖</div>
+        <h3>START-HERE.md</h3>
+        <p>Entry point for the entire system. Read this first to understand the architecture and what each component does.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>AUTOMATION-DEPLOYMENT-SUMMARY.md</h3>
+        <p>5-minute executive brief on the patient funnel automation system. Share with your team.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h3>CONTENT_LIBRARY_README.md</h3>
+        <p>How to use the 2,407-asset content library. Examples, search filters, export options.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h3>CONTENT_INDEX.md</h3>
+        <p>Quick reference guide to all content library assets organized by funnel and stage.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <h3>README-AUTOMATION.md</h3>
+        <p>Quick reference for the automation system. Configuration, deployment, monitoring.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌿</div>
+        <h3>GitHub Repository</h3>
+        <p><strong>jakehb1/Marketing-Funnel</strong><br>All dashboards, documentation, and configuration files.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <p>🌿 ENNIE Marketing Hub — Complete system for managing 5 marketing funnels, 2,407 content assets, and 1 fully automated patient funnel.</p>
+    <p style="margin-top: 12px; font-size: 11px; opacity: 0.6;">Built with agent-native architecture • All dashboards interactive • Full API documentation included</p>
+  </div>
+  <div class="footer-credit">© 2026 ENNIE. All systems active.</div>
+</footer>
+
+<script>
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = e.target.getAttribute('data-page');
+      
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      document.getElementById(page).style.display = 'block';
+      
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      e.target.classList.add('active');
+      
+      window.scrollTo(0, 0);
+    });
+  });
+</script>
+
+</body>
+</html>
