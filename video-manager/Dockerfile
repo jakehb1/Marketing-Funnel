@@ -8,11 +8,11 @@ WORKDIR /app
 RUN apk add --no-cache \
     ffmpeg \
     python3 \
-    pip \
+    py3-pip \
     build-base
 
 # Install Whisper (optional - comment out if using mock transcription)
-# RUN pip install openai-whisper
+# RUN pip3 install openai-whisper
 
 # Copy backend
 COPY backend/package*.json ./
