@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Manager - ENNIE</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1 class="app-title"> Video Manager</h1>
+        <nav class="nav-tabs">
+          <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+          <button class="nav-tab" data-tab="approval">Approvals</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Dashboard Tab -->
+      <div class="tab-content active" id="dashboard-tab">
+        <!-- Upload Section -->
+        <section class="upload-section">
+          <div class="upload-card">
+            <h2>Upload Video</h2>
+            
+            <div class="form-group">
+              <label for="video-title">Video Title</label>
+              <input 
+                type="text" 
+                id="video-title" 
+                placeholder="Enter video title (e.g., Healer Intro - Reiki)"
+                class="form-input"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="video-funnel">Funnel</label>
+              <select id="video-funnel" class="form-input">
+                <option value="">Select a funnel...</option>
+                <option value="healer">Healer</option>
+                <option value="untrained">Untrained</option>
+                <option value="patient">Patient</option>
+                <option value="referral">Referral</option>
+                <option value="owned">Owned</option>
+              </select>
+            </div>
+
+            <div class="dropzone" id="video-dropzone">
+              <div class="dropzone-content">
+                <div class="dropzone-icon"></div>
+                <p class="dropzone-text">Drag and drop your video here</p>
+                <p class="dropzone-subtext">or</p>
+                <button type="button" class="btn-secondary" id="select-file-btn">
+                  Choose File
+                </button>
+                <input 
+                  type="file" 
+                  id="video-file" 
+                  accept="video/*" 
+                  style="display: none;"
+                >
+              </div>
+            </div>
+
+            <div class="upload-progress" id="upload-progress" style="display: none;">
+              <p id="upload-status">Uploading...</p>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+              </div>
+              <p id="progress-text">0%</p>
+            </div>
+
+            <button 
+              type="button" 
+              id="upload-btn" 
+              class="btn-primary"
+              style="display: none;"
+            >
+              Upload Video
+            </button>
+          </div>
+        </section>
+
+        <!-- Filters Section -->
+        <section class="filters-section">
+          <div class="filters-card">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Search videos..."
+                class="form-input"
+              >
+            </div>
+
+            <div class="filter-controls">
+              <select id="filter-funnel" class="form-input">
+                <option value="">All Funnels</option>
+                <option value="healer">Healer</option>
+                <option value="untrained">Untrained</option>
+                <option value="patient">Patient</option>
+                <option value="referral">Referral</option>
+                <option value="owned">Owned</option>
+              </select>
+
+              <select id="filter-status" class="form-input">
+                <option value="">All Status</option>
+                <option value="uploading">Uploading</option>
+                <option value="transcribing">Transcribing</option>
+                <option value="ready">Ready</option>
+                <option value="error">Error</option>
+              </select>
+
+              <button id="refresh-btn" class="btn-secondary"> Refresh</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+          <div class="stat-card">
+            <p class="stat-label">Total Videos</p>
+            <p class="stat-value" id="stat-total">0</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Ready</p>
+            <p class="stat-value" id="stat-ready">0</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Processing</p>
+            <p class="stat-value" id="stat-processing">0</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Errors</p>
+            <p class="stat-value" id="stat-errors">0</p>
+          </div>
+        </section>
+
+        <!-- Videos Grid -->
+        <section class="videos-section">
+          <div id="videos-grid" class="videos-grid">
+            <div class="empty-state">
+              <p>📭 No videos yet</p>
+              <small>Upload a video to get started</small>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Approval Tab -->
+      <div class="tab-content" id="approval-tab">
+        <div id="approval-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Video Details Modal -->
+  <div class="modal" id="video-modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      
+      <div class="modal-header">
+        <h2 id="modal-title"></h2>
+      </div>
+
+      <div class="modal-body">
+        <div class="video-info-grid">
+          <div class="info-group">
+            <label>Funnel</label>
+            <p id="modal-funnel"></p>
+          </div>
+          <div class="info-group">
+            <label>Status</label>
+            <p id="modal-status"></p>
+          </div>
+          <div class="info-group">
+            <label>Uploaded</label>
+            <p id="modal-uploaded"></p>
+          </div>
+          <div class="info-group">
+            <label>Duration</label>
+            <p id="modal-duration"></p>
+          </div>
+        </div>
+
+        <div class="transcript-section">
+          <h3>Transcript</h3>
+          <div class="transcript-viewer" id="transcript-viewer">
+            <p class="loading-text">Loading transcript...</p>
+          </div>
+        </div>
+
+        <div class="approval-info" id="approval-info" style="display: none;">
+          <h3>Approval Status</h3>
+          <div class="approval-details">
+            <p><strong>Status:</strong> <span id="approval-status"></span></p>
+            <p id="approval-notes-line" style="display: none;">
+              <strong>Charlie's Notes:</strong>
+              <span id="approval-notes"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="download-transcript-btn" class="btn-secondary">
+          ⬇ Download Transcript
+        </button>
+        <button id="download-video-btn" class="btn-secondary">
+          ⬇ Download Video
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -21,6 +21,8 @@ const transcriptRoutes = require('./routes/transcripts');
 const clipRoutes = require('./routes/clips');
 const statusRoutes = require('./routes/status');
 const approvalsRoutes = require('./routes/approvals');
+const agentRoutes = require('./routes/agents');
+const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 
@@ -42,6 +44,9 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve static frontend files from public directory
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Health check
 app.get('/health', async (req, res) => {
@@ -68,6 +73,8 @@ app.use('/api/transcripts', transcriptRoutes);
 app.use('/api/clips', clipRoutes);
 app.use('/api/status', statusRoutes);
 app.use('/api/approvals', approvalsRoutes);
+app.use('/api/agents', agentRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

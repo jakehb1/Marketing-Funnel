@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approval Dashboard - ENNIE</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header approval-header">
+      <div class="header-content">
+        <h1 class="app-title"> Approval Dashboard</h1>
+        <button id="logout-btn" class="btn-secondary" style="display: none;">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Login Screen -->
+      <div id="login-screen" class="login-screen">
+        <div class="login-card">
+          <div class="login-icon"></div>
+          <h2>Approval Dashboard</h2>
+          <p class="login-subtitle">Charlie's Content Review Portal</p>
+
+          <form id="login-form" class="login-form">
+            <div class="form-group">
+              <label for="pin-input">PIN</label>
+              <input 
+                type="password" 
+                id="pin-input" 
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="••••••"
+                class="form-input pin-input"
+                autocomplete="off"
+              >
+            </div>
+            <button type="submit" class="btn-primary btn-block">
+              Unlock Dashboard
+            </button>
+          </form>
+
+          <p class="login-hint">Enter your PIN to access approvals</p>
+        </div>
+      </div>
+
+      <!-- Dashboard Screen -->
+      <div id="dashboard-screen" class="approval-dashboard" style="display: none;">
+        <!-- Approval Controls -->
+        <div class="approval-controls">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-status="pending">
+               Pending (<span class="pending-count">0</span>)
+            </button>
+            <button class="tab-btn" data-status="approved">
+               Approved (<span class="approved-count">0</span>)
+            </button>
+            <button class="tab-btn" data-status="rejected">
+               Rejected (<span class="rejected-count">0</span>)
+            </button>
+          </div>
+
+          <div class="approval-filters">
+            <select id="filter-content-type" class="form-input">
+              <option value="">All Content Types</option>
+              <option value="video">Videos</option>
+              <option value="transcript">Transcripts</option>
+              <option value="clip">Clips</option>
+            </select>
+
+            <select id="filter-funnel" class="form-input">
+              <option value="">All Funnels</option>
+              <option value="healer">Healer</option>
+              <option value="untrained">Untrained</option>
+              <option value="patient">Patient</option>
+              <option value="referral">Referral</option>
+              <option value="owned">Owned</option>
+            </select>
+
+            <button id="approval-refresh-btn" class="btn-secondary">
+               Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Approvals Grid -->
+        <div id="approvals-grid" class="approvals-grid">
+          <div class="empty-state">
+            <p>📭 No items in this category</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Rejection Modal -->
+  <div class="modal" id="reject-modal">
+    <div class="modal-content reject-modal">
+      <button class="modal-close">&times;</button>
+      
+      <div class="modal-header">
+        <h2> Reject Content</h2>
+        <p class="modal-subtitle">Please provide detailed feedback for the creator.</p>
+      </div>
+
+      <div class="modal-body">
+        <textarea 
+          id="reject-notes" 
+          class="form-input textarea" 
+          rows="6"
+          placeholder="Why is this being rejected? (required)"
+        ></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button id="reject-cancel-btn" class="btn-secondary">Cancel</button>
+        <button id="reject-confirm-btn" class="btn-danger" disabled>
+          Confirm Rejection
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal" id="detail-modal">
+    <div class="modal-content detail-modal">
+      <button class="modal-close">&times;</button>
+      
+      <div class="modal-header">
+        <h2>Content Details</h2>
+      </div>
+
+      <div class="modal-body">
+        <div id="detail-content"></div>
+      </div>
+
+      <div class="modal-footer" id="detail-actions">
+        <!-- Actions for pending approvals -->
+      </div>
+    </div>
+  </div>
+
+  <script src="approval.js"></script>
+</body>
+</html>

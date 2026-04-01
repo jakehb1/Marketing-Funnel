@@ -1,20 +1,5 @@
-# Multi-stage build for efficiency
+# Single-stage build - vanilla frontend, no build complexity
 
-# Stage 1: Build frontend
-FROM node:18-alpine as frontend-builder
-
-WORKDIR /app/frontend
-
-COPY frontend/package*.json ./
-
-RUN npm ci
-
-COPY frontend/public ./public
-COPY frontend/src ./src
-
-RUN npm run build
-
-# Stage 2: Build backend + runtime
 FROM node:18-alpine
 
 WORKDIR /app
@@ -35,8 +20,8 @@ RUN npm ci --only=production
 
 COPY backend .
 
-# Copy built frontend
-COPY --from=frontend-builder /app/frontend/build ./public
+# Copy vanilla HTML/CSS/JS frontend
+COPY public ./public
 
 # Create uploads directory
 RUN mkdir -p /app/uploads
