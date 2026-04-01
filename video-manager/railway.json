@@ -1,0 +1,63 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "dockerfile",
+    "context": ".",
+    "dockerfile": "Dockerfile"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "healthchecks": {
+      "readiness": "/health",
+      "liveness": "/health"
+    },
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  },
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment",
+      "default": "production"
+    },
+    "PORT": {
+      "description": "Server port",
+      "default": "5000"
+    },
+    "DB_USER": {
+      "description": "Database user",
+      "default": "postgres"
+    },
+    "DB_PASSWORD": {
+      "description": "Database password",
+      "default": ""
+    },
+    "DB_HOST": {
+      "description": "Database host",
+      "default": ""
+    },
+    "DB_PORT": {
+      "description": "Database port",
+      "default": "5432"
+    },
+    "DB_NAME": {
+      "description": "Database name",
+      "default": "video_manager"
+    },
+    "DATABASE_URL": {
+      "description": "PostgreSQL connection string (Railway PostgreSQL addon)",
+      "default": ""
+    },
+    "FRONTEND_URL": {
+      "description": "Frontend URL for CORS",
+      "default": ""
+    },
+    "USE_WHISPER_CLI": {
+      "description": "Use Whisper CLI for transcription",
+      "default": "false"
+    },
+    "CHARLIE_PIN": {
+      "description": "Charlie's PIN for approval dashboard access",
+      "default": "1234"
+    }
+  }
+}
