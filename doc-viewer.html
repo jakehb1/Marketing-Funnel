@@ -259,6 +259,7 @@
 
   <div class="sidebar-section">
     <div class="sidebar-title">📚 Content Library</div>
+    <a class="sidebar-link" onclick="loadJson('comprehensive-content.json')">All Assets (2,407)</a>
     <a class="sidebar-link" onclick="loadDoc('CONTENT_LIBRARY_README.md')">How to Use</a>
     <a class="sidebar-link" onclick="loadDoc('CONTENT_INDEX.md')">Index</a>
   </div>
@@ -341,9 +342,14 @@
     return text.replace(/[&<>"']/g, m => map[m]);
   }
 
-  // Load START-HERE on page load
+  // Load START-HERE on page load, OR comprehensive-content.json if query param
   window.addEventListener('load', () => {
-    loadDoc('START-HERE.md');
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('content')) {
+      loadJson('comprehensive-content.json');
+    } else {
+      loadDoc('START-HERE.md');
+    }
   });
 </script>
 
