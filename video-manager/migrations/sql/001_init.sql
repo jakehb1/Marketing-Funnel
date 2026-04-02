@@ -1,46 +1,32 @@
--- Create videos table
+-- Create basic tables if they don't exist
+
 CREATE TABLE IF NOT EXISTS videos (
-  id UUID PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  filename VARCHAR(255) NOT NULL UNIQUE,
-  original_name VARCHAR(255),
-  funnel VARCHAR(100) DEFAULT 'general',
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR(255),
+  filename VARCHAR(255),
+  funnel VARCHAR(50),
   status VARCHAR(50) DEFAULT 'uploading',
-  duration INTEGER,
-  size BIGINT,
-  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS transcripts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  video_id UUID REFERENCES videos(id) ON DELETE CASCADE,
+  text TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create transcripts table
-CREATE TABLE IF NOT EXISTS transcripts (
-  id UUID PRIMARY KEY,
-  video_id UUID NOT NULL REFERENCES videos(id) ON DELETE CASCADE,
-  text TEXT,
-  language VARCHAR(10) DEFAULT 'en',
+CREATE TABLE IF NOT EXISTS approvals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  video_id UUID REFERENCES videos(id) ON DELETE CASCADE,
+  status VARCHAR(50) DEFAULT 'pending',
+  notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create clips table
-CREATE TABLE IF NOT EXISTS clips (
-  id UUID PRIMARY KEY,
-  video_id UUID NOT NULL REFERENCES videos(id) ON DELETE CASCADE,
-  start_time DECIMAL(10, 2) NOT NULL,
-  end_time DECIMAL(10, 2) NOT NULL,
-  purpose VARCHAR(255),
-  filename VARCHAR(255) NOT NULL UNIQUE,
-  duration DECIMAL(10, 2),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create indexes for common queries
-CREATE INDEX idx_videos_funnel ON videos(funnel);
-CREATE INDEX idx_videos_status ON videos(status);
-CREATE INDEX idx_videos_uploaded_at ON videos(uploaded_at DESC);
-CREATE INDEX idx_transcripts_video_id ON transcripts(video_id);
-CREATE INDEX idx_transcripts_language ON transcripts(language);
-CREATE INDEX idx_clips_video_id ON clips(video_id);
-CREATE INDEX idx_clips_purpose ON clips(purpose);
+CREATE INDEX IF NOT EXISTS idx_videos_funnel ON videos(funnel);
+CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status);
+CREATE INDEX IF NOT EXISTS idx_transcripts_video_id ON transcripts(video_id);
+CREATE INDEX IF NOT EXISTS idx_approvals_status ON approvals(status);
