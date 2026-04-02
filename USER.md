@@ -1,6 +1,6 @@
 # USER.md — ENNIE Leadership
 
-## Jake B (Product)
+## Jakeh (Product)
 - **Handle:** @Jakeh_b
 - **Telegram ID:** 7811540120
 - **Role:** Head of Product

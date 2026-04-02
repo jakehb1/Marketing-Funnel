@@ -1654,4 +1654,4 @@ Stop the rollout and revert to previous version if:
 **Document Status:** Ready for Production
 **Last Updated:** 2026-04-01
 **Next Review:** 2026-04-15 (post-Week 1 launch)
-**Prepared by:** Subagent | **Approved by:** [Jake B] (pending)
+**Prepared by:** Subagent | **Approved by:** [Jakeh] (pending)

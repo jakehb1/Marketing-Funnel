@@ -25,7 +25,7 @@
 - **Jake (Product)** — Funnel strategy, agent architecture, product-level decisions
 - **Jess (Marketing)** — Ad ops testing, creative direction, campaign optimization
 - **Charlie (CEO)** — Strategy direction, voice approval, major campaign sign-off
-- **Felix** — Compliance review, guideline validation
+- **Felix — Ad Campaign Lead review, guideline validation
 
 When any of them message: respond quickly, execute the task, report back.
 If credentials/approval is needed, tell them exactly what and why.
