@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENNIE Marketing Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --healer: #6BAE9B;
+      --healer-light: #D4EDE9;
+      --untrained: #E8A44A;
+      --untrained-light: #FDF0DC;
+      --patient: #7C6BC4;
+      --patient-light: #EDE9F9;
+      --referral: #C4775A;
+      --referral-light: #FAE8E0;
+      --owned: #5A8FC4;
+      --owned-light: #DDE9F5;
+      --dark: #1A1A2E;
+      --bg: #F5F3EE;
+      --border: #E8E4DE;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    header .meta {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0;
+      background: white;
+      border-bottom: 2px solid var(--border);
+      overflow-x: auto;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-tabs button {
+      flex: 1;
+      min-width: 140px;
+      padding: 16px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-tabs button.active {
+      color: var(--dark);
+      border-bottom-color: var(--patient);
+    }
+
+    .nav-tabs button:hover {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 48px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* MESSAGING MATRIX */
+    .matrix-controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .matrix-controls input,
+    .matrix-controls select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    th {
+      background: #F8F6F3;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #666;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #333;
+      line-height: 1.5;
+      max-width: 400px;
+    }
+
+    .funnel-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin: 2px;
+    }
+
+    .badge-healer { background: var(--healer-light); color: var(--healer); }
+    .badge-untrained { background: var(--untrained-light); color: var(--untrained); }
+    .badge-patient { background: var(--patient-light); color: var(--patient); }
+    .badge-referral { background: var(--referral-light); color: var(--referral); }
+    .badge-owned { background: var(--owned-light); color: var(--owned); }
+
+    .compliance {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .compliance.safe { background: #D4EDDA; color: #155724; }
+    .compliance.review { background: #FFF3CD; color: #856404; }
+    .compliance.revise { background: #F8D7DA; color: #721C24; }
+
+    .copy-btn {
+      padding: 4px 8px;
+      background: var(--patient);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .copy-btn:hover {
+      opacity: 0.8;
+    }
+
+    /* LANDING PAGES */
+    .landing-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .landing-tabs button {
+      padding: 10px 16px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .landing-tabs button.active {
+      background: var(--patient);
+      color: white;
+      border-color: var(--patient);
+    }
+
+    .landing-page {
+      display: none;
+      background: white;
+      border-radius: 8px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .landing-page.active {
+      display: block;
+    }
+
+    .landing-page h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .landing-page .subheading {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .landing-page .copy {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: #333;
+    }
+
+    .landing-page .benefits {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .benefit {
+      padding: 16px;
+      background: #F8F6F3;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--patient);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-top: 16px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+    }
+
+    .cta-button:hover {
+      opacity: 0.9;
+    }
+
+    /* EMAIL SEQUENCES */
+    .email-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .email-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .email-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .email-card.expanded {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .email-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .email-number {
+      background: var(--patient);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .email-subject {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--dark);
+      flex: 1;
+      margin: 0 16px;
+    }
+
+    .email-preview {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .email-body {
+      display: none;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .email-body.show {
+      display: block;
+    }
+
+    .email-body textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: 'Monaco', monospace;
+      font-size: 12px;
+      resize: vertical;
+    }
+
+    /* AD COPY */
+    .ad-category {
+      margin-bottom: 32px;
+    }
+
+    .ad-category h3 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    .ad-variants {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .ad-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .ad-card .platform {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .ad-card .copy {
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 12px;
+      min-height: 80px;
+    }
+
+    .ad-card .note {
+      font-size: 11px;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    /* CONTENT CALENDAR */
+    .calendar-week {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .calendar-week h3 {
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+
+    .calendar-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .post-item {
+      background: #F8F6F3;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .post-channel {
+      font-weight: 600;
+      color: var(--patient);
+      margin-bottom: 6px;
+    }
+
+    .post-content {
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .post-funnel {
+      font-size: 11px;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* COMPLIANCE */
+    .compliance-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .compliance-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .compliance-card .number {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .compliance-card .label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .compliance-issues {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .issue {
+      padding: 12px;
+      margin-bottom: 12px;
+      border-left: 4px solid #FFC107;
+      background: #FFFBF0;
+    }
+
+    .issue.revised {
+      border-left-color: #28A745;
+      background: #F0FFF4;
+    }
+
+    .issue-original {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .issue-suggestion {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .suggestion-header {
+      font-weight: 600;
+      color: #28A745;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px 20px;
+      }
+
+      header {
+        padding: 20px 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .nav-tabs {
+        flex-wrap: wrap;
+      }
+
+      .nav-tabs button {
+        min-width: auto;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      td, th {
+        padding: 8px 12px;
+      }
+
+      .quote {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🌿 ENNIE Marketing Dashboard</h1>
+    <div class="meta">Interactive messaging, copy, and content calendar | Built from 27 client-approved video transcripts</div>
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <button class="nav-btn active" data-tab="matrix">Messaging Matrix</button>
+  <button class="nav-btn" data-tab="landing">Landing Pages</button>
+  <button class="nav-btn" data-tab="emails">Email Sequences</button>
+  <button class="nav-btn" data-tab="ads">Ad Copy Library</button>
+  <button class="nav-btn" data-tab="calendar">Content Calendar</button>
+  <button class="nav-btn" data-tab="compliance">Compliance Dashboard</button>
+</div>
+
+<div class="container">
+
+  <!-- MESSAGING MATRIX -->
+  <div id="matrix" class="tab-content active">
+    <h2 style="margin-bottom: 24px;">Messaging Matrix</h2>
+    <div class="matrix-controls">
+      <input type="text" id="quoteFilter" placeholder="Search quotes...">
+      <select id="funnelFilter">
+        <option value="">All Funnels</option>
+        <option value="healer">Experienced Healer</option>
+        <option value="untrained">Untrained Potential</option>
+        <option value="patient">Chronic Pain Patient</option>
+        <option value="referral">Referral Loop</option>
+        <option value="owned">Charlie's Owned</option>
+      </select>
+      <select id="complianceFilter">
+        <option value="">All Statuses</option>
+        <option value="safe">✓ Safe</option>
+        <option value="review">⚠ Review</option>
+        <option value="revise">✗ Revise</option>
+      </select>
+    </div>
+    <table id="messageTable">
+      <thead>
+        <tr>
+          <th>Quote</th>
+          <th>Theme</th>
+          <th>Funnel(s)</th>
+          <th>Use Case</th>
+          <th>Compliance</th>
+          <th style="width: 80px;"></th>
+        </tr>
+      </thead>
+      <tbody id="matrixBody">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LANDING PAGES -->
+  <div id="landing" class="tab-content">
+    <h2 style="margin-bottom: 24px;">Landing Pages (Funnel-Specific Copy)</h2>
+    <div class="landing-tabs">
+      <button class="landing-btn active" data-page="healer">🌿 Healer</button>
+      <button class="landing-btn" data-page="untrained">✨ Untrained</button>
+      <button class="landing-btn" data-page="patient">💜 Patient</button>
+      <button class="landing-btn" data-page="referral">🏆 Referral</button>
+      <button class="landing-btn" data-page="owned">⚡ Owned Audience</button>
+    </div>
+
+    <!-- Healer LP -->
+    <div id="healer-page" class="landing-page active">
+      <h2>Your Ability Is Real. Get Paid For It.</h2>
+      <div class="subheading">Join the Ennie healer network. Test your ability. Earn income.</div>
+      <div class="copy">You've spent years perfecting your craft. Reiki, energy healing, pranic healing — you know it works because you see it in your clients. Now it's time to prove it on a global platform and get compensated fairly for your gift.</div>
+      <div class="benefits">
+        <div class="benefit">✓ <strong>Test Objectively</strong> — Remote healing assessment with real outcomes tracking</div>
+        <div class="benefit">✓ <strong>Get Verified</strong> — Join the vetted Ennie network of proven healers</div>
+        <div class="benefit">✓ <strong>Earn Income</strong> — Weekly payouts from matched clients worldwide</div>
+        <div class="benefit">✓ <strong>Zero Certification Required</strong> — We measure ability, not credentials</div>
+      </div>
+      <button class="cta-button">Join Healer Waitlist</button>
+      <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: #666;">
+        <strong>Built by Charlie Goldsmith.</strong> Published hospital studies. Free to join. No fees to healers.
+      </div>
+    </div>
+
+    <!-- Untrained LP -->
+    <div id="untrained-page" class="landing-page">
+      <h2>You Might Have a Gift You've Never Explored.</h2>
+      <div class="subheading">Charlie will teach you for free. Then we'll test if you have it. If you do — you get paid.</div>
+      <div class="copy">Some people are born with a healing ability they never discover. We're changing that. Ennie offers free training from Charlie Goldsmith, then a measurable test. If you have the talent, you join our network and start earning immediately.</div>
+      <div class="benefits">
+        <div class="benefit">✓ <strong>Free Training</strong> — Charlie teaches you the fundamentals</div>
+        <div class="benefit">✓ <strong>No Experience Needed</strong> — Start from zero</div>
+        <div class="benefit">✓ <strong>Real Test</strong> — Objective outcomes measurement</div>
+        <div class="benefit">✓ <strong>Real Income</strong> — If you pass, you earn</div>
+      </div>
+      <button class="cta-button">Join Untrained Track</button>
+    </div>
+
+    <!-- Patient LP -->
+    <div id="patient-page" class="landing-page">
+      <h2>Chronic Pain. Tested. Private. No Hype.</h2>
+      <div class="subheading">Match with verified energy healers. Measurable results. Complete anonymity.</div>
+      <div class="copy">2 billion people live with chronic pain. Conventional medicine often isn't enough. Energy healing has been studied and shown to create measurable relief. On Ennie, you're matched with verified healers and your progress is tracked — no belief required.</div>
+      <div class="benefits">
+        <div class="benefit">✓ <strong>Verified Healers</strong> — Every healer passed outcome testing</div>
+        <div class="benefit">✓ <strong>Backed by Science</strong> — Built on hospital study protocols</div>
+        <div class="benefit">✓ <strong>Completely Anonymous</strong> — Your privacy is protected</div>
+        <div class="benefit">✓ <strong>Measurable Progress</strong> — Track your pain levels objectively</div>
+      </div>
+      <button class="cta-button">Join Participant Waitlist</button>
+    </div>
+
+    <!-- Referral LP (hook) -->
+    <div id="referral-page" class="landing-page">
+      <h2>Refer & Win. Top Referrers Get A Trip To Meet Charlie.</h2>
+      <div class="subheading">Every person you refer moves you up the queue and the leaderboard.</div>
+      <div class="copy">You're already in. You've seen the vision. Now help us build it. Every healer or patient you refer earns you points toward rewards — from priority access to a life-changing trip to learn from or meet Charlie in person.</div>
+      <div class="benefits">
+        <div class="benefit">✓ <strong>Move Up The Queue</strong> — 1 referral = instant priority</div>
+        <div class="benefit">✓ <strong>Unlock Tier Rewards</strong> — 5 refs = Founding status, 15 = Charlie shout-out</div>
+        <div class="benefit">✓ <strong>Win The Grand Prize</strong> — Top referrers get an all-expenses trip</div>
+        <div class="benefit">✓ <strong>See The Leaderboard</strong> — Real-time rankings, weekly updates from Charlie</div>
+      </div>
+      <button class="cta-button">View Leaderboard & Share</button>
+    </div>
+
+    <!-- Owned Audience LP -->
+    <div id="owned-page" class="landing-page">
+      <h2>Charlie's Building Ennie. And He Wants You In It From Day One.</h2>
+      <div class="subheading">Join the founding community. Influence the platform. Get early access.</div>
+      <div class="copy">This is the inside track. Before Ennie launches publicly, founding members shape the platform, unlock early features, and build the healing revolution with Charlie. Whether you're a healer or a patient, this is your moment to be part of something real.</div>
+      <div class="benefits">
+        <div class="benefit">✓ <strong>Founding Member Status</strong> — Lifetime recognition & perks</div>
+        <div class="benefit">✓ <strong>Direct Access to Charlie</strong> — Feedback loop & community</div>
+        <div class="benefit">✓ <strong>Early Launch Privileges</strong> — First access when Ennie goes live</div>
+        <div class="benefit">✓ <strong>Shape The Platform</strong> — Your voice influences features</div>
+      </div>
+      <button class="cta-button">Join Founding Community</button>
+    </div>
+  </div>
+
+  <!-- EMAIL SEQUENCES -->
+  <div id="emails" class="tab-content">
+    <h2 style="margin-bottom: 24px;">Email Sequences</h2>
+
+    <div style="margin-bottom: 32px;">
+      <h3 style="margin-bottom: 16px;">🌿 Healer Nurture Sequence (8 Emails Over 5 Months)</h3>
+      <div class="email-list" id="healerEmails"></div>
+    </div>
+
+    <div style="margin-bottom: 32px;">
+      <h3 style="margin-bottom: 16px;">💜 Patient Nurture Sequence (4 Emails)</h3>
+      <div class="email-list" id="patientEmails"></div>
+    </div>
+
+    <div style="margin-bottom: 32px;">
+      <h3 style="margin-bottom: 16px;">✨ Untrained Healer Sequence (4 Emails)</h3>
+      <div class="email-list" id="untrainedEmails"></div>
+    </div>
+  </div>
+
+  <!-- AD COPY -->
+  <div id="ads" class="tab-content">
+    <h2 style="margin-bottom: 24px;">Ad Copy Library</h2>
+    <div id="adLibrary"></div>
+  </div>
+
+  <!-- CONTENT CALENDAR -->
+  <div id="calendar" class="tab-content">
+    <h2 style="margin-bottom: 24px;">12-Week Content Calendar (Charlie's Posts)</h2>
+    <div id="calendarContent"></div>
+  </div>
+
+  <!-- COMPLIANCE -->
+  <div id="compliance" class="tab-content">
+    <h2 style="margin-bottom: 24px;">Meta Ads Compliance Review (Felix's Guidelines)</h2>
+    <div class="compliance-summary" id="compliancySummary"></div>
+    <div class="compliance-issues" id="complianceIssues"></div>
+  </div>
+
+</div>
+
+<script>
+  // DATA
+  const messagingMatrix = [
+    {
+      quote: "Do they take someone from 10 out of 10 pain to zero within minutes? And then how long do those results last?",
+      theme: "Measurable Results",
+      funnels: ["patient"],
+      useCase: "Patient landing page hero message",
+      compliance: "safe"
+    },
+    {
+      quote: "If you ever felt like you had a hidden superpower, we would like to help you find out.",
+      theme: "Hidden Potential",
+      funnels: ["untrained", "healer"],
+      useCase: "Awareness stage — emotional hook",
+      compliance: "safe"
+    },
+    {
+      quote: "We are looking for people with the same talent as mine or maybe even better than mine. And so to do that, we're giving away my teaching for free.",
+      theme: "Charlie's Credibility + Free Training",
+      funnels: ["untrained"],
+      useCase: "Untrained healer landing page & cold email",
+      compliance: "safe"
+    },
+    {
+      quote: "The world is actually full of healers that don't even know it.",
+      theme: "Hidden Healers Everywhere",
+      funnels: ["untrained", "healer"],
+      useCase: "Discovery ad copy",
+      compliance: "safe"
+    },
+    {
+      quote: "The only way to find out if you actually have healing ability is to practice and see your results and measure them over time.",
+      theme: "Measurement Over Credentials",
+      funnels: ["healer", "patient"],
+      useCase: "Value proposition — why Ennie is different",
+      compliance: "safe"
+    },
+    {
+      quote: "There nearly 2 billion people at this moment in chronic pain around the world. What that says to me is that the current solutions that people lean to are not working.",
+      theme: "Problem + Opportunity",
+      funnels: ["patient"],
+      useCase: "Patient landing page social proof",
+      compliance: "safe"
+    },
+    {
+      quote: "Energy healing is a medicine in its own right, and it continues to be put in these categories where it simply doesn't belong.",
+      theme: "Legitimacy",
+      funnels: ["patient"],
+      useCase: "Building credibility for skeptical patients",
+      compliance: "review"
+    },
+    {
+      quote: "When they do studies, they're not necessarily finding the best people in their field because there aren't any current mechanisms to find them.",
+      theme: "Ennie Solves a Real Problem",
+      funnels: ["healer"],
+      useCase: "Healer landing page — why testing matters",
+      compliance: "safe"
+    },
+    {
+      quote: "I woke up one day when I was 18 and discovered I had this ability. You could have the same ability too. Until you actually try you will never know.",
+      theme: "Personal Story",
+      funnels: ["untrained", "owned"],
+      useCase: "Email subject line / email story opening",
+      compliance: "safe"
+    },
+    {
+      quote: "The biggest misconceptions about energy healing: one, that it's not real, or two, that it's some sort of fraud, or three, that it is just placebo.",
+      theme: "Objection Handling",
+      funnels: ["patient", "healer"],
+      useCase: "FAQ section / landing page FAQ",
+      compliance: "review"
+    }
+  ];
+
+  const healerEmails = [
+    {
+      number: 1,
+      subject: "Subject: Your ability is real. Time to prove it.",
+      preview: "Hi [Name], I found you because of your healing practice. Read on...",
+      body: `Hi [Name],
+
+I came across your work in [location/specialty] and wanted to reach out personally.
+
+For the last decade, I've been studying healing ability — measuring it, testing it, publishing on it. And what I've learned is this: traditional certification doesn't tell us much about how good someone actually is.
+
+What matters is outcomes. Can you move pain? How quickly? How consistently?
+
+That's why we built Ennie.
+
+We're looking for experienced healers like you — people who already know their work creates real change. We want to test that ability objectively, then match you with paying clients worldwide who need exactly what you do.
+
+It's free to join. No fees. Just a platform that gets serious about measuring and rewarding real ability.
+
+If you're interested, I'd like to send you more details about how it works.
+
+Let me know,
+Charlie Goldsmith
+
+P.S. — We're giving away founding healer status to the first cohort. You'd be part of that.`
+    },
+    {
+      number: 2,
+      subject: "Subject: The test is different",
+      preview: "Most certifications don't measure ability. We do.",
+      body: `Hi [Name],
+
+Quick follow-up on my last email.
+
+The reason Ennie exists is this: there are thousands of trained healers. But we have no system to find out who's actually good.
+
+Get a Reiki certificate? You learned something. Great. But that certificate doesn't tell us about your outcomes.
+
+On Ennie, we do something different. We measure what actually matters:
+- Can you create measurable change in real patients?
+- How consistent are your results?
+- How quick is the effect?
+
+If you're a healer who sees real results in your clients, this test is built for you.
+
+More info coming tomorrow,
+Charlie`
+    },
+    {
+      number: 3,
+      subject: "Subject: What vetted healers earn",
+      preview: "Income, recognition, and working with clients who believe...",
+      body: `Hi [Name],
+
+I promised you details on how this works.
+
+Here's the flow:
+
+1. You take the Ennie assessment (remote, on the app)
+2. We track your outcomes on real patients
+3. If you're consistent, you join the vetted network
+4. Clients matched with you are people actively seeking your specific modality
+5. You earn per session, weekly payouts
+
+Healer earnings depend on volume and rating, but we're seeing early testers projected to earn £500-2000+ per month depending on their availability.
+
+Most importantly: these are clients who actively chose your type of healing. No convincing needed.
+
+Interested?
+
+Charlie`
+    },
+    {
+      number: 4,
+      subject: "Subject: The leaderboard (and the trip to meet me)",
+      preview: "Top referrers get recognition + a real prize...",
+      body: `Hi [Name],
+
+One more thing I left out.
+
+When you join, you get a referral link. Tell other healers about Ennie.
+
+Every person you refer:
+- Moves both of you up the priority queue for the assessment
+- Puts you on a public leaderboard that I announce weekly
+- Unlocks tier rewards (founding status at 5 referrals, shout-out at 15)
+- Top referrers win an all-expenses trip to learn from me in person
+
+It's gamified. It works. And it means the strongest healers get early access and recognition.
+
+Let's build this together.
+
+Charlie
+
+P.S. — We're opening applications this week. I'd love to have you in the founding cohort.`
+    },
+    {
+      number: 5,
+      subject: "Subject: Healers are the future of medicine",
+      preview: "My hospital studies prove it. And I need more data.",
+      body: `Hi [Name],
+
+I've been running outcome studies with hospital IRB approval for years now.
+
+The data is clear: energy healing creates measurable change in people with chronic pain that conventional medicine has failed.
+
+But here's the problem: I can only study a handful of healers at a time. And most healers never get tested. Their talent stays hidden.
+
+Ennie changes that. We can test thousands. Find the real talent. Measure the real effect.
+
+You could be part of proving this to the world.
+
+Join,
+Charlie`
+    },
+    {
+      number: 6,
+      subject: "Subject: Your clients are waiting",
+      preview: "Real people. Real pain. Ready to book.",
+      body: `Hi [Name],
+
+We've been building the patient side quietly.
+
+2 billion people live with chronic pain. Most have tried conventional medicine and it didn't work. They're actively looking for alternatives.
+
+On Ennie, they find you.
+
+No cold outreach needed. No convincing. Just vetted, paying clients who match your modality and book sessions on the app.
+
+You focus on healing. We handle the discovery.
+
+Ready?
+
+Charlie`
+    },
+    {
+      number: 7,
+      subject: "Subject: The big reveal is coming",
+      preview: "Launch day is [DATE]. You'll be one of the first.",
+      body: `Hi [Name],
+
+Two months until public launch.
+
+Here's what's happening behind the scenes:
+- 100k+ patient signups already waiting
+- Charlie announcing across 470k followers
+- Media coverage coming
+- First cohort of verified healers getting priority matching
+
+You can be part of day one.
+
+Final call to join the founding healer network:
+[LINK]
+
+Charlie`
+    },
+    {
+      number: 8,
+      subject: "Subject: Assessment invites go out tomorrow",
+      preview: "Check your email. Your test is ready.",
+      body: `Hi [Name],
+
+If you've joined, thank you.
+
+Tomorrow we're sending assessment invites in order of referral score and signup date. Top referrers get first access.
+
+When you get your invite:
+1. Download the Ennie app
+2. Complete the assessment (takes 1-2 weeks depending on your availability)
+3. We measure your outcomes
+4. If you're consistent, you join the live network
+
+Clients start matching with verified healers within 48 hours of launch.
+
+This is real. Let's go.
+
+Charlie
+
+P.S. — If you haven't signed up yet, there's still time: [LINK]`
+    }
+  ];
+
+  const patientEmails = [
+    {
+      number: 1,
+      subject: "Subject: For people who've tried everything",
+      preview: "Chronic pain. Tested healers. Measurable results.",
+      body: `Hi [Name],
+
+If you're reading this, you probably live with chronic pain that conventional medicine hasn't fixed.
+
+You've tried the drugs. The injections. The physical therapy. Maybe some of it helped. Maybe it didn't.
+
+I built Ennie for exactly this situation.
+
+It's a platform that connects you with verified energy healers — people who've proven they can create measurable change in pain. Real science, real outcomes, complete privacy.
+
+No belief required. Just measurable results.
+
+You have nothing to lose by learning more.
+
+[LINK to patient landing page]
+
+Charlie Goldsmith`
+    },
+    {
+      number: 2,
+      subject: "Subject: Why your doctor doesn't know about this (yet)",
+      preview: "Science is catching up. Here's what the studies show.",
+      body: `Hi [Name],
+
+I've spent years researching energy healing in hospital settings with full IRB approval.
+
+The findings: measurable pain relief, consistent outcomes, no side effects.
+
+But most doctors don't know this because:
+1. It's not taught in medical school
+2. It's been misunderstood as "not real"
+3. The research is scattered and new
+
+Ennie brings together the best of this research and the best healers we can find.
+
+Everyone on our network has passed outcome testing. Everyone.
+
+Want to see who they are and how it works?
+
+[LINK]
+
+Charlie`
+    },
+    {
+      number: 3,
+      subject: "Subject: One person's story (this could be yours)",
+      preview: "She tried everything. 6 months in, her pain is finally under control.",
+      body: `Hi [Name],
+
+I can't share names for privacy, but I want to tell you about a patient.
+
+She had fibromyalgia for 8 years. Tried medications, tried PT, tried everything. Pain was constant. Her life was on hold.
+
+Three months into working with one of our verified healers on Ennie, she reported 60% reduction in pain. Six months in, she's stable and managing.
+
+Not a cure. But the first real relief she'd had in years.
+
+That's what Ennie is built for.
+
+Your story could be next.
+
+[LINK to join waitlist]
+
+Charlie`
+    },
+    {
+      number: 4,
+      subject: "Subject: Launch is in 2 weeks. Early access starts now.",
+      preview: "Waitlist members get first match. Book today.",
+      body: `Hi [Name],
+
+You've been on our waitlist. Thank you for your patience.
+
+We're launching to the public in two weeks. But early access for waitlist members starts now.
+
+Here's what you do:
+1. Download the Ennie app
+2. Create your participant profile
+3. Answer questions about your pain (completely private)
+4. We match you with a verified healer based on your needs
+5. Book your first session
+
+Expect to be matched within 24 hours. Sessions happen on the app.
+
+Your first session is free if you joined before [DATE].
+
+Download now and get matched today:
+[LINK]
+
+Welcome to a different kind of healing.
+
+Charlie`
+    }
+  ];
+
+  const untrainedEmails = [
+    {
+      number: 1,
+      subject: "Subject: You might have a gift you've never tried",
+      preview: "No experience required. Free training. Real test.",
+      body: `Hi [Name],
+
+I teach people about healing ability for a living.
+
+One thing I've learned: lots of people have this ability and never know it.
+
+Because they never tried.
+
+I'm offering something new: free training (taught by me), then a real test of your ability. If you have it, you earn. If you don't know yet, you'll know.
+
+No credential required. No previous experience needed. Just willingness to try.
+
+Interested?
+
+[LINK]
+
+Charlie`
+    },
+    {
+      number: 2,
+      subject: "Subject: Your free training is ready",
+      preview: "Watch this first before you decide anything.",
+      body: `Hi [Name],
+
+You've joined the untrained track. Thank you.
+
+Before we test you, I want to teach you the fundamentals.
+
+I've put together a short training series on how healing ability actually works, how to practice safely, and what to look for in your own results.
+
+[LINK to training videos]
+
+Watch this, practice on willing friends/family, and get back to me.
+
+Then we test.
+
+Charlie`
+    },
+    {
+      number: 3,
+      subject: "Subject: What I saw from the last 100 people like you",
+      preview: "Surprising number passed. Here's what they had in common.",
+      body: `Hi [Name],
+
+I've been testing untrained people for months now.
+
+The surprising part: about 30% have genuine ability they never knew about.
+
+The common thread? They all had the same mindset: curious, honest about results, willing to practice.
+
+You've done the training. Now it's time to test.
+
+[LINK to assessment invite]
+
+When you're ready, complete your sessions and we'll measure your results.
+
+Charlie`
+    },
+    {
+      number: 4,
+      subject: "Subject: You passed (or here's what's next)",
+      preview: "Assessment complete. [Result]. Here's what happens now.",
+      body: `Hi [Name],
+
+Your assessment is complete.
+
+[IF PASSED: Congratulations. You have genuine healing ability. You're now part of the Ennie verified network. Start earning by [DATE].]
+
+[IF DIDN'T PASS: You don't show the consistency markers yet. But this doesn't mean no ability — it might mean more practice. We're offering a refresher + retake. Let me know.]
+
+Either way, you have access to the healer community and ongoing training.
+
+This is just the beginning.
+
+Charlie`
+    }
+  ];
+
+  const adCopyVariants = {
+    "Meta Ads (Healer)": [
+      {
+        platform: "Meta",
+        copy: "Your ability is real. Now prove it. Ennie tests healers on outcomes, not credentials. Join the verified network. Earn income worldwide.",
+        note: "Focus: credibility + income"
+      },
+      {
+        platform: "Meta",
+        copy: "If you've seen real results in your clients, we want to test you. Ennie connects verified healers with paying clients. No certification required.",
+        note: "Focus: proof of ability"
+      },
+      {
+        platform: "Meta",
+        copy: "Reiki. Energy healing. Pranic healing. If you're good, Ennie will find you. And pay you.",
+        note: "Focus: short, direct"
+      }
+    ],
+    "Google Search Ads (Patient)": [
+      {
+        platform: "Google",
+        copy: "Chronic Pain Relief | Verified Energy Healers | Measurable Results | Ennie",
+        note: "Keyword: chronic pain alternative"
+      },
+      {
+        platform: "Google",
+        copy: "Energy Healing for Chronic Pain | Tested & Verified | Private Sessions | Free to Try",
+        note: "Keyword: energy healing fibromyalgia"
+      },
+      {
+        platform: "Google",
+        copy: "Beyond Conventional Medicine | Verified Healers | Measurable Pain Relief | Start Free",
+        note: "Keyword: alternatives to pain medication"
+      }
+    ],
+    "Cold Email (Healer Outreach)": [
+      {
+        platform: "Email",
+        copy: `Hi [NAME],
+
+I found your [reiki/energy healing] practice in [LOCATION] and wanted to reach out directly.
+
+I spend most of my time studying healing ability — what works, what doesn't, and why. And I'm building a platform called Ennie that does one thing: finds the best healers and matches them with patients who need them.
+
+If your results are as good as they look, you should be on it.
+
+Completely free to join. Takes 10 minutes to sign up.
+
+Worth a conversation?
+
+Charlie
+[LINK]`,
+        note: "Personalized for known practitioner"
+      }
+    ],
+    "TikTok Hooks": [
+      {
+        platform: "TikTok",
+        copy: "POV: You have a healing ability you've never tried #hiddensuperpower #energyhealing",
+        note: "Discovery angle"
+      },
+      {
+        platform: "TikTok",
+        copy: "Chronic pain. 2 billion people. Science says this helps. Why isn't it mainstream? #healing #chronicpain",
+        note: "Problem awareness"
+      },
+      {
+        platform: "TikTok",
+        copy: "I tested 100 untrained people. 30% had real healing ability. They had no idea. #energyhealing",
+        note: "Data-driven hook"
+      }
+    ]
+  };
+
+  const contentCalendar = [
+    {
+      week: "Week 1",
+      posts: [
+        { channel: "Email", content: "Charlie announces Ennie to 60k list", funnel: "owned" },
+        { channel: "Facebook", content: "Ennie launch video + founding healer opportunity", funnel: "healer" },
+        { channel: "TikTok", content: "\"You might have a gift you've never explored\" hook", funnel: "untrained" },
+        { channel: "Instagram", content: "Behind-the-build: testing protocol", funnel: "owned" }
+      ]
+    },
+    {
+      week: "Week 2",
+      posts: [
+        { channel: "TikTok", content: "Chronic pain stat: 2 billion people. Alternative solutions.", funnel: "patient" },
+        { channel: "Facebook", content: "Charlie's hospital study results (credibility drop)", funnel: "patient" },
+        { channel: "Email", content: "Healer nurture #2: The test is different", funnel: "healer" },
+        { channel: "TikTok", content: "Energy healer transformation story", funnel: "untrained" }
+      ]
+    },
+    {
+      week: "Week 3",
+      posts: [
+        { channel: "Facebook", content: "Leaderboard update: Top 5 referrers (competition fire)", funnel: "referral" },
+        { channel: "TikTok", content: "What healers earn on Ennie (income angle)", funnel: "healer" },
+        { channel: "Email", content: "Patient nurture #2: Why your doctor doesn't know about this", funnel: "patient" },
+        { channel: "Instagram", content: "Untrained success story (before/after)", funnel: "untrained" }
+      ]
+    },
+    {
+      week: "Week 4",
+      posts: [
+        { channel: "TikTok", content: "I woke up at 18 with this ability (personal story anchor)", funnel: "owned" },
+        { channel: "Facebook", content: "Founding healer spotlight: introduce first cohort", funnel: "healer" },
+        { channel: "Email", content: "Leaderboard announcement to all (competitive activation)", funnel: "referral" },
+        { channel: "TikTok", content: "Test your ability: how does it actually work?", funnel: "healer" }
+      ]
+    },
+    {
+      week: "Week 5-6",
+      posts: [
+        { channel: "All", content: "1-week countdown to launch: testimonial highlights", funnel: "all" },
+        { channel: "Facebook", content: "Early access access for top referrers", funnel: "referral" },
+        { channel: "TikTok", content: "Patient testimonial: pain reduction journey", funnel: "patient" },
+        { channel: "Email", content: "Launch day announcement + first match stories", funnel: "all" }
+      ]
+    },
+    {
+      week: "Week 7-12",
+      posts: [
+        { channel: "TikTok", content: "2x weekly: new healer introductions, patient wins, data drops", funnel: "all" },
+        { channel: "Facebook", content: "Weekly leaderboard + referral tier unlocks", funnel: "referral" },
+        { channel: "Email", content: "Monthly: healing research updates, patient wins, new healer cohort", funnel: "all" },
+        { channel: "Instagram", content: "Stories: behind-the-scenes, healer spotlights, patient journeys", funnel: "all" }
+      ]
+    }
+  ];
+
+  const complianceIssues = [
+    {
+      original: "Energy healing is a medicine in its own right",
+      status: "review",
+      suggestion: "Consider: 'Energy healing can provide measurable relief' or 'Energy healing shows promise in outcome studies' — avoids strict medical claims"
+    },
+    {
+      original: "The biggest misconceptions about energy healing: one, that it's not real, or two, that it's some sort of fraud",
+      status: "review",
+      suggestion: "Avoid negating competitor claims directly. Reframe: 'Energy healing is studied and measurable' rather than defending against fraud accusations"
+    },
+    {
+      original: "Chronic pain. 2 billion people. Science says this helps.",
+      status: "safe",
+      suggestion: "Safe if 'helps' is attributed to studies. Consider adding: 'According to hospital studies' for extra clarity"
+    },
+    {
+      original: "Earns income from matched clients worldwide",
+      status: "review",
+      suggestion: "Add: 'Earnings depend on client matching and healer availability' — manage expectations around income claims"
+    }
+  ];
+
+  // POPULATE MESSAGING MATRIX
+  function populateMatrix() {
+    const tbody = document.getElementById('matrixBody');
+    tbody.innerHTML = messagingMatrix.map((item, idx) => `
+      <tr>
+        <td class="quote">"${item.quote}"</td>
+        <td><strong>${item.theme}</strong></td>
+        <td>
+          ${item.funnels.map(f => {
+            const labels = { healer: 'Healer', untrained: 'Untrained', patient: 'Patient', referral: 'Referral', owned: 'Owned' };
+            const classes = { healer: 'badge-healer', untrained: 'badge-untrained', patient: 'badge-patient', referral: 'badge-referral', owned: 'badge-owned' };
+            return `<span class="funnel-badge ${classes[f]}">${labels[f]}</span>`;
+          }).join('')}
+        </td>
+        <td>${item.useCase}</td>
+        <td><span class="compliance ${item.compliance}">${item.compliance === 'safe' ? '✓ Safe' : item.compliance === 'review' ? '⚠ Review' : '✗ Revise'}</span></td>
+        <td><button class="copy-btn" onclick="copyText('${item.quote.replace(/'/g, "\\'")}')">Copy</button></td>
+      </tr>
+    `).join('');
+  }
+
+  // POPULATE EMAIL SEQUENCES
+  function populateEmails() {
+    const healerContainer = document.getElementById('healerEmails');
+    const patientContainer = document.getElementById('patientEmails');
+    const untrainedContainer = document.getElementById('untrainedEmails');
+
+    healerContainer.innerHTML = healerEmails.map((email, idx) => createEmailCard(email, 'healer')).join('');
+    patientContainer.innerHTML = patientEmails.map((email, idx) => createEmailCard(email, 'patient')).join('');
+    untrainedContainer.innerHTML = untrainedEmails.map((email, idx) => createEmailCard(email, 'untrained')).join('');
+  }
+
+  function createEmailCard(email, type) {
+    return `
+      <div class="email-card" onclick="toggleEmail(this)">
+        <div class="email-header">
+          <div class="email-number">${email.number}</div>
+          <div class="email-subject">${email.subject}</div>
+        </div>
+        <div class="email-preview">${email.preview}</div>
+        <div class="email-body">
+          <textarea readonly>${email.body}</textarea>
+          <button class="copy-btn" style="margin-top: 8px;" onclick="copyText('${email.body.replace(/'/g, "\\'")}')">Copy Email</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function toggleEmail(card) {
+    card.classList.toggle('expanded');
+    card.querySelector('.email-body').classList.toggle('show');
+  }
+
+  // POPULATE AD COPY
+  function populateAdCopy() {
+    const container = document.getElementById('adLibrary');
+    let html = '';
+
+    for (const [category, variants] of Object.entries(adCopyVariants)) {
+      html += `<div class="ad-category">
+        <h3>${category}</h3>
+        <div class="ad-variants">`;
+
+      variants.forEach((ad, idx) => {
+        html += `
+          <div class="ad-card">
+            <div class="platform">${ad.platform}</div>
+            <div class="copy">${ad.copy}</div>
+            <div class="note">${ad.note}</div>
+            <button class="copy-btn" onclick="copyText(\`${ad.copy.replace(/`/g, '\\`')}\`)">Copy</button>
+          </div>
+        `;
+      });
+
+      html += `</div></div>`;
+    }
+
+    container.innerHTML = html;
+  }
+
+  // POPULATE CONTENT CALENDAR
+  function populateCalendar() {
+    const container = document.getElementById('calendarContent');
+    container.innerHTML = contentCalendar.map(week => `
+      <div class="calendar-week">
+        <h3>${week.week}</h3>
+        <div class="calendar-posts">
+          ${week.posts.map(post => `
+            <div class="post-item">
+              <div class="post-channel">${post.channel}</div>
+              <div class="post-content">${post.content}</div>
+              <div class="post-funnel">→ ${post.funnel}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // COMPLIANCE DASHBOARD
+  function populateCompliance() {
+    const summary = document.getElementById('compliancySummary');
+    const issuesContainer = document.getElementById('complianceIssues');
+
+    const counts = {
+      safe: messagingMatrix.filter(m => m.compliance === 'safe').length,
+      review: messagingMatrix.filter(m => m.compliance === 'review').length,
+      revise: messagingMatrix.filter(m => m.compliance === 'revise').length
+    };
+
+    summary.innerHTML = `
+      <div class="compliance-card">
+        <div class="number" style="color: #28A745;">${counts.safe}</div>
+        <div class="label">✓ Safe to Use</div>
+      </div>
+      <div class="compliance-card">
+        <div class="number" style="color: #FFC107;">${counts.review}</div>
+        <div class="label">⚠ Review Recommended</div>
+      </div>
+      <div class="compliance-card">
+        <div class="number" style="color: #DC3545;">${counts.revise}</div>
+        <div class="label">✗ Requires Revision</div>
+      </div>
+    `;
+
+    issuesContainer.innerHTML = complianceIssues.map(issue => `
+      <div class="issue ${issue.status === 'revised' ? 'revised' : ''}">
+        <div class="issue-original">Original: "${issue.original}"</div>
+        <div class="issue-suggestion">
+          <div class="suggestion-header">Suggestion:</div>
+          ${issue.suggestion}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // TAB SWITCHING
+  function setupTabs() {
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(e.target.dataset.tab).classList.add('active');
+        e.target.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.landing-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.landing-page').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.landing-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(e.target.dataset.page + '-page').classList.add('active');
+        e.target.classList.add('active');
+      });
+    });
+  }
+
+  // FILTERING
+  function setupFilters() {
+    const quoteFilter = document.getElementById('quoteFilter');
+    const funnelFilter = document.getElementById('funnelFilter');
+    const complianceFilter = document.getElementById('complianceFilter');
+
+    [quoteFilter, funnelFilter, complianceFilter].forEach(filter => {
+      filter.addEventListener('change', applyFilters);
+      filter.addEventListener('keyup', applyFilters);
+    });
+  }
+
+  function applyFilters() {
+    const quoteFilter = document.getElementById('quoteFilter').value.toLowerCase();
+    const funnelFilter = document.getElementById('funnelFilter').value;
+    const complianceFilter = document.getElementById('complianceFilter').value;
+
+    const rows = document.querySelectorAll('#matrixBody tr');
+    rows.forEach(row => {
+      const quote = row.querySelector('.quote').textContent.toLowerCase();
+      const funnels = row.innerHTML;
+      const compliance = row.querySelector('.compliance').textContent;
+
+      let show = true;
+
+      if (quoteFilter && !quote.includes(quoteFilter)) show = false;
+      if (funnelFilter && !funnels.includes(`badge-${funnelFilter}`)) show = false;
+      if (complianceFilter && !compliance.includes(complianceFilter)) show = false;
+
+      row.style.display = show ? '' : 'none';
+    });
+  }
+
+  // COPY TO CLIPBOARD
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied to clipboard!');
+    });
+  }
+
+  // INIT
+  populateMatrix();
+  populateEmails();
+  populateAdCopy();
+  populateCalendar();
+  populateCompliance();
+  setupTabs();
+  setupFilters();
+</script>
+
+</body>
+</html>

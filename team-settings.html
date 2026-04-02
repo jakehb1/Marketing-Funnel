@@ -5,6 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Team & Settings - ENNIE Marketing</title>
   <style>
+    :root {
+      --bg-neutral: #FAFBFC;
+      --bg-card: #FFFFFF;
+      --color-primary: #2563EB;
+      --color-accent: #DC2626;
+      --color-text: #1F2937;
+      --color-text-secondary: #6B7280;
+      --color-border: #E5E7EB;
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
+      
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      --font-size-h1: 32px;
+      --font-size-h2: 24px;
+      --font-size-h3: 18px;
+      --font-size-body: 14px;
+      --font-size-caption: 12px;
+      
+      --font-weight-header: 600;
+      --font-weight-semibold: 500;
+      --font-weight-regular: 400;
+      
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 20px;
+      --spacing-2xl: 24px;
+      --spacing-3xl: 32px;
+      
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --transition-base: all 0.2s ease;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,10 +47,10 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #F5F3EE;
-      color: #1A1A2E;
-      padding: 20px;
+      font-family: var(--font-family);
+      background: var(--bg-neutral);
+      color: var(--color-text);
+      padding: var(--spacing-xl);
     }
 
     .container {
@@ -23,66 +58,69 @@
       margin: 0 auto;
     }
 
-    .header {
-      margin-bottom: 32px;
-    }
-
-    .header h1 {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      font-size: 13px;
-      color: #999;
-    }
-
     .back-link {
       display: inline-block;
-      font-size: 13px;
-      color: #7C6BC4;
+      font-size: var(--font-size-caption);
+      color: var(--color-primary);
       text-decoration: none;
-      margin-bottom: 20px;
+      margin-bottom: var(--spacing-xl);
+      font-weight: var(--font-weight-semibold);
+      transition: var(--transition-base);
     }
 
     .back-link:hover {
       text-decoration: underline;
     }
 
-    /* TABS */
+    .header {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .header h1 {
+      font-size: var(--font-size-h1);
+      font-weight: var(--font-weight-header);
+      margin-bottom: var(--spacing-md);
+      letter-spacing: -0.5px;
+    }
+
+    .header p {
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+    }
+
     .tabs {
       display: flex;
       gap: 0;
-      border-bottom: 1px solid #E8E4DE;
-      margin-bottom: 32px;
-      background: white;
-      border-radius: 12px 12px 0 0;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--spacing-3xl);
+      background: var(--bg-card);
+      border-radius: 8px 8px 0 0;
     }
 
     .tab {
-      padding: 16px 24px;
+      padding: var(--spacing-lg) var(--spacing-2xl);
       border: none;
       background: none;
       cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      color: #666;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-header);
+      color: var(--color-text-secondary);
       border-bottom: 2px solid transparent;
-      transition: all 0.2s;
+      transition: var(--transition-base);
       white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .tab:hover {
-      color: #7C6BC4;
+      color: var(--color-primary);
     }
 
     .tab.active {
-      color: #7C6BC4;
-      border-bottom-color: #7C6BC4;
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
     }
 
-    /* TAB CONTENT */
     .tab-content {
       display: none;
     }
@@ -91,38 +129,37 @@
       display: block;
     }
 
-    /* SECTION */
     .section {
-      margin-bottom: 40px;
+      margin-bottom: var(--spacing-3xl);
     }
 
     .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: #1A1A2E;
+      font-size: var(--font-size-h3);
+      font-weight: var(--font-weight-header);
+      margin-bottom: var(--spacing-lg);
+      color: var(--color-text);
+      letter-spacing: -0.3px;
     }
 
     .section-description {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 16px;
-      line-height: 1.5;
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-lg);
+      line-height: 1.6;
     }
 
-    /* MEMBER CARDS */
     .members-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .member-card {
-      background: white;
-      border-radius: 12px;
-      border: 1px solid #E8E4DE;
-      padding: 20px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      padding: var(--spacing-xl);
       display: flex;
       flex-direction: column;
     }
@@ -131,106 +168,105 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: #7C6BC4;
+      background: var(--color-primary);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
+      font-weight: var(--font-weight-header);
       font-size: 20px;
-      margin-bottom: 12px;
+      margin-bottom: var(--spacing-md);
     }
 
     .member-name {
-      font-weight: 600;
-      font-size: 14px;
-      color: #1A1A2E;
-      margin-bottom: 4px;
+      font-weight: var(--font-weight-header);
+      font-size: var(--font-size-body);
+      color: var(--color-text);
+      margin-bottom: var(--spacing-sm);
     }
 
     .member-role {
-      font-size: 12px;
-      color: #7C6BC4;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-size: var(--font-size-caption);
+      color: var(--color-primary);
+      font-weight: var(--font-weight-header);
+      margin-bottom: var(--spacing-md);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .member-email {
-      font-size: 12px;
-      color: #999;
-      margin-bottom: 12px;
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-md);
       word-break: break-all;
     }
 
     .member-permissions {
-      font-size: 11px;
-      color: #666;
-      background: #F8F6F3;
-      padding: 8px;
-      border-radius: 4px;
-      margin-bottom: 12px;
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      background: var(--bg-neutral);
+      padding: var(--spacing-md);
+      border-radius: 6px;
+      margin-bottom: var(--spacing-md);
     }
 
     .member-actions {
       display: flex;
-      gap: 8px;
+      gap: var(--spacing-sm);
     }
 
     .btn {
       flex: 1;
-      padding: 8px 12px;
-      border: 1px solid #E8E4DE;
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 1px solid var(--color-border);
       border-radius: 6px;
-      background: white;
-      color: #666;
-      font-size: 11px;
-      font-weight: 600;
+      background: var(--bg-card);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-header);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition-base);
     }
 
     .btn:hover {
-      background: #F8F6F3;
-      color: #7C6BC4;
+      background: var(--bg-neutral);
+      border-color: var(--color-primary);
     }
 
     .btn.primary {
-      background: #7C6BC4;
+      background: var(--color-primary);
       color: white;
-      border-color: #7C6BC4;
+      border-color: var(--color-primary);
     }
 
     .btn.primary:hover {
-      background: #6B5BA8;
+      background: #1d4ed8;
     }
 
     .btn.danger {
-      background: rgba(255, 59, 48, 0.1);
-      color: #FF3B30;
-      border-color: #FF3B30;
+      background: rgba(220, 38, 38, 0.05);
+      color: var(--color-accent);
+      border-color: var(--color-accent);
     }
 
     .btn.danger:hover {
-      background: rgba(255, 59, 48, 0.2);
+      background: rgba(220, 38, 38, 0.1);
     }
 
-    /* FORM */
     .form-group {
-      margin-bottom: 20px;
-      background: white;
-      padding: 16px;
+      margin-bottom: var(--spacing-xl);
+      background: var(--bg-card);
+      padding: var(--spacing-lg);
       border-radius: 8px;
-      border: 1px solid #E8E4DE;
+      border: 1px solid var(--color-border);
     }
 
     .form-label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #666;
-      margin-bottom: 8px;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-header);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-md);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -239,21 +275,21 @@
     .form-select,
     .form-textarea {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #E8E4DE;
+      padding: var(--spacing-lg);
+      border: 1px solid var(--color-border);
       border-radius: 6px;
-      font-size: 13px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #1A1A2E;
-      transition: all 0.2s;
+      font-size: var(--font-size-body);
+      font-family: var(--font-family);
+      color: var(--color-text);
+      transition: var(--transition-base);
     }
 
     .form-input:focus,
     .form-select:focus,
     .form-textarea:focus {
       outline: none;
-      border-color: #7C6BC4;
-      box-shadow: 0 0 0 3px rgba(124, 107, 196, 0.1);
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
 
     .form-textarea {
@@ -262,108 +298,111 @@
     }
 
     .form-help {
-      font-size: 11px;
-      color: #999;
-      margin-top: 6px;
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-md);
     }
 
-    /* CARD SECTION */
     .card-section {
-      background: white;
-      border-radius: 12px;
-      border: 1px solid #E8E4DE;
-      padding: 20px;
-      margin-bottom: 20px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
     }
 
     .card-section-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 16px;
+      font-size: var(--font-size-body);
+      font-weight: var(--font-weight-header);
+      margin-bottom: var(--spacing-lg);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      color: var(--color-text);
     }
 
     .api-key-display {
       font-family: 'Monaco', 'Courier New', monospace;
-      font-size: 12px;
-      background: #F8F6F3;
-      padding: 12px;
+      font-size: var(--font-size-caption);
+      background: var(--bg-neutral);
+      padding: var(--spacing-lg);
       border-radius: 6px;
       word-break: break-all;
-      color: #666;
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
     }
 
     .copy-btn {
-      padding: 6px 12px;
-      background: #7C6BC4;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      background: var(--color-primary);
       color: white;
       border: none;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
+      border-radius: 6px;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-header);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition-base);
     }
 
     .copy-btn:hover {
-      background: #6B5BA8;
+      background: #1d4ed8;
     }
 
-    /* ACTION BUTTONS */
     .action-buttons {
       display: flex;
-      gap: 12px;
-      margin-top: 24px;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-2xl);
     }
 
-    .action-buttons .btn {
-      margin: 0;
-    }
-
-    /* SETTINGS TABLE */
     .settings-table {
       width: 100%;
       border-collapse: collapse;
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .settings-table th {
-      background: #F8F6F3;
-      padding: 12px 16px;
+      background: var(--bg-neutral);
+      padding: var(--spacing-lg);
       text-align: left;
-      font-size: 11px;
-      font-weight: 600;
-      color: #666;
+      font-size: var(--font-size-caption);
+      font-weight: var(--font-weight-header);
+      color: var(--color-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-bottom: 1px solid #E8E4DE;
+      border-bottom: 1px solid var(--color-border);
     }
 
     .settings-table td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #F0EEEA;
-      font-size: 13px;
-      color: #666;
+      padding: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--font-size-body);
+      color: var(--color-text);
+    }
+
+    .settings-table tr:last-child td {
+      border-bottom: none;
     }
 
     .settings-table tr:hover {
-      background: #F8F6F3;
+      background: var(--bg-neutral);
     }
 
     .toggle-switch {
       display: inline-block;
       width: 40px;
       height: 24px;
-      background: #E8E4DE;
+      background: var(--color-border);
       border-radius: 12px;
       position: relative;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition-base);
     }
 
     .toggle-switch.active {
-      background: #34C759;
+      background: var(--color-success);
     }
 
     .toggle-switch::after {
@@ -375,80 +414,28 @@
       border-radius: 50%;
       top: 2px;
       left: 2px;
-      transition: all 0.2s;
+      transition: var(--transition-base);
     }
 
     .toggle-switch.active::after {
       left: 18px;
     }
 
-    /* MODAL */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      padding: 32px;
-      max-width: 500px;
-      width: 90%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #999;
-    }
-
-    .modal-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .modal-actions .btn {
-      flex: 1;
-      margin: 0;
-    }
-
     @media (max-width: 768px) {
-      .tabs {
-        overflow-x: auto;
+      body {
+        padding: var(--spacing-lg);
       }
 
       .members-grid {
         grid-template-columns: 1fr;
       }
 
-      .action-buttons {
-        flex-direction: column;
+      .tabs {
+        flex-wrap: wrap;
+      }
+
+      .tab {
+        padding: var(--spacing-md) var(--spacing-lg);
       }
     }
   </style>
@@ -460,315 +447,226 @@
 
   <div class="header">
     <h1>👥 Team & Settings</h1>
-    <p>Manage team members, API keys, and preferences</p>
+    <p>Manage team members, API keys, webhooks, and notification preferences</p>
   </div>
 
-  <!-- TABS -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('team')">👥 Team Members</button>
-    <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
+    <button class="tab active" onclick="switchTab('team')">Team Members</button>
+    <button class="tab" onclick="switchTab('api')">API Keys</button>
+    <button class="tab" onclick="switchTab('webhooks')">Webhooks</button>
+    <button class="tab" onclick="switchTab('settings')">Settings</button>
   </div>
 
-  <!-- TEAM TAB -->
+  <!-- TEAM MEMBERS TAB -->
   <div id="team" class="tab-content active">
     <div class="section">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h2 class="section-title">Team Members</h2>
-        <button class="btn primary" onclick="openAddMemberModal()" style="margin: 0; width: auto;">+ Add Member</button>
+      <div class="section-title">Team Members</div>
+      <div class="section-description">Manage who has access to the marketing command center. 4 active members.</div>
+
+      <div class="members-grid">
+        <div class="member-card">
+          <div class="member-avatar">JB</div>
+          <div class="member-name">Jake B</div>
+          <div class="member-role">Head of Product</div>
+          <div class="member-email">jake@ennie.co</div>
+          <div class="member-permissions">Admin • Full access</div>
+          <div class="member-actions">
+            <button class="btn">Edit</button>
+            <button class="btn">Remove</button>
+          </div>
+        </div>
+
+        <div class="member-card">
+          <div class="member-avatar">J</div>
+          <div class="member-name">Jess</div>
+          <div class="member-role">Head of Marketing</div>
+          <div class="member-email">jess@ennie.co</div>
+          <div class="member-permissions">Editor • Ad ops, content</div>
+          <div class="member-actions">
+            <button class="btn">Edit</button>
+            <button class="btn danger">Remove</button>
+          </div>
+        </div>
+
+        <div class="member-card">
+          <div class="member-avatar">C</div>
+          <div class="member-name">Charlie</div>
+          <div class="member-role">CEO</div>
+          <div class="member-email">charlie@ennie.co</div>
+          <div class="member-permissions">Admin • Approvals</div>
+          <div class="member-actions">
+            <button class="btn">Edit</button>
+            <button class="btn danger">Remove</button>
+          </div>
+        </div>
+
+        <div class="member-card">
+          <div class="member-avatar">F</div>
+          <div class="member-name">Felix</div>
+          <div class="member-role">Compliance</div>
+          <div class="member-email">felix@ennie.co</div>
+          <div class="member-permissions">Reviewer • Compliance</div>
+          <div class="member-actions">
+            <button class="btn">Edit</button>
+            <button class="btn danger">Remove</button>
+          </div>
+        </div>
       </div>
-      <p class="section-description">Manage team members and their permissions. 4 members • 3 active</p>
+
+      <button class="btn primary" style="width: 200px;">+ Add Team Member</button>
     </div>
+  </div>
 
-    <div class="members-grid">
-      <!-- Charlie -->
-      <div class="member-card">
-        <div class="member-avatar" style="background: #FF3B30;">C</div>
-        <div class="member-name">Charlie</div>
-        <div class="member-role">CEO</div>
-        <div class="member-email">charlie@ennie.app</div>
-        <div class="member-permissions">
-          <strong>Permissions:</strong><br>
-          Admin • Full Access
+  <!-- API KEYS TAB -->
+  <div id="api" class="tab-content">
+    <div class="section">
+      <div class="section-title">API Keys</div>
+      <div class="section-description">Manage API credentials for integrations. Keep these secure and regenerate periodically.</div>
+
+      <div class="card-section">
+        <div class="card-section-title">
+          <span>Google Ads API Key</span>
+          <span style="font-size: 12px; color: var(--color-success); font-weight: 600;">ACTIVE</span>
         </div>
-        <div class="member-actions">
-          <button class="btn" onclick="editMember('Charlie')">Edit</button>
-          <button class="btn danger" onclick="removeMember('Charlie')">Remove</button>
+        <div class="api-key-display">[YOUR_STRIPE_KEY]</div>
+        <div style="margin-top: var(--spacing-lg); display: flex; gap: var(--spacing-md);">
+          <button class="copy-btn">Copy</button>
+          <button class="btn" style="flex: 1;">Regenerate</button>
         </div>
       </div>
 
-      <!-- Jake -->
-      <div class="member-card">
-        <div class="member-avatar" style="background: #7C6BC4;">J</div>
-        <div class="member-name">Jake</div>
-        <div class="member-role">Head of Product</div>
-        <div class="member-email">jake@ennie.app</div>
-        <div class="member-permissions">
-          <strong>Permissions:</strong><br>
-          Admin • Analytics
+      <div class="card-section">
+        <div class="card-section-title">
+          <span>Meta Ads API Key</span>
+          <span style="font-size: 12px; color: var(--color-success); font-weight: 600;">ACTIVE</span>
         </div>
-        <div class="member-actions">
-          <button class="btn" onclick="editMember('Jake')">Edit</button>
-          <button class="btn danger" onclick="removeMember('Jake')">Remove</button>
+        <div class="api-key-display">[YOUR_STRIPE_KEY]</div>
+        <div style="margin-top: var(--spacing-lg); display: flex; gap: var(--spacing-md);">
+          <button class="copy-btn">Copy</button>
+          <button class="btn" style="flex: 1;">Regenerate</button>
         </div>
       </div>
 
-      <!-- Jess -->
-      <div class="member-card">
-        <div class="member-avatar" style="background: #34C759;">J</div>
-        <div class="member-name">Jess</div>
-        <div class="member-role">Head of Marketing</div>
-        <div class="member-email">jess@ennie.app</div>
-        <div class="member-permissions">
-          <strong>Permissions:</strong><br>
-          Campaigns • Analytics
+      <div class="card-section">
+        <div class="card-section-title">
+          <span>PostHog API Key</span>
+          <span style="font-size: 12px; color: var(--color-success); font-weight: 600;">ACTIVE</span>
         </div>
-        <div class="member-actions">
-          <button class="btn" onclick="editMember('Jess')">Edit</button>
-          <button class="btn danger" onclick="removeMember('Jess')">Remove</button>
-        </div>
-      </div>
-
-      <!-- Felix -->
-      <div class="member-card">
-        <div class="member-avatar" style="background: #FF9500;">F</div>
-        <div class="member-name">Felix</div>
-        <div class="member-role">Compliance</div>
-        <div class="member-email">felix@ennie.app</div>
-        <div class="member-permissions">
-          <strong>Permissions:</strong><br>
-          View • Audit Only
-        </div>
-        <div class="member-actions">
-          <button class="btn" onclick="editMember('Felix')">Edit</button>
-          <button class="btn danger" onclick="removeMember('Felix')">Remove</button>
+        <div class="api-key-display">phc_1234567890abcdefghijklmnopqrst</div>
+        <div style="margin-top: var(--spacing-lg); display: flex; gap: var(--spacing-md);">
+          <button class="copy-btn">Copy</button>
+          <button class="btn" style="flex: 1;">Regenerate</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SETTINGS TAB -->
-  <div id="settings" class="tab-content">
-    <!-- API KEYS SECTION -->
+  <!-- WEBHOOKS TAB -->
+  <div id="webhooks" class="tab-content">
     <div class="section">
-      <h2 class="section-title">🔑 API Keys</h2>
-      <p class="section-description">API keys for integrations and external services. Keep these secure.</p>
-    </div>
+      <div class="section-title">Webhooks</div>
+      <div class="section-description">Configure webhooks for real-time event notifications.</div>
 
-    <div class="card-section">
-      <div class="card-section-title">
-        Google Ads
-        <button class="copy-btn" onclick="saveAPIKey('Google Ads')">Save Changes</button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Customer ID</label>
-        <input type="text" class="form-input" placeholder="1234567890" value="1234567890">
-        <div class="form-help">Your Google Ads customer ID (MCC if using manager account)</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Developer Token</label>
-        <input type="password" class="form-input" placeholder="●●●●●●●●●●●●●●●●" value="DeveloperTokenHere">
-        <div class="form-help">Keep this token secret. Used for API authentication.</div>
-      </div>
-    </div>
-
-    <div class="card-section">
-      <div class="card-section-title">
-        Meta (Facebook/Instagram)
-        <button class="copy-btn" onclick="saveAPIKey('Meta')">Save Changes</button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Access Token</label>
-        <input type="password" class="form-input" placeholder="●●●●●●●●●●●●●●●●" value="AccessTokenHere">
-        <div class="form-help">Facebook API access token</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Ad Account ID</label>
-        <input type="text" class="form-input" placeholder="act_1234567890" value="act_1234567890">
-        <div class="form-help">Your Meta Ad Account ID</div>
-      </div>
-    </div>
-
-    <!-- WEBHOOKS SECTION -->
-    <div class="section" style="margin-top: 40px;">
-      <h2 class="section-title">🔗 Webhooks</h2>
-      <p class="section-description">Receive real-time notifications for important events</p>
-    </div>
-
-    <div class="card-section">
-      <div class="card-section-title">Webhook Endpoints</div>
       <table class="settings-table">
         <thead>
           <tr>
             <th>Event</th>
             <th>Endpoint</th>
-            <th>Active</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Campaign Complete</td>
-            <td><code style="background: #F8F6F3; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/webhooks/campaign-complete</code></td>
-            <td><div class="toggle-switch active" onclick="toggleWebhook(this)"></div></td>
+            <td>Campaign Updated</td>
+            <td>api.ennie.co/webhooks/campaign</td>
+            <td><span class="toggle-switch active"></span></td>
+            <td><button class="btn" style="width: 80px;">Edit</button></td>
           </tr>
           <tr>
             <td>Conversion Event</td>
-            <td><code style="background: #F8F6F3; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/webhooks/conversion</code></td>
-            <td><div class="toggle-switch active" onclick="toggleWebhook(this)"></div></td>
+            <td>api.ennie.co/webhooks/conversion</td>
+            <td><span class="toggle-switch active"></span></td>
+            <td><button class="btn" style="width: 80px;">Edit</button></td>
           </tr>
           <tr>
-            <td>Failed Sync</td>
-            <td><code style="background: #F8F6F3; padding: 2px 4px; border-radius: 3px; font-size: 11px;">/webhooks/sync-error</code></td>
-            <td><div class="toggle-switch" onclick="toggleWebhook(this)"></div></td>
+            <td>Sync Complete</td>
+            <td>api.ennie.co/webhooks/sync</td>
+            <td><span class="toggle-switch"></span></td>
+            <td><button class="btn" style="width: 80px;">Edit</button></td>
           </tr>
         </tbody>
       </table>
-      <div class="action-buttons">
-        <button class="btn primary" style="flex: 0; width: auto;">+ Add Webhook</button>
-      </div>
-    </div>
 
-    <!-- NOTIFICATIONS SECTION -->
-    <div class="section" style="margin-top: 40px;">
-      <h2 class="section-title">🔔 Notifications</h2>
-      <p class="section-description">Control how you receive alerts and updates</p>
-    </div>
-
-    <div class="card-section">
-      <table class="settings-table">
-        <thead>
-          <tr>
-            <th>Notification</th>
-            <th>Email</th>
-            <th>In-App</th>
-            <th>Slack</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Campaign Performance</td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch" onclick="toggleNotif(this)"></div></td>
-          </tr>
-          <tr>
-            <td>Approval Requests</td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-          </tr>
-          <tr>
-            <td>Budget Alerts</td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch" onclick="toggleNotif(this)"></div></td>
-          </tr>
-          <tr>
-            <td>Integration Failures</td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-            <td><div class="toggle-switch active" onclick="toggleNotif(this)"></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- GENERAL SETTINGS -->
-    <div class="section" style="margin-top: 40px;">
-      <h2 class="section-title">⚙️ General Settings</h2>
-    </div>
-
-    <div class="card-section">
-      <div class="form-group">
-        <label class="form-label">Organization Name</label>
-        <input type="text" class="form-input" value="ENNIE">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Default Timezone</label>
-        <select class="form-select">
-          <option>America/Los_Angeles</option>
-          <option>America/New_York</option>
-          <option>Europe/London</option>
-          <option>UTC</option>
-        </select>
-      </div>
-      <div class="action-buttons">
-        <button class="btn primary" style="flex: 0; width: auto;">Save Settings</button>
-      </div>
+      <button class="btn primary" style="width: 200px; margin-top: var(--spacing-2xl);">+ Add Webhook</button>
     </div>
   </div>
-</div>
 
-<!-- ADD MEMBER MODAL -->
-<div class="modal" id="addMemberModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <h2 class="modal-title">Add Team Member</h2>
-    <div class="form-group">
-      <label class="form-label">Full Name</label>
-      <input type="text" class="form-input" placeholder="John Doe">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="john@ennie.app">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Role</label>
-      <select class="form-select">
-        <option>Admin</option>
-        <option>Marketing</option>
-        <option>Analytics</option>
-        <option>Viewer</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn primary" onclick="addMember()">Add Member</button>
+  <!-- SETTINGS TAB -->
+  <div id="settings" class="tab-content">
+    <div class="section">
+      <div class="section-title">General Settings</div>
+
+      <div class="form-group">
+        <label class="form-label">Team Name</label>
+        <input class="form-input" type="text" value="ENNIE Marketing" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notification Email</label>
+        <input class="form-input" type="email" value="alerts@ennie.co" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Time Zone</label>
+        <select class="form-select">
+          <option>America/Los_Angeles (PST)</option>
+          <option>America/New_York (EST)</option>
+          <option>Europe/London (GMT)</option>
+          <option>Europe/Paris (CET)</option>
+          <option>Asia/Tokyo (JST)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notification Preferences</label>
+        <table class="settings-table" style="margin-top: var(--spacing-lg);">
+          <tbody>
+            <tr>
+              <td>Email alerts for campaign updates</td>
+              <td><span class="toggle-switch active" onclick="this.classList.toggle('active')"></span></td>
+            </tr>
+            <tr>
+              <td>Email alerts for conversion events</td>
+              <td><span class="toggle-switch active" onclick="this.classList.toggle('active')"></span></td>
+            </tr>
+            <tr>
+              <td>Daily digest summary</td>
+              <td><span class="toggle-switch" onclick="this.classList.toggle('active')"></span></td>
+            </tr>
+            <tr>
+              <td>Weekly performance report</td>
+              <td><span class="toggle-switch active" onclick="this.classList.toggle('active')"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn">Cancel</button>
+        <button class="btn primary">Save Changes</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  function switchTab(tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
     
+    document.getElementById(tabName).classList.add('active');
     event.target.classList.add('active');
-    document.getElementById(tab).classList.add('active');
-  }
-
-  function openAddMemberModal() {
-    document.getElementById('addMemberModal').classList.add('active');
-  }
-
-  function addMember() {
-    alert('New team member has been added!');
-    closeModal();
-  }
-
-  function editMember(name) {
-    alert(`Edit permissions for ${name}\n\nFeature coming soon!`);
-  }
-
-  function removeMember(name) {
-    if (confirm(`Are you sure you want to remove ${name} from the team?`)) {
-      alert(`${name} has been removed from the team.`);
-    }
-  }
-
-  function saveAPIKey(service) {
-    alert(`${service} API keys have been saved securely.`);
-  }
-
-  function toggleWebhook(element) {
-    element.classList.toggle('active');
-  }
-
-  function toggleNotif(element) {
-    element.classList.toggle('active');
-  }
-
-  function closeModal() {
-    document.getElementById('addMemberModal').classList.remove('active');
   }
 </script>
 

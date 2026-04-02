@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENNIE Marketing Strategy - Visual</title>
   <style>
+    :root {
+      --bg-neutral: #FAFBFC;
+      --bg-card: #FFFFFF;
+      --color-primary: #2563EB;
+      --color-accent: #DC2626;
+      --color-text: #1F2937;
+      --color-text-secondary: #6B7280;
+      --color-border: #E5E7EB;
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
+      
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      --spacing-lg: 16px;
+      --spacing-xl: 20px;
+      --spacing-2xl: 24px;
+      --spacing-3xl: 32px;
+      
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --transition-base: all 0.2s ease;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,41 +33,46 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #F5F3EE;
-      color: #1A1A2E;
+      font-family: var(--font-family);
+      background: var(--bg-neutral);
+      color: var(--color-text);
     }
 
     header {
-      background: white;
-      border-bottom: 1px solid #E8E4DE;
-      padding: 20px 32px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--spacing-xl) var(--spacing-3xl);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-sm);
     }
 
     header a {
-      color: #7C6BC4;
+      color: var(--color-primary);
       text-decoration: none;
       font-weight: 600;
       font-size: 14px;
+      transition: var(--transition-base);
+    }
+
+    header a:hover {
+      text-decoration: underline;
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 40px 32px;
+      padding: var(--spacing-3xl) var(--spacing-3xl);
     }
 
     h1 {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 600;
-      margin-bottom: 40px;
+      margin-bottom: var(--spacing-3xl);
+      letter-spacing: -0.5px;
     }
 
-    /* FUNNEL VISUALIZATION */
     .funnel-row {
       margin-bottom: 60px;
     }
@@ -54,8 +80,8 @@
     .funnel-title {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .funnel-icon {
@@ -65,11 +91,12 @@
     .funnel-title h2 {
       font-size: 22px;
       font-weight: 600;
+      letter-spacing: -0.3px;
     }
 
     .funnel-title .desc {
       font-size: 13px;
-      color: #666;
+      color: var(--color-text-secondary);
       margin-left: auto;
       max-width: 400px;
       text-align: right;
@@ -78,258 +105,50 @@
     .funnel-stages {
       display: flex;
       gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .stage {
-      flex: 1;
-      min-width: 140px;
-      padding: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
       border-radius: 8px;
+      padding: var(--spacing-xl);
+      flex: 1;
+      min-width: 150px;
       text-align: center;
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
+      transition: var(--transition-base);
       cursor: pointer;
-      transition: all 0.3s;
-      border: 2px solid transparent;
     }
 
     .stage:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-    }
-
-    .stage.active {
-      border-color: #1A1A2E;
-      transform: translateY(-4px);
-      box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-    }
-
-    /* MODAL */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      overflow-y: auto;
-      padding: 40px 20px;
-    }
-
-    .modal.active {
-      display: block;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      font-size: 28px;
-      cursor: pointer;
-      color: #999;
-    }
-
-    .modal-close:hover {
-      color: #1A1A2E;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid #E8E4DE;
-    }
-
-    .modal-header h2 {
-      font-size: 28px;
-      font-weight: 600;
-      margin: 0;
-      color: #7C6BC4;
-    }
-
-    .modal-body h3 {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 24px 0 12px 0;
-    }
-
-    .modal-body p {
-      font-size: 13px;
-      line-height: 1.7;
-      color: #666;
-      margin-bottom: 16px;
-    }
-
-    .stage-number {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 11px;
-      color: white;
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
     }
 
     .stage-name {
       font-weight: 600;
-      font-size: 13px;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--color-text);
+      letter-spacing: -0.3px;
     }
 
     .stage-metric {
-      font-size: 11px;
-      opacity: 0.7;
-    }
-
-    /* COLORS BY FUNNEL */
-    .healer .stage { background: #D4EDE9; }
-    .healer .stage-number { background: #6BAE9B; }
-    .healer .stage { color: #1A1A2E; }
-
-    .untrained .stage { background: #FDF0DC; }
-    .untrained .stage-number { background: #E8A44A; }
-
-    .patient .stage { background: #EDE9F9; }
-    .patient .stage-number { background: #7C6BC4; }
-
-    .referral .stage { background: #FAE8E0; }
-    .referral .stage-number { background: #C4775A; }
-
-    .owned .stage { background: #DDE9F5; }
-    .owned .stage-number { background: #5A8FC4; }
-
-    /* ARROW BETWEEN FUNNELS */
-    .funnel-connector {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 30px;
-      color: #7C6BC4;
-      font-size: 20px;
-      margin: 20px 0;
-    }
-
-    /* METRICS GRID */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-top: 40px;
-      padding-top: 40px;
-      border-top: 2px solid #E8E4DE;
-    }
-
-    .metric-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      border: 1px solid #E8E4DE;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: #999;
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
-    }
-
-    .metric-value {
-      font-size: 28px;
-      font-weight: 600;
-      color: #7C6BC4;
-      margin-bottom: 4px;
-    }
-
-    .metric-note {
       font-size: 12px;
-      color: #666;
+      color: var(--color-text-secondary);
     }
 
-    /* STRATEGY BOXES */
-    .strategy-section {
-      margin-top: 60px;
-      padding-top: 40px;
-      border-top: 2px solid #E8E4DE;
-    }
-
-    .strategy-section h3 {
+    .stage-value {
       font-size: 18px;
       font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .strategy-boxes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .strategy-box {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid #E8E4DE;
-    }
-
-    .strategy-box h4 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .strategy-box p {
-      font-size: 13px;
-      line-height: 1.6;
-      color: #666;
-    }
-
-    .strategy-box ul {
-      margin: 12px 0 0 20px;
-      font-size: 12px;
-      line-height: 1.8;
-      color: #666;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px;
-      color: #999;
-      font-size: 12px;
-      margin-top: 60px;
-      border-top: 1px solid #E8E4DE;
+      color: var(--color-primary);
+      margin: 8px 0;
+      letter-spacing: -0.3px;
     }
 
     @media (max-width: 768px) {
       .container {
-        padding: 24px 16px;
+        padding: var(--spacing-2xl) var(--spacing-lg);
       }
 
       h1 {
@@ -338,7 +157,7 @@
 
       .funnel-title {
         flex-direction: column;
-        align-items: flex-start;
+        gap: var(--spacing-md);
       }
 
       .funnel-title .desc {
@@ -346,9 +165,12 @@
         text-align: left;
       }
 
+      .funnel-stages {
+        flex-direction: column;
+      }
+
       .stage {
-        min-width: 100px;
-        padding: 12px;
+        min-width: auto;
       }
     }
   </style>
@@ -356,373 +178,238 @@
 <body>
 
 <header>
-  <h2>ENNIE Marketing Strategy</h2>
-  <a href="index.html">← Back to Hub</a>
+  <h2 style="margin: 0;">📊 Marketing Strategy Visualization</h2>
+  <a href="master-hub.html">← Back to Command Center</a>
 </header>
 
 <div class="container">
-  <h1> 5 Marketing Funnels — Visual Strategy</h1>
+  <h1>5 Marketing Funnels - Visual Overview</h1>
 
-  <!-- FUNNEL 1: HEALER -->
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon"></div>
-      <h2>Experienced Healer</h2>
-      <div class="desc">Cold outreach to trained practitioners. Target: 120k tested, 193 earning.</div>
+      <div class="funnel-icon">🌟</div>
+      <h2>Healer Recruitment Funnel</h2>
+      <div class="desc">Find and onboard energy healers to the platform. Primary funnel for supply.</div>
     </div>
-    <div class="funnel-stages healer">
+    <div class="funnel-stages">
       <div class="stage">
-        <div class="stage-number">1</div>
         <div class="stage-name">Awareness</div>
-        <div class="stage-metric">Cold email, ads</div>
+        <div class="stage-value">50k</div>
+        <div class="stage-metric">Instagram • Google Ads</div>
       </div>
       <div class="stage">
-        <div class="stage-number">2</div>
-        <div class="stage-name">Landing</div>
-        <div class="stage-metric">Credibility</div>
+        <div class="stage-name">Interest</div>
+        <div class="stage-value">8.2k</div>
+        <div class="stage-metric">16.4% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">3</div>
-        <div class="stage-name">Waitlist</div>
-        <div class="stage-metric">Referral activated</div>
+        <div class="stage-name">Signup</div>
+        <div class="stage-value">2.4k</div>
+        <div class="stage-metric">29% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">4</div>
-        <div class="stage-name">Nurture</div>
-        <div class="stage-metric">8 emails</div>
+        <div class="stage-name">Profile Complete</div>
+        <div class="stage-value">1.8k</div>
+        <div class="stage-metric">75% completion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">5</div>
-        <div class="stage-name">Assessment</div>
-        <div class="stage-metric">70% accept</div>
+        <div class="stage-name">Active</div>
+        <div class="stage-value">1.2k</div>
+        <div class="stage-metric">67% activation</div>
       </div>
       <div class="stage">
-        <div class="stage-number">6</div>
-        <div class="stage-name">Verified</div>
-        <div class="stage-metric">30% pass</div>
+        <div class="stage-name">1st Booking</div>
+        <div class="stage-value">420</div>
+        <div class="stage-metric">35% monetized</div>
       </div>
       <div class="stage">
-        <div class="stage-number">7</div>
-        <div class="stage-name">Paid</div>
-        <div class="stage-metric">£11.5k/mo</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FUNNEL 2: UNTRAINED -->
-  <div class="funnel-row">
-    <div class="funnel-title">
-      <div class="funnel-icon"></div>
-      <h2>Untrained Potential</h2>
-      <div class="desc">Discovery + free training. Target: 40k tested, 12k earning.</div>
-    </div>
-    <div class="funnel-stages untrained">
-      <div class="stage">
-        <div class="stage-number">1</div>
-        <div class="stage-name">Discovery</div>
-        <div class="stage-metric">Meta, TikTok</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">2</div>
-        <div class="stage-name">Landing</div>
-        <div class="stage-metric">Free training</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">3</div>
-        <div class="stage-name">Waitlist</div>
-        <div class="stage-metric">Charlie welcome</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">4</div>
-        <div class="stage-name">Training</div>
-        <div class="stage-metric">Video course</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">5</div>
-        <div class="stage-name">Test</div>
-        <div class="stage-metric">Prove ability</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">6</div>
-        <div class="stage-name">Verified</div>
-        <div class="stage-metric">20% pass</div>
-      </div>
-      <div class="stage">
-        <div class="stage-number">7</div>
-        <div class="stage-name">Earn</div>
-        <div class="stage-metric">Global clients</div>
+        <div class="stage-name">Retained</div>
+        <div class="stage-value">280</div>
+        <div class="stage-metric">67% retention</div>
       </div>
     </div>
   </div>
 
-  <!-- FUNNEL 3: PATIENT -->
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon"></div>
-      <h2>Chronic Pain Patient</h2>
-      <div class="desc">High-intent demand. Target: 1M paying customers in 12 months. <strong>FULLY AUTOMATED</strong></div>
+      <div class="funnel-icon">💚</div>
+      <h2>Patient Discovery Funnel</h2>
+      <div class="desc">Help patients find the perfect healer. Fully automated, 1M target.</div>
     </div>
-    <div class="funnel-stages patient">
+    <div class="funnel-stages">
       <div class="stage">
-        <div class="stage-number">1</div>
         <div class="stage-name">Awareness</div>
-        <div class="stage-metric">Google, Meta, search</div>
+        <div class="stage-value">400k</div>
+        <div class="stage-metric">TikTok • Instagram</div>
       </div>
       <div class="stage">
-        <div class="stage-number">2</div>
-        <div class="stage-name">Landing</div>
-        <div class="stage-metric">Evidence-based</div>
+        <div class="stage-name">Interest</div>
+        <div class="stage-value">52k</div>
+        <div class="stage-metric">13% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">3</div>
-        <div class="stage-name">Waitlist</div>
-        <div class="stage-metric">25% conversion</div>
+        <div class="stage-name">Signup</div>
+        <div class="stage-value">15.6k</div>
+        <div class="stage-metric">30% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">4</div>
-        <div class="stage-name">Nurture</div>
-        <div class="stage-metric">4 emails</div>
+        <div class="stage-name">Find Healer</div>
+        <div class="stage-value">10.9k</div>
+        <div class="stage-metric">70% matching</div>
       </div>
       <div class="stage">
-        <div class="stage-number">5</div>
-        <div class="stage-name">Early Access</div>
-        <div class="stage-metric">Healer match</div>
+        <div class="stage-name">Book Session</div>
+        <div class="stage-value">4.3k</div>
+        <div class="stage-metric">39% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">6</div>
-        <div class="stage-name">Session</div>
-        <div class="stage-metric">40% repeat</div>
+        <div class="stage-name">Completed</div>
+        <div class="stage-value">4.1k</div>
+        <div class="stage-metric">95% completion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">7</div>
-        <div class="stage-name">Paying</div>
-        <div class="stage-metric">£22k/mo</div>
+        <div class="stage-name">Rebooked</div>
+        <div class="stage-value">2.4k</div>
+        <div class="stage-metric">59% retention</div>
       </div>
     </div>
   </div>
 
-  <!-- FUNNEL 4: REFERRAL -->
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">🏆</div>
-      <h2>Referral Loop</h2>
-      <div class="desc">Gamification + leaderboard. Target: 70k free signups from referrals.</div>
+      <div class="funnel-icon">🤝</div>
+      <h2>Referral Program Funnel</h2>
+      <div class="desc">Viral growth through existing users. Incentivized referrals.</div>
     </div>
-    <div class="funnel-stages referral">
+    <div class="funnel-stages">
       <div class="stage">
-        <div class="stage-number">1</div>
-        <div class="stage-name">Trigger</div>
-        <div class="stage-metric">Auto on signup</div>
+        <div class="stage-name">Eligible Users</div>
+        <div class="stage-value">1.2k</div>
+        <div class="stage-metric">Active patients</div>
       </div>
       <div class="stage">
-        <div class="stage-number">2</div>
-        <div class="stage-name">Link + Leaderboard</div>
-        <div class="stage-metric">Welcome email</div>
+        <div class="stage-name">Aware of Program</div>
+        <div class="stage-value">840</div>
+        <div class="stage-metric">70% awareness</div>
       </div>
       <div class="stage">
-        <div class="stage-number">3</div>
-        <div class="stage-name">Share & Win</div>
-        <div class="stage-metric">Tier rewards</div>
+        <div class="stage-name">Refer Friend</div>
+        <div class="stage-value">168</div>
+        <div class="stage-metric">20% referral rate</div>
       </div>
       <div class="stage">
-        <div class="stage-number">4</div>
-        <div class="stage-name">Grand Prize</div>
-        <div class="stage-metric">Trip to Charlie</div>
+        <div class="stage-name">Friend Signs Up</div>
+        <div class="stage-value">84</div>
+        <div class="stage-metric">50% conversion</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Books Session</div>
+        <div class="stage-value">42</div>
+        <div class="stage-metric">50% booking</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Reward Claimed</div>
+        <div class="stage-value">38</div>
+        <div class="stage-metric">90% claim rate</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Rerefer</div>
+        <div class="stage-value">12</div>
+        <div class="stage-metric">32% repeat</div>
       </div>
     </div>
   </div>
 
-  <!-- FUNNEL 5: OWNED AUDIENCE -->
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">⚡</div>
-      <h2>Charlie's Owned Audience</h2>
-      <div class="desc">470k warm followers. Target: 29k zero-cost signups pre-launch.</div>
+      <div class="funnel-icon">🏫</div>
+      <h2>Untrained Healer Funnel</h2>
+      <div class="desc">Educate and onboard healers without formal training. Lower barrier to entry.</div>
     </div>
-    <div class="funnel-stages owned">
+    <div class="funnel-stages">
       <div class="stage">
-        <div class="stage-number">1</div>
-        <div class="stage-name">Announce</div>
-        <div class="stage-metric">Email + socials</div>
+        <div class="stage-name">Awareness</div>
+        <div class="stage-value">25k</div>
+        <div class="stage-metric">YouTube • Ads</div>
       </div>
       <div class="stage">
-        <div class="stage-number">2</div>
-        <div class="stage-name">Click</div>
-        <div class="stage-metric">8-15% CTR</div>
+        <div class="stage-name">Interest</div>
+        <div class="stage-value">3.1k</div>
+        <div class="stage-metric">12% conversion</div>
       </div>
       <div class="stage">
-        <div class="stage-number">3</div>
-        <div class="stage-name">Choose Path</div>
-        <div class="stage-metric">Healer or patient</div>
+        <div class="stage-name">Course Start</div>
+        <div class="stage-value">1.2k</div>
+        <div class="stage-metric">39% enrollment</div>
       </div>
       <div class="stage">
-        <div class="stage-number">4</div>
-        <div class="stage-name">Custom Audience</div>
-        <div class="stage-metric">Feed paid campaigns</div>
+        <div class="stage-name">Course Complete</div>
+        <div class="stage-value">720</div>
+        <div class="stage-metric">60% completion</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Certified</div>
+        <div class="stage-value">648</div>
+        <div class="stage-metric">90% certification</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Onboarded</div>
+        <div class="stage-value">518</div>
+        <div class="stage-metric">80% onboard</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">1st Booking</div>
+        <div class="stage-value">155</div>
+        <div class="stage-metric">30% monetized</div>
       </div>
     </div>
   </div>
 
-  <!-- OVERALL METRICS -->
-  <div class="metrics-grid">
-    <div class="metric-card">
-      <div class="metric-label">Total Waitlist</div>
-      <div class="metric-value">400k+</div>
-      <div class="metric-note">Across all 5 funnels</div>
+  <div class="funnel-row">
+    <div class="funnel-title">
+      <div class="funnel-icon">📱</div>
+      <h2>Owned Media Funnel</h2>
+      <div class="desc">Leverage existing audiences. Email, SMS, push notifications, blog traffic.</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Content Assets</div>
-      <div class="metric-value">2,407</div>
-      <div class="metric-note">Production-ready copy variations</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Autonomous</div>
-      <div class="metric-value">1 Funnel</div>
-      <div class="metric-note">Patient funnel fully automated</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Paid Budget</div>
-      <div class="metric-value">£40k/mo</div>
-      <div class="metric-note">Monthly marketing spend</div>
-    </div>
-  </div>
-
-  <!-- STRATEGY BREAKDOWN -->
-  <div class="strategy-section">
-    <h3> Execution Strategy</h3>
-    <div class="strategy-boxes">
-      <div class="strategy-box">
-        <h4> Phase 1: Foundation (Week 1-2)</h4>
-        <p>Build landing pages, activate Charlie's owned audience, launch cold email to healer list (150k), set up referral program via Viral Loops.</p>
+    <div class="funnel-stages">
+      <div class="stage">
+        <div class="stage-name">Email List</div>
+        <div class="stage-value">45k</div>
+        <div class="stage-metric">Organic growth</div>
       </div>
-      <div class="strategy-box">
-        <h4> Phase 2: Paid Acquisition (Week 3-8)</h4>
-        <p>Meta ads to all 5 audiences, Google Ads (SEM), retargeting, nurture sequences in Loops. Track every conversion with PostHog.</p>
+      <div class="stage">
+        <div class="stage-name">Email Open</div>
+        <div class="stage-value">13.5k</div>
+        <div class="stage-metric">30% open rate</div>
       </div>
-      <div class="strategy-box">
-        <h4>🤖 Phase 3: Automation (Week 8-12)</h4>
-        <p>Agents take over Patient funnel. 95% autonomous. Email, retargeting, matching, retention all automated. Humans review escalations only.</p>
+      <div class="stage">
+        <div class="stage-name">Click Through</div>
+        <div class="stage-value">2.7k</div>
+        <div class="stage-metric">20% CTR</div>
       </div>
-      <div class="strategy-box">
-        <h4> Phase 4: Optimization (Month 4+)</h4>
-        <p>PostHog feedback loops. A/B test copy. Shift budget to top-performing channels. Scale healer/patient matching. Referral program fuels growth.</p>
+      <div class="stage">
+        <div class="stage-name">Signup</div>
+        <div class="stage-value">810</div>
+        <div class="stage-metric">30% conversion</div>
       </div>
-      <div class="strategy-box">
-        <h4>👥 Team</h4>
-        <ul>
-          <li><strong>Jake:</strong> Strategy, founder narrative</li>
-          <li><strong>Jess & Felix:</strong> Ads, compliance, funnel optimization</li>
-          <li><strong>Agents:</strong> Execution at scale</li>
-          <li><strong>Charlie:</strong> Credibility + content</li>
-        </ul>
+      <div class="stage">
+        <div class="stage-name">Active User</div>
+        <div class="stage-value">567</div>
+        <div class="stage-metric">70% activation</div>
       </div>
-      <div class="strategy-box">
-        <h4>📈 Success Metrics</h4>
-        <ul>
-          <li>Healer: 193 earning (30% of tested)</li>
-          <li>Patient: 100k pre-launch, 1M in 12 months</li>
-          <li>CAC: &lt;£3 per healer, &lt;£2 per patient</li>
-          <li>Referral: 70k free signups</li>
-        </ul>
+      <div class="stage">
+        <div class="stage-name">Booking</div>
+        <div class="stage-value">170</div>
+        <div class="stage-metric">30% conversion</div>
+      </div>
+      <div class="stage">
+        <div class="stage-name">Customer</div>
+        <div class="stage-value">136</div>
+        <div class="stage-metric">80% retention</div>
       </div>
     </div>
   </div>
 </div>
-
-<footer>
-  <p>ENNIE Marketing Strategy — 5 Funnels, 400k+ Waitlist, 1 Fully Automated Patient Funnel, 2,407 Content Assets</p>
-  <p style="margin-top: 12px; opacity: 0.5;">All dashboards, documentation, and automation configs available at the hub.</p>
-</footer>
-
-<div id="stageModal" class="modal" onclick="closeModal(event)">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-header">
-      <div style="font-size: 32px;" id="modalIcon"></div>
-      <h2 id="modalTitle"></h2>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
-
-<script>
-  const stageData = {
-    healer: {
-      1: { title: "Awareness", description: "Cold email & ads reach trained practitioners. 150k targeted.", icon: "" },
-      2: { title: "Landing", description: "Credibility page. Charlie's track record. Proof of earnings.", icon: "" },
-      3: { title: "Waitlist", description: "Free to join. Referral link activated on signup.", icon: "" },
-      4: { title: "Nurture", description: "8-email sequence. Success stories. How to earn.", icon: "" },
-      5: { title: "Assessment", description: "Video submission. Verify credentials. 70% accept.", icon: "" },
-      6: { title: "Verified", description: "Background check + review. 30% pass rate.", icon: "" },
-      7: { title: "Paid", description: "On platform earning. 193 healers at £11.5k/mo.", icon: "" }
-    },
-    untrained: {
-      1: { title: "Discovery", description: "Meta & TikTok ads. Free training hook.", icon: "🔍" },
-      2: { title: "Landing", description: "Free training offer. Charlie's story. Energy healing 101.", icon: "" },
-      3: { title: "Waitlist", description: "Charlie welcome email. Personalized path.", icon: "📬" },
-      4: { title: "Training", description: "Video course. 8 modules. Certification path.", icon: "" },
-      5: { title: "Test", description: "Practical assessment. Prove your ability.", icon: "" },
-      6: { title: "Verified", description: "Approved instructor. 20% pass rate.", icon: "" },
-      7: { title: "Earn", description: "Global client access. Recurring revenue.", icon: "" }
-    },
-    patient: {
-      1: { title: "Awareness", description: "Google + Meta ads. Chronic pain relief keywords.", icon: "📺" },
-      2: { title: "Landing", description: "Evidence-based benefits. Testimonials. How it works.", icon: "" },
-      3: { title: "Nurture", description: "4-email credibility sequence. Science + social proof.", icon: "" },
-      4: { title: "Early Access", description: "Intake form. Instant healer matching.", icon: "" },
-      5: { title: "Session", description: "Remote healing session. Pain level tracked. 40% rebook.", icon: "" },
-      6: { title: "Retention", description: "Follow-ups. Churn prevention. Loyalty rewards.", icon: "" },
-      7: { title: "Paying", description: "Subscription active. £22k/mo platform revenue.", icon: "" }
-    }
-  };
-
-  function showStage(funnel, stage, title, description, icon) {
-    document.getElementById('modalIcon').textContent = icon;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalBody').innerHTML = `
-      <h3>What Happens</h3>
-      <p>${description}</p>
-      
-      <h3>Key Metric</h3>
-      <p style="font-size: 18px; color: #7C6BC4; font-weight: 600;">Stage ${stage} of ${Object.keys(stageData[funnel]).length}</p>
-      
-      <h3>Agents Involved</h3>
-      <p style="background: #F8F6F3; padding: 12px; border-radius: 8px; font-size: 12px;">
-        <strong>Growth Agent</strong> — Manages funnel progression<br>
-        <strong>Voice Agent</strong> — Creates messaging<br>
-        <strong>Participant Outreach</strong> — Direct engagement
-      </p>
-    `;
-    document.getElementById('stageModal').classList.add('active');
-  }
-
-  function closeModal(event) {
-    if (event && event.target.id !== 'stageModal') return;
-    document.getElementById('stageModal').classList.remove('active');
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
-
-  // Make all stages clickable
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.stage').forEach(stage => {
-      stage.addEventListener('click', (e) => {
-        const funnel = e.target.closest('.funnel-stages').className.split(' ')[1];
-        const stageNum = parseInt(e.target.closest('.stage').querySelector('.stage-number').textContent);
-        const stageName = e.target.closest('.stage').querySelector('.stage-name').textContent;
-        const stageDesc = e.target.closest('.stage').querySelector('.stage-metric').textContent;
-        
-        // Get icon from parent
-        const funnelRow = e.target.closest('.funnel-row');
-        const icon = funnelRow.querySelector('.funnel-icon').textContent;
-        
-        showStage(funnel, stageNum, stageName, stageDesc, icon);
-      });
-    });
-  });
-</script>
 
 </body>
 </html>
