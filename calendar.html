@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campaign Calendar - ENNIE Marketing</title>
   <style>
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-accent: #DC2626;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
-      --color-warning: #F59E0B;
+      --color-border: #E8E4DE;
+      --color-success: #7FA997;
+      --color-warning: #A89973;
       
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
-      --font-size-h1: 32px;
+      /* Typography */
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
       --font-size-h2: 24px;
       --font-size-h3: 18px;
       --font-size-body: 14px;
@@ -27,9 +31,7 @@
       --font-weight-semibold: 500;
       --font-weight-regular: 400;
       
-      --line-height-header: 1.4;
-      --line-height-body: 1.6;
-      
+      /* Spacing */
       --spacing-xs: 4px;
       --spacing-sm: 8px;
       --spacing-md: 12px;
@@ -38,8 +40,10 @@
       --spacing-2xl: 24px;
       --spacing-3xl: 32px;
       
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+      
       --transition-base: all 0.2s ease;
     }
 
@@ -50,8 +54,8 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
       padding: var(--spacing-xl);
     }
@@ -85,10 +89,12 @@
     }
 
     .header-left h1 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-md);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .header-left p {
@@ -126,7 +132,7 @@
       background: var(--bg-card);
       border-radius: 8px;
       border: 1px solid var(--color-border);
-      padding: var(--spacing-xl);
+      padding: var(--spacing-2xl);
       margin-bottom: var(--spacing-3xl);
     }
 
@@ -140,9 +146,11 @@
     }
 
     .calendar-header h2 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .calendar-nav {
@@ -163,8 +171,9 @@
     }
 
     .nav-btn:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       color: var(--color-primary);
+      border-color: var(--color-primary);
     }
 
     .month-calendar {
@@ -185,7 +194,7 @@
 
     .day {
       aspect-ratio: 1;
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       border-radius: 8px;
       padding: var(--spacing-md);
       display: flex;
@@ -197,7 +206,7 @@
     }
 
     .day:hover {
-      background: #F3F4F6;
+      background: #f0f0ea;
       border-color: var(--color-primary);
     }
 
@@ -246,7 +255,7 @@
       grid-template-columns: 120px 1fr 150px;
       gap: var(--spacing-xl);
       padding: var(--spacing-lg);
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       border-radius: 8px;
       border: 1px solid var(--color-border);
       margin-bottom: var(--spacing-md);
@@ -294,17 +303,17 @@
     }
 
     .status-active {
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(127, 169, 151, 0.1);
       color: var(--color-success);
     }
 
     .status-paused {
-      background: rgba(245, 158, 11, 0.1);
+      background: rgba(168, 153, 115, 0.1);
       color: var(--color-warning);
     }
 
     .status-scheduled {
-      background: rgba(37, 99, 235, 0.1);
+      background: rgba(127, 169, 151, 0.1);
       color: var(--color-primary);
     }
 
@@ -312,8 +321,8 @@
       display: flex;
       gap: var(--spacing-2xl);
       flex-wrap: wrap;
-      padding: var(--spacing-xl);
-      background: var(--bg-neutral);
+      padding: var(--spacing-2xl);
+      background: var(--bg-card);
       border-radius: 8px;
       border: 1px solid var(--color-border);
     }
@@ -370,10 +379,12 @@
     }
 
     .modal-title {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-lg);
       letter-spacing: -0.3px;
+      color: var(--color-text);
     }
 
     .modal-field {
@@ -415,7 +426,8 @@
     }
 
     .btn:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
+      border-color: var(--color-primary);
     }
 
     .btn.primary {
@@ -425,7 +437,7 @@
     }
 
     .btn.primary:hover {
-      background: #1d4ed8;
+      background: #6d8f7f;
     }
 
     @media (max-width: 768px) {
@@ -459,11 +471,11 @@
 <body>
 
 <div class="container">
-  <a href="master-hub.html" class="back-link">← Back to Command Center</a>
+  <a href="master-hub.html" class="back-link"> Back to Command Center</a>
 
   <div class="header">
     <div class="header-left">
-      <h1>📅 Campaign Calendar</h1>
+      <h1>Campaign Calendar</h1>
       <p>Timeline view of all campaigns with launch dates, budgets, and status</p>
     </div>
     <div class="view-toggle">
@@ -476,9 +488,9 @@
     <div class="calendar-header">
       <h2 id="monthTitle">April 2026</h2>
       <div class="calendar-nav">
-        <button class="nav-btn" onclick="previousMonth()">← Prev</button>
+        <button class="nav-btn" onclick="previousMonth()"> Prev</button>
         <button class="nav-btn" onclick="todayMonth()">Today</button>
-        <button class="nav-btn" onclick="nextMonth()">Next →</button>
+        <button class="nav-btn" onclick="nextMonth()">Next </button>
       </div>
     </div>
     <div class="month-calendar" id="monthCalendar"></div>
@@ -493,23 +505,23 @@
 
   <div class="legend">
     <div class="legend-item">
-      <div class="legend-color" style="background: #10B981;"></div>
+      <div class="legend-color" style="background: #7FA997;"></div>
       <span>Healer Funnel</span>
     </div>
     <div class="legend-item">
-      <div class="legend-color" style="background: #2563EB;"></div>
+      <div class="legend-color" style="background: #7FA997;"></div>
       <span>Patient Funnel</span>
     </div>
     <div class="legend-item">
-      <div class="legend-color" style="background: #F59E0B;"></div>
+      <div class="legend-color" style="background: #A89973;"></div>
       <span>Referral Funnel</span>
     </div>
     <div class="legend-item">
-      <div class="legend-color" style="background: #DC2626;"></div>
+      <div class="legend-color" style="background: #A89973;"></div>
       <span>Untrained Funnel</span>
     </div>
     <div class="legend-item">
-      <div class="legend-color" style="background: #0A84FF;"></div>
+      <div class="legend-color" style="background: #7FA997;"></div>
       <span>Owned Funnel</span>
     </div>
   </div>
@@ -518,7 +530,7 @@
 <div class="modal" id="campaignModal">
   <div style="position: relative; width: 100%;">
     <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" onclick="closeModal()">�</button>
       <h2 class="modal-title" id="modalTitle">Campaign Details</h2>
       <div id="modalBody"></div>
       <div class="modal-actions">
@@ -621,7 +633,7 @@
       });
 
       if (dayCampaigns.length > 0) {
-        const colors = { healer: '#10B981', patient: '#2563EB', referral: '#F59E0B', untrained: '#DC2626', owned: '#0A84FF' };
+        const colors = { healer: '#7FA997', patient: '#7FA997', referral: '#A89973', untrained: '#A89973', owned: '#7FA997' };
         dayCampaigns.forEach(c => {
           const dot = document.createElement('div');
           dot.className = 'event-dot';
@@ -641,7 +653,7 @@
         <div class="timeline-date">${c.startDate.toLocaleDateString()}</div>
         <div class="timeline-content">
           <div class="timeline-name">${c.name}</div>
-          <div class="timeline-details">${c.budget} budget • ${c.conversions} conversions</div>
+          <div class="timeline-details">${c.budget} budget � ${c.conversions} conversions</div>
         </div>
         <span class="status-badge status-${c.status.toLowerCase()}">${c.status}</span>
       </div>

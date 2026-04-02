@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENNIE Marketing Command Center</title>
   <style>
-    /* CSS ROOT VARIABLES */
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      /* Colors */
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-accent: #DC2626;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
-      --color-warning: #F59E0B;
+      --color-border: #E8E4DE;
+      --color-success: #7FA997;
+      --color-warning: #A89973;
       
       /* Typography */
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
-      --font-size-h1: 32px;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
       --font-size-h2: 24px;
       --font-size-h3: 18px;
       --font-size-body: 14px;
@@ -44,10 +45,9 @@
       --spacing-4xl: 40px;
       --spacing-5xl: 48px;
       
-      /* Shadows */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
       
       /* Transitions */
       --transition-base: all 0.2s ease;
@@ -60,8 +60,8 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
       overflow: hidden;
     }
@@ -82,14 +82,15 @@
     }
 
     .sidebar-header {
-      padding: var(--spacing-xl);
+      padding: var(--spacing-3xl) var(--spacing-xl);
       border-bottom: 1px solid var(--color-border);
     }
 
     .sidebar-header h1 {
-      font-size: 18px;
+      font-family: var(--font-serif);
+      font-size: 24px;
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
       color: var(--color-text);
       letter-spacing: -0.5px;
     }
@@ -97,15 +98,16 @@
     .sidebar-header p {
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
+      line-height: 1.5;
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: var(--spacing-xl) 0;
+      padding: var(--spacing-2xl) 0;
     }
 
     .nav-section {
-      margin-bottom: var(--spacing-2xl);
+      margin-bottom: var(--spacing-3xl);
     }
 
     .nav-section-title {
@@ -115,7 +117,7 @@
       color: var(--color-text-secondary);
       font-weight: var(--font-weight-header);
       letter-spacing: 0.5px;
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
 
     .nav-link {
@@ -124,18 +126,19 @@
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
       text-decoration: none;
-      border-left: 2px solid transparent;
+      border-left: 3px solid transparent;
       cursor: pointer;
       transition: var(--transition-base);
     }
 
     .nav-link:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       color: var(--color-primary);
+      border-left-color: var(--color-primary);
     }
 
     .nav-link.active {
-      background: rgba(37, 99, 235, 0.05);
+      background: rgba(127, 169, 151, 0.08);
       border-left-color: var(--color-primary);
       color: var(--color-primary);
       font-weight: var(--font-weight-semibold);
@@ -152,7 +155,7 @@
     .header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--color-border);
-      padding: var(--spacing-xl) var(--spacing-3xl);
+      padding: var(--spacing-2xl) var(--spacing-3xl);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -160,9 +163,11 @@
     }
 
     .header h2 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .header-info {
@@ -176,7 +181,7 @@
     .content {
       flex: 1;
       overflow-y: auto;
-      padding: var(--spacing-3xl);
+      padding: var(--spacing-4xl) var(--spacing-3xl);
     }
 
     .view {
@@ -189,37 +194,40 @@
 
     /* HERO */
     .hero {
-      margin-bottom: var(--spacing-3xl);
-      padding: var(--spacing-3xl);
-      background: linear-gradient(135deg, #2563EB08 0%, #2563EB04 100%);
+      margin-bottom: var(--spacing-4xl);
+      padding: var(--spacing-4xl) var(--spacing-3xl);
+      background: rgba(127, 169, 151, 0.04);
       border: 1px solid var(--color-border);
       border-radius: 8px;
     }
 
     .hero h1 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .hero p {
       font-size: var(--font-size-body);
       color: var(--color-text-secondary);
       line-height: var(--line-height-body);
+      max-width: 600px;
     }
 
     /* METRICS GRID */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: var(--spacing-lg);
-      margin: var(--spacing-3xl) 0;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--spacing-2xl);
+      margin: var(--spacing-4xl) 0;
     }
 
     .metric {
       background: var(--bg-card);
-      padding: var(--spacing-lg);
+      padding: var(--spacing-2xl);
       border-radius: 8px;
       border: 1px solid var(--color-border);
     }
@@ -229,12 +237,13 @@
       text-transform: uppercase;
       color: var(--color-text-secondary);
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
       letter-spacing: 0.5px;
     }
 
     .metric-value {
-      font-size: 28px;
+      font-family: var(--font-serif);
+      font-size: 32px;
       font-weight: var(--font-weight-header);
       color: var(--color-primary);
       letter-spacing: -0.5px;
@@ -243,9 +252,9 @@
     /* CARDS */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing-xl);
-      margin-bottom: var(--spacing-3xl);
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-2xl);
+      margin-bottom: var(--spacing-4xl);
     }
 
     .card {
@@ -264,19 +273,21 @@
     .card:hover {
       border-color: var(--color-primary);
       box-shadow: var(--shadow-md);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
 
     .card-icon {
       font-size: 32px;
-      margin-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
 
     .card h3 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-md);
       letter-spacing: -0.3px;
+      color: var(--color-text);
     }
 
     .card p {
@@ -289,17 +300,13 @@
     .card-meta {
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
-      margin-top: var(--spacing-md);
-    }
-
-    .card.external {
-      position: relative;
+      margin-top: var(--spacing-lg);
     }
 
     .card.external::after {
-      content: "↗";
+      content: "";
       position: absolute;
-      top: var(--spacing-md);
+      top: var(--spacing-lg);
       right: var(--spacing-lg);
       font-size: 18px;
       opacity: 0.4;
@@ -307,13 +314,15 @@
 
     /* SECTION HEADING */
     .section-heading {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
-      margin: var(--spacing-3xl) 0 var(--spacing-xl) 0;
+      margin: var(--spacing-4xl) 0 var(--spacing-2xl) 0;
       display: flex;
       align-items: center;
       gap: var(--spacing-md);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     /* MOBILE HAMBURGER */
@@ -336,8 +345,9 @@
     }
 
     .hamburger:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       border-color: var(--color-primary);
+      color: var(--color-primary);
     }
 
     /* RESPONSIVE */
@@ -347,7 +357,7 @@
       }
 
       .card-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       }
     }
 
@@ -371,7 +381,7 @@
         border-right: 1px solid var(--color-border);
         z-index: 1999;
         transition: left 0.3s ease;
-        box-shadow: var(--shadow-lg);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       }
 
       .sidebar.mobile-open {
@@ -404,11 +414,11 @@
       }
 
       .hero {
-        padding: var(--spacing-xl);
+        padding: var(--spacing-2xl);
       }
 
       .hero h1 {
-        font-size: 24px;
+        font-size: 28px;
       }
     }
 
@@ -418,7 +428,7 @@
       }
 
       .hero h1 {
-        font-size: 20px;
+        font-size: 24px;
       }
 
       .card h3 {
@@ -430,7 +440,7 @@
 <body>
 
 <div class="container">
-  <button class="hamburger" id="hamburger">☰</button>
+  <button class="hamburger" id="hamburger"></button>
 
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -510,65 +520,65 @@
         <h2 class="section-heading">Quick Access</h2>
         <div class="card-grid">
           <div class="card" onclick="showView('funnels')">
-            <div class="card-icon">📈</div>
+            <div class="card-icon">�</div>
             <h3>View All Funnels</h3>
             <p>Interactive visualization of 5 marketing funnels with stage breakdowns.</p>
-            <div class="card-meta">5 funnels • 7 stages each</div>
+            <div class="card-meta">5 funnels � 7 stages each</div>
           </div>
           <div class="card" onclick="showView('video-manager')">
-            <div class="card-icon">🎥</div>
+            <div class="card-icon"></div>
             <h3>Video Manager</h3>
             <p>Upload videos, auto-transcribe, get approval from Charlie, use for content.</p>
             <div class="card-meta">Whisper transcription</div>
           </div>
           <div class="card" onclick="showView('content-library')">
-            <div class="card-icon">📋</div>
+            <div class="card-icon">�</div>
             <h3>Content Library</h3>
             <p>2,407 production-ready marketing assets. Emails, ads, landing pages, SMS.</p>
             <div class="card-meta">Organized by funnel</div>
           </div>
           <div class="card" onclick="showView('approvals')">
-            <div class="card-icon">✓</div>
+            <div class="card-icon"></div>
             <h3>Charlie's Approvals</h3>
             <p>Charlie reviews and approves all content before agents use it. PIN: 12345</p>
-            <div class="card-meta">Pending • Approved • Rejected</div>
+            <div class="card-meta">Pending � Approved � Rejected</div>
           </div>
           <div class="card" onclick="showView('automation')">
-            <div class="card-icon">🤖</div>
+            <div class="card-icon"></div>
             <h3>Patient Funnel Automation</h3>
-            <p>Fully automated 7-stage funnel. Awareness → Paying customer. 95% autonomous.</p>
-            <div class="card-meta">Growth Agent • Voice Agent</div>
+            <p>Fully automated 7-stage funnel. Awareness  Paying customer. 95% autonomous.</p>
+            <div class="card-meta">Growth Agent � Voice Agent</div>
           </div>
           <div class="card" onclick="showView('agents')">
-            <div class="card-icon">⚙️</div>
+            <div class="card-icon"></div>
             <h3>Agent Dashboard</h3>
             <p>Monitor active agents, their tasks, approvals, and real-time metrics.</p>
-            <div class="card-meta">5 agents • Live tracking</div>
+            <div class="card-meta">5 agents � Live tracking</div>
           </div>
         </div>
 
         <h2 class="section-heading">Operations & Analytics</h2>
         <div class="card-grid">
           <div class="card external" onclick="window.open('metrics.html', '_blank')">
-            <div class="card-icon">📊</div>
+            <div class="card-icon"></div>
             <h3>Metrics Dashboard</h3>
             <p>Real-time performance metrics: spend, conversions, ROI, CPA by channel, funnel breakdown.</p>
             <div class="card-meta">Click to open dashboard</div>
           </div>
           <div class="card external" onclick="window.open('calendar.html', '_blank')">
-            <div class="card-icon">📅</div>
+            <div class="card-icon"></div>
             <h3>Campaign Calendar</h3>
             <p>Timeline view of all campaigns with launch dates, budgets, and status. Drag-to-reschedule.</p>
             <div class="card-meta">Month & timeline views</div>
           </div>
           <div class="card external" onclick="window.open('integrations.html', '_blank')">
-            <div class="card-icon">🔌</div>
+            <div class="card-icon"></div>
             <h3>Integration Status</h3>
             <p>Monitor API connections: Google Ads, Meta, TikTok, PostHog, ElevenLabs. Last sync times.</p>
-            <div class="card-meta">2 connected • 3 available</div>
+            <div class="card-meta">2 connected � 3 available</div>
           </div>
           <div class="card external" onclick="window.open('team-settings.html', '_blank')">
-            <div class="card-icon">👥</div>
+            <div class="card-icon"></div>
             <h3>Team & Settings</h3>
             <p>Manage team members, API keys, webhooks, notification preferences, and general settings.</p>
             <div class="card-meta">4 team members</div>
@@ -577,10 +587,10 @@
       </div>
 
       <div id="funnels" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">📈 All 5 Marketing Funnels</h1>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� All 5 Marketing Funnels</h1>
         <div class="card-grid">
           <div class="card external" onclick="window.open('visual-strategy.html', '_blank')">
-            <div class="card-icon">🎯</div>
+            <div class="card-icon"></div>
             <h3>Visual Strategy</h3>
             <p>See all 5 funnels with stages, metrics, and execution plan.</p>
             <div class="card-meta">Click stages for details</div>
@@ -589,17 +599,17 @@
       </div>
 
       <div id="video-manager" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">🎥 Video Manager</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Upload videos, auto-transcribe with Whisper, submit for Charlie's approval, access approved transcripts for ad copy.</p>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Video Manager</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Upload videos, auto-transcribe with Whisper, submit for Charlie's approval, access approved transcripts for ad copy.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/'">
-            <div class="card-icon">⬆️</div>
+            <div class="card-icon"></div>
             <h3>Upload & Manage Videos</h3>
             <p>Upload videos, track transcription status, view approved videos.</p>
-            <div class="card-meta">Whisper transcription • Auto-approval requests</div>
+            <div class="card-meta">Whisper transcription � Auto-approval requests</div>
           </div>
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/approval'">
-            <div class="card-icon">✓</div>
+            <div class="card-icon"></div>
             <h3>Approval Dashboard (Charlie)</h3>
             <p>Charlie's PIN-protected dashboard. Approve or reject videos with feedback.</p>
             <div class="card-meta">PIN: 12345</div>
@@ -608,37 +618,37 @@
       </div>
 
       <div id="approvals" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">✓ Content Approval System</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Charlie reviews all content (videos, ads, emails) before agents can use it.</p>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Content Approval System</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Charlie reviews all content (videos, ads, emails) before agents can use it.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/approval'">
-            <div class="card-icon">🔐</div>
+            <div class="card-icon"></div>
             <h3>Charlie's Approval Portal</h3>
             <p>Review pending content. Approve or reject with detailed feedback notes.</p>
-            <div class="card-meta">PIN-protected • Real-time updates</div>
+            <div class="card-meta">PIN-protected � Real-time updates</div>
           </div>
         </div>
       </div>
 
       <div id="content-library" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">📋 Content Library</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">2,407 production-ready marketing assets from 27 video transcripts. All organized by funnel and stage.</p>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� Content Library</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">2,407 production-ready marketing assets from 27 video transcripts. All organized by funnel and stage.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='content-library-simple.html'">
-            <div class="card-icon">📋</div>
+            <div class="card-icon">�</div>
             <h3>View All Assets</h3>
             <p>Browse 2,407 marketing assets. Emails, ads, landing pages, social captions, SMS.</p>
-            <div class="card-meta">JSON viewer • Searchable</div>
+            <div class="card-meta">JSON viewer � Searchable</div>
           </div>
         </div>
       </div>
 
       <div id="documentation" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">📚 Documentation</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Complete guides for setup, deployment, automation, and agent orchestration.</p>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Documentation</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Complete guides for setup, deployment, automation, and agent orchestration.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon">📖</div>
+            <div class="card-icon"></div>
             <h3>Full Documentation</h3>
             <p>All guides, playbooks, and references. Automation playbook, data integration, deployment.</p>
             <div class="card-meta">15+ documents</div>
@@ -647,17 +657,17 @@
       </div>
 
       <div id="automation" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">🤖 Patient Funnel Automation</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Complete runbook for 7-stage patient funnel automation. Fully autonomous with agent orchestration.</p>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Patient Funnel Automation</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Complete runbook for 7-stage patient funnel automation. Fully autonomous with agent orchestration.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon">📄</div>
+            <div class="card-icon"></div>
             <h3>Automation Playbook</h3>
             <p>68KB complete runbook. Triggers, workflows, metrics, deployment timeline.</p>
             <div class="card-meta">Week 1-4 deployment</div>
           </div>
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon">🔗</div>
+            <div class="card-icon"></div>
             <h3>Data Integration Map</h3>
             <p>36KB integration guide. APIs, schemas, PostHog events, monitoring.</p>
             <div class="card-meta">Real-time feedback loops</div>
@@ -666,53 +676,53 @@
       </div>
 
       <div id="ad-ops" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">📢 Ad Operations Automation</h1>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� Ad Operations Automation</h1>
         <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Agents autonomously manage campaigns across Meta, Google, TikTok, Pinterest. Daily optimization.</p>
         <div class="hero">
-          <h3 style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-lg);">Multi-Platform Campaign Management</h3>
-          <p style="margin: var(--spacing-lg) 0 0 0; line-height: var(--line-height-body);">
-            <strong>Facebook/Instagram:</strong> £12k/mo • 5 ad variations cycled every 3 days<br>
-            <strong>Google Ads:</strong> £15k/mo • Bid optimization + keyword expansion<br>
-            <strong>TikTok:</strong> £8k/mo • 10 creative variations tested<br>
-            <strong>Pinterest:</strong> £5k/mo • Auto-cycle designs weekly<br><br>
-            <strong>Daily Agent Loop:</strong> 06:00 check metrics → 06:15 stop/scale → 06:30 generate copy → 07:00 deploy → evening human review
+          <h3 style="font-family: var(--font-serif); font-size: var(--font-size-h3); margin-bottom: var(--spacing-lg); color: var(--color-text);">Multi-Platform Campaign Management</h3>
+          <p style="margin: var(--spacing-lg) 0 0 0; line-height: var(--line-height-body); color: var(--color-text-secondary);">
+            <strong style="color: var(--color-text);">Facebook/Instagram:</strong> £12k/mo � 5 ad variations cycled every 3 days<br>
+            <strong style="color: var(--color-text);">Google Ads:</strong> £15k/mo � Bid optimization + keyword expansion<br>
+            <strong style="color: var(--color-text);">TikTok:</strong> £8k/mo � 10 creative variations tested<br>
+            <strong style="color: var(--color-text);">Pinterest:</strong> £5k/mo � Auto-cycle designs weekly<br><br>
+            <strong style="color: var(--color-text);">Daily Agent Loop:</strong> 06:00 check metrics  06:15 stop/scale  06:30 generate copy  07:00 deploy  evening human review
           </p>
         </div>
       </div>
 
       <div id="agents" class="view">
-        <h1 style="margin-bottom: var(--spacing-2xl);">⚙️ Agent Dashboard</h1>
+        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Agent Dashboard</h1>
         <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Monitor all agents, their tasks, approvals, and real-time metrics.</p>
         <div class="card-grid">
           <div class="card">
-            <div class="card-icon">📈</div>
+            <div class="card-icon">�</div>
             <h3>Growth Agent</h3>
             <p>Manages funnel progression, email sequences, user state tracking.</p>
-            <div class="card-meta">Active • 5 tasks</div>
+            <div class="card-meta">Active � 5 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon">🎙️</div>
+            <div class="card-icon"></div>
             <h3>Voice Agent</h3>
             <p>Generates all messaging and copy in Charlie's voice via ElevenLabs.</p>
-            <div class="card-meta">Active • 3 tasks</div>
+            <div class="card-meta">Active � 3 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon">🔗</div>
+            <div class="card-icon"></div>
             <h3>Matching Agent</h3>
             <p>Matches patients with best-fit healers based on compatibility and availability.</p>
-            <div class="card-meta">Active • 12 tasks</div>
+            <div class="card-meta">Active � 12 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon">💝</div>
+            <div class="card-icon"></div>
             <h3>Retention Agent</h3>
             <p>Follow-ups, churn prevention, loyalty rewards, re-engagement campaigns.</p>
-            <div class="card-meta">Active • 8 tasks</div>
+            <div class="card-meta">Active � 8 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon">💰</div>
+            <div class="card-icon"></div>
             <h3>Paid Ads Agent</h3>
             <p>Multi-platform ad optimization (Meta, Google, TikTok, Pinterest).</p>
-            <div class="card-meta">Active • 4 campaigns</div>
+            <div class="card-meta">Active � 4 campaigns</div>
           </div>
         </div>
       </div>
@@ -743,14 +753,14 @@
 
     if (window.innerWidth <= 768) {
       document.getElementById('sidebar').classList.remove('mobile-open');
-      document.getElementById('hamburger').textContent = '☰';
+      document.getElementById('hamburger').textContent = '';
     }
   }
 
   document.getElementById('hamburger').addEventListener('click', function() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('mobile-open');
-    this.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+    this.textContent = sidebar.classList.contains('mobile-open') ? '�' : '';
   });
 
   document.addEventListener('click', function(event) {
@@ -758,7 +768,7 @@
     const hamburger = document.getElementById('hamburger');
     if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
       sidebar.classList.remove('mobile-open');
-      hamburger.textContent = '☰';
+      hamburger.textContent = '';
     }
   });
 </script>

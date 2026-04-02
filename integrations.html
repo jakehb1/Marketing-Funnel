@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Integration Status - ENNIE Marketing</title>
   <style>
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-accent: #DC2626;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
-      --color-warning: #F59E0B;
+      --color-border: #E8E4DE;
+      --color-success: #7FA997;
+      --color-warning: #A89973;
       
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
-      --font-size-h1: 32px;
+      /* Typography */
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
       --font-size-h2: 24px;
       --font-size-h3: 18px;
       --font-size-body: 14px;
@@ -27,6 +31,7 @@
       --font-weight-semibold: 500;
       --font-weight-regular: 400;
       
+      /* Spacing */
       --spacing-xs: 4px;
       --spacing-sm: 8px;
       --spacing-md: 12px;
@@ -35,8 +40,10 @@
       --spacing-2xl: 24px;
       --spacing-3xl: 32px;
       
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+      
       --transition-base: all 0.2s ease;
     }
 
@@ -47,8 +54,8 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
       padding: var(--spacing-xl);
     }
@@ -77,10 +84,12 @@
     }
 
     .header h1 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-md);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .header p {
@@ -93,6 +102,7 @@
     }
 
     .section-title {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-xl);
@@ -214,12 +224,12 @@
     }
 
     .status-connected {
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(127, 169, 151, 0.1);
       color: var(--color-success);
     }
 
     .status-disconnected {
-      background: rgba(220, 38, 38, 0.1);
+      background: rgba(168, 153, 115, 0.1);
       color: var(--color-accent);
     }
 
@@ -235,7 +245,7 @@
       padding: var(--spacing-md) var(--spacing-lg);
       border: 1px solid var(--color-border);
       border-radius: 6px;
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       color: var(--color-text-secondary);
       font-size: var(--font-size-caption);
       font-weight: var(--font-weight-header);
@@ -244,7 +254,7 @@
     }
 
     button:hover {
-      background: #F3F4F6;
+      background: #f0f0ea;
       border-color: var(--color-primary);
       color: var(--color-primary);
     }
@@ -256,7 +266,7 @@
     }
 
     button.primary:hover {
-      background: #1d4ed8;
+      background: #6d8f7f;
     }
 
     @media (max-width: 768px) {
@@ -273,10 +283,10 @@
 <body>
 
 <div class="container">
-  <a href="master-hub.html" class="back-link">← Back to Command Center</a>
+  <a href="master-hub.html" class="back-link"> Back to Command Center</a>
 
   <div class="header">
-    <h1>🔌 Integration Status</h1>
+    <h1>Integration Status</h1>
     <p>Monitor API connections and sync status across platforms</p>
   </div>
 
@@ -286,7 +296,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">🔵</div>
+            <div class="integration-icon">�</div>
             <div class="integration-name">
               <h3>Google Ads</h3>
               <div class="integration-status">API v2</div>
@@ -318,7 +328,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">📱</div>
+            <div class="integration-icon"></div>
             <div class="integration-name">
               <h3>Meta (Facebook/Instagram)</h3>
               <div class="integration-status">Marketing API</div>
@@ -350,7 +360,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">📊</div>
+            <div class="integration-icon"></div>
             <div class="integration-name">
               <h3>PostHog</h3>
               <div class="integration-status">Analytics</div>
@@ -387,7 +397,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">🎵</div>
+            <div class="integration-icon">�</div>
             <div class="integration-name">
               <h3>ElevenLabs</h3>
               <div class="integration-status">Voice Synthesis</div>
@@ -414,7 +424,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">🎯</div>
+            <div class="integration-icon"></div>
             <div class="integration-name">
               <h3>TikTok Ads</h3>
               <div class="integration-status">Ads API</div>
@@ -441,7 +451,7 @@
       <div class="integration-card">
         <div class="integration-header">
           <div class="integration-title">
-            <div class="integration-icon">📌</div>
+            <div class="integration-icon"></div>
             <div class="integration-name">
               <h3>Pinterest Ads</h3>
               <div class="integration-status">Ads API</div>

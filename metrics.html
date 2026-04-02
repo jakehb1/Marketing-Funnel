@@ -6,19 +6,23 @@
   <title>Metrics Dashboard - ENNIE Marketing</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-accent: #DC2626;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
-      --color-warning: #F59E0B;
+      --color-border: #E8E4DE;
+      --color-success: #7FA997;
+      --color-warning: #A89973;
       
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
-      --font-size-h1: 32px;
+      /* Typography */
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
       --font-size-h2: 24px;
       --font-size-h3: 18px;
       --font-size-body: 14px;
@@ -31,6 +35,7 @@
       --line-height-header: 1.4;
       --line-height-body: 1.6;
       
+      /* Spacing */
       --spacing-xs: 4px;
       --spacing-sm: 8px;
       --spacing-md: 12px;
@@ -39,12 +44,12 @@
       --spacing-2xl: 24px;
       --spacing-3xl: 32px;
       --spacing-4xl: 40px;
-      --spacing-5xl: 48px;
       
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
       
+      /* Transitions */
       --transition-base: all 0.2s ease;
     }
 
@@ -55,10 +60,10 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
-      padding: var(--spacing-xl);
+      padding: var(--spacing-3xl);
     }
 
     .container {
@@ -67,7 +72,7 @@
     }
 
     .header {
-      margin-bottom: var(--spacing-3xl);
+      margin-bottom: var(--spacing-4xl);
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -76,10 +81,12 @@
     }
 
     .header-left h1 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-md);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .header-left p {
@@ -138,7 +145,7 @@
     }
 
     .back-link:hover {
-      color: #1d4ed8;
+      color: #6d8f7f;
       text-decoration: underline;
     }
 
@@ -164,7 +171,7 @@
     }
 
     button:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
       color: var(--color-text);
     }
 
@@ -177,13 +184,13 @@
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-3xl);
+      gap: var(--spacing-2xl);
+      margin-bottom: var(--spacing-4xl);
     }
 
     .stat-card {
       background: var(--bg-card);
-      padding: var(--spacing-xl);
+      padding: var(--spacing-2xl);
       border-radius: 8px;
       border: 1px solid var(--color-border);
       display: flex;
@@ -200,7 +207,8 @@
     }
 
     .stat-value {
-      font-size: 28px;
+      font-family: var(--font-serif);
+      font-size: 32px;
       font-weight: var(--font-weight-header);
       color: var(--color-primary);
       margin-bottom: var(--spacing-md);
@@ -221,20 +229,21 @@
     }
 
     .stat-change::before {
-      content: '↑ ';
+      content: ' ';
       font-weight: var(--font-weight-header);
     }
 
     .stat-change.negative::before {
-      content: '↓ ';
+      content: ' ';
     }
 
     /* SECTIONS */
     .section {
-      margin-bottom: var(--spacing-3xl);
+      margin-bottom: var(--spacing-4xl);
     }
 
     .section-title {
+      font-family: var(--font-serif);
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-xl);
@@ -246,18 +255,19 @@
     .charts-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: var(--spacing-xl);
-      margin-bottom: var(--spacing-3xl);
+      gap: var(--spacing-2xl);
+      margin-bottom: var(--spacing-4xl);
     }
 
     .chart-card {
       background: var(--bg-card);
-      padding: var(--spacing-xl);
+      padding: var(--spacing-2xl);
       border-radius: 8px;
       border: 1px solid var(--color-border);
     }
 
     .chart-title {
+      font-family: var(--font-serif);
       font-size: var(--font-size-body);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-lg);
@@ -276,11 +286,11 @@
       border-radius: 8px;
       border: 1px solid var(--color-border);
       overflow: hidden;
-      margin-bottom: var(--spacing-3xl);
+      margin-bottom: var(--spacing-4xl);
     }
 
     .table-header {
-      padding: var(--spacing-xl);
+      padding: var(--spacing-2xl);
       border-bottom: 1px solid var(--color-border);
       display: flex;
       justify-content: space-between;
@@ -290,6 +300,7 @@
     }
 
     .table-header h3 {
+      font-family: var(--font-serif);
       font-size: var(--font-size-body);
       font-weight: var(--font-weight-header);
       color: var(--color-text);
@@ -307,8 +318,8 @@
     }
 
     th {
-      background: var(--bg-neutral);
-      padding: var(--spacing-md) var(--spacing-xl);
+      background: var(--bg-main);
+      padding: var(--spacing-lg);
       text-align: left;
       font-size: 11px;
       font-weight: var(--font-weight-header);
@@ -319,14 +330,14 @@
     }
 
     td {
-      padding: var(--spacing-md) var(--spacing-xl);
+      padding: var(--spacing-lg);
       font-size: var(--font-size-body);
       border-bottom: 1px solid var(--color-border);
       color: var(--color-text);
     }
 
     tbody tr:hover {
-      background: var(--bg-neutral);
+      background: var(--bg-main);
     }
 
     tbody tr:last-child td {
@@ -342,17 +353,17 @@
     }
 
     .status-active {
-      background: rgba(16, 185, 129, 0.1);
+      background: rgba(127, 169, 151, 0.1);
       color: var(--color-success);
     }
 
     .status-paused {
-      background: rgba(245, 158, 11, 0.1);
+      background: rgba(168, 153, 115, 0.1);
       color: var(--color-warning);
     }
 
     .status-scheduled {
-      background: rgba(37, 99, 235, 0.1);
+      background: rgba(127, 169, 151, 0.1);
       color: var(--color-primary);
     }
 
@@ -368,7 +379,7 @@
     }
 
     .error {
-      background: rgba(220, 38, 38, 0.05);
+      background: rgba(168, 153, 115, 0.05);
       border: 1px solid var(--color-accent);
       color: var(--color-accent);
       padding: var(--spacing-lg);
@@ -428,11 +439,11 @@
 <body>
 
 <div class="container">
-  <a href="master-hub.html" class="back-link">← Back to Command Center</a>
+  <a href="master-hub.html" class="back-link"> Back to Command Center</a>
 
   <div class="header">
     <div class="header-left">
-      <h1>📊 Metrics Dashboard</h1>
+      <h1>Metrics Dashboard</h1>
       <p>Real-time performance metrics across Google Ads and Meta</p>
     </div>
 
@@ -442,7 +453,7 @@
         Last synced: <span id="lastSync">--</span>
       </div>
       <div class="btn-group">
-        <button onclick="refreshMetrics()">🔄 Refresh</button>
+        <button onclick="refreshMetrics()"> Refresh</button>
         <button onclick="setDayRange(7)" class="active" id="btn-7d">7 Days</button>
         <button onclick="setDayRange(30)" id="btn-30d">30 Days</button>
       </div>
@@ -586,7 +597,7 @@
 
   function showError(message) {
     const errorContainer = document.getElementById('errorContainer');
-    errorContainer.innerHTML = `<div class="error">⚠️ ${message}</div>`;
+    errorContainer.innerHTML = `<div class="error">� ${message}</div>`;
   }
 
   function clearError() {
@@ -703,7 +714,7 @@
         labels: ['Google Ads', 'Meta (Facebook/Instagram)'],
         datasets: [{
           data: [google.spend || 0, meta.spend || 0],
-          backgroundColor: ['#2563EB', '#10B981'],
+          backgroundColor: ['#7FA997', '#A89973'],
           borderColor: '#FFFFFF',
           borderWidth: 2
         }]
@@ -729,7 +740,7 @@
         datasets: [{
           label: 'Conversions',
           data: [google.conversions || 0, meta.conversions || 0],
-          backgroundColor: ['#2563EB', '#10B981'],
+          backgroundColor: ['#7FA997', '#A89973'],
           borderRadius: 6,
           borderSkipped: false
         }]
@@ -742,7 +753,7 @@
           y: {
             beginAtZero: true,
             border: { display: false },
-            grid: { color: '#E5E7EB' },
+            grid: { color: '#E8E4DE' },
             ticks: { color: '#6B7280', font: { size: 12 } }
           },
           x: { border: { display: false }, grid: { display: false }, ticks: { color: '#6B7280', font: { size: 12 } } }
@@ -760,14 +771,14 @@
           {
             label: 'Google Ads',
             data: [google.cpc || 0, combined.costPerConversion || 0],
-            backgroundColor: '#2563EB',
+            backgroundColor: '#7FA997',
             borderRadius: 6,
             borderSkipped: false
           },
           {
             label: 'Meta',
             data: [meta.cpc || 0, combined.costPerConversion || 0],
-            backgroundColor: '#10B981',
+            backgroundColor: '#A89973',
             borderRadius: 6,
             borderSkipped: false
           }
@@ -781,7 +792,7 @@
           y: {
             beginAtZero: true,
             border: { display: false },
-            grid: { color: '#E5E7EB' },
+            grid: { color: '#E8E4DE' },
             ticks: { color: '#6B7280', font: { size: 12 } }
           },
           x: { border: { display: false }, grid: { display: false }, ticks: { color: '#6B7280', font: { size: 12 } } }
