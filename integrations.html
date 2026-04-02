@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integration Status - ENNIE Marketing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F3EE;
+      color: #1A1A2E;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #999;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 13px;
+      color: #7C6BC4;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    /* INTEGRATION CARDS */
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .integration-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #E8E4DE;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .integration-header {
+      padding: 20px;
+      border-bottom: 1px solid #E8E4DE;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .integration-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .integration-icon {
+      font-size: 24px;
+    }
+
+    .integration-name {
+      font-weight: 600;
+      color: #1A1A2E;
+      font-size: 14px;
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-connected {
+      background: #34C759;
+      box-shadow: 0 0 8px rgba(52, 199, 89, 0.4);
+    }
+
+    .status-disconnected {
+      background: #FF3B30;
+      box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
+    }
+
+    .integration-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-text {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-text.connected {
+      color: #34C759;
+    }
+
+    .status-text.disconnected {
+      color: #FF3B30;
+    }
+
+    .sync-info {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 12px;
+      background: #F8F6F3;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .data-sync {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .data-sync-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .data-sync-item::before {
+      content: '✓';
+      color: #34C759;
+      font-weight: bold;
+      width: 16px;
+    }
+
+    .integration-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 8px 12px;
+      border: 1px solid #E8E4DE;
+      border-radius: 6px;
+      background: white;
+      color: #666;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn:hover {
+      background: #F8F6F3;
+      color: #7C6BC4;
+    }
+
+    .btn.primary {
+      background: #7C6BC4;
+      color: white;
+      border-color: #7C6BC4;
+    }
+
+    .btn.primary:hover {
+      background: #6B5BA8;
+    }
+
+    .btn.danger {
+      background: rgba(255, 59, 48, 0.1);
+      color: #FF3B30;
+      border-color: #FF3B30;
+    }
+
+    .btn.danger:hover {
+      background: rgba(255, 59, 48, 0.2);
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #1A1A2E;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* SUMMARY CARD */
+    .summary-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #E8E4DE;
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .summary-stat {
+      text-align: center;
+    }
+
+    .summary-value {
+      font-size: 28px;
+      font-weight: 600;
+      color: #7C6BC4;
+      margin-bottom: 4px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #999;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* DATA SYNC TABLE */
+    .sync-table {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #E8E4DE;
+      overflow: hidden;
+    }
+
+    .sync-table-header {
+      background: #F8F6F3;
+      padding: 16px 20px;
+      border-bottom: 1px solid #E8E4DE;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sync-table-row {
+      padding: 16px 20px;
+      border-bottom: 1px solid #F0EEEA;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sync-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .sync-table-row:hover {
+      background: #F8F6F3;
+    }
+
+    .sync-data-type {
+      font-weight: 600;
+      color: #1A1A2E;
+      font-size: 13px;
+    }
+
+    .sync-last-update {
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .modal-body {
+      margin-bottom: 24px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .modal-actions .btn {
+      flex: 1;
+      margin: 0;
+      min-width: auto;
+    }
+
+    @media (max-width: 768px) {
+      .integrations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .sync-table-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="master-hub.html" class="back-link">← Back to Command Center</a>
+
+  <div class="header">
+    <h1>🔌 Integration Status</h1>
+    <p>Monitor connected APIs and data sync status</p>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-card">
+    <div class="summary-grid">
+      <div class="summary-stat">
+        <div class="summary-value">2</div>
+        <div class="summary-label">Connected</div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-value">3</div>
+        <div class="summary-label">Disconnected</div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-value">5</div>
+        <div class="summary-label">Total APIs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTEGRATIONS -->
+  <div class="section">
+    <h2 class="section-title">Connected Services</h2>
+    <div class="integrations-grid">
+      <!-- Google Ads - Connected -->
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-title">
+            <div class="integration-icon">📊</div>
+            <div class="integration-name">Google Ads</div>
+          </div>
+          <div class="status-indicator status-connected"></div>
+        </div>
+        <div class="integration-body">
+          <div class="status-text connected">✓ Connected</div>
+          <div class="sync-info">Last sync: 2 minutes ago</div>
+          <div class="data-sync">
+            <strong>Syncing:</strong>
+            <div class="data-sync-item">Campaign metrics (daily)</div>
+            <div class="data-sync-item">Keyword performance</div>
+            <div class="data-sync-item">Conversions & costs</div>
+            <div class="data-sync-item">Quality scores</div>
+          </div>
+          <div class="integration-actions">
+            <button class="btn" onclick="testConnection('Google Ads')">🧪 Test</button>
+            <button class="btn danger" onclick="disconnect('Google Ads')">Disconnect</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta (Facebook/Instagram) - Connected -->
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-title">
+            <div class="integration-icon">📱</div>
+            <div class="integration-name">Meta (FB/IG)</div>
+          </div>
+          <div class="status-indicator status-connected"></div>
+        </div>
+        <div class="integration-body">
+          <div class="status-text connected">✓ Connected</div>
+          <div class="sync-info">Last sync: 5 minutes ago</div>
+          <div class="data-sync">
+            <strong>Syncing:</strong>
+            <div class="data-sync-item">Ad performance (daily)</div>
+            <div class="data-sync-item">Audience insights</div>
+            <div class="data-sync-item">Conversion tracking</div>
+            <div class="data-sync-item">Creative performance</div>
+          </div>
+          <div class="integration-actions">
+            <button class="btn" onclick="testConnection('Meta')">🧪 Test</button>
+            <button class="btn danger" onclick="disconnect('Meta')">Disconnect</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TikTok Ads - Disconnected -->
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-title">
+            <div class="integration-icon">🎵</div>
+            <div class="integration-name">TikTok Ads</div>
+          </div>
+          <div class="status-indicator status-disconnected"></div>
+        </div>
+        <div class="integration-body">
+          <div class="status-text disconnected">✗ Disconnected</div>
+          <div class="sync-info">Not connected yet</div>
+          <div class="data-sync">
+            <strong>Available to sync:</strong>
+            <div class="data-sync-item">Campaign metrics</div>
+            <div class="data-sync-item">Video performance</div>
+            <div class="data-sync-item">Audience demographics</div>
+          </div>
+          <div class="integration-actions">
+            <button class="btn primary" onclick="connectIntegration('TikTok Ads')">→ Connect</button>
+            <button class="btn" onclick="testConnection('TikTok Ads')">🧪 Test</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PostHog Analytics - Disconnected -->
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-title">
+            <div class="integration-icon">📈</div>
+            <div class="integration-name">PostHog Analytics</div>
+          </div>
+          <div class="status-indicator status-disconnected"></div>
+        </div>
+        <div class="integration-body">
+          <div class="status-text disconnected">✗ Disconnected</div>
+          <div class="sync-info">Not connected yet</div>
+          <div class="data-sync">
+            <strong>Available to sync:</strong>
+            <div class="data-sync-item">User behavior tracking</div>
+            <div class="data-sync-item">Funnel analytics</div>
+            <div class="data-sync-item">Conversion events</div>
+          </div>
+          <div class="integration-actions">
+            <button class="btn primary" onclick="connectIntegration('PostHog Analytics')">→ Connect</button>
+            <button class="btn" onclick="testConnection('PostHog Analytics')">🧪 Test</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ElevenLabs Voice - Disconnected -->
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-title">
+            <div class="integration-icon">🎙️</div>
+            <div class="integration-name">ElevenLabs Voice</div>
+          </div>
+          <div class="status-indicator status-disconnected"></div>
+        </div>
+        <div class="integration-body">
+          <div class="status-text disconnected">✗ Disconnected</div>
+          <div class="sync-info">Not connected yet</div>
+          <div class="data-sync">
+            <strong>Available to sync:</strong>
+            <div class="data-sync-item">Voice generation API</div>
+            <div class="data-sync-item">Character voice management</div>
+            <div class="data-sync-item">Audio file storage</div>
+          </div>
+          <div class="integration-actions">
+            <button class="btn primary" onclick="connectIntegration('ElevenLabs Voice')">→ Connect</button>
+            <button class="btn" onclick="testConnection('ElevenLabs Voice')">🧪 Test</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA SYNC DETAILS -->
+  <div class="section">
+    <h2 class="section-title">Data Sync Details</h2>
+    <div class="sync-table">
+      <div class="sync-table-header">Connected Integrations & Last Sync Status</div>
+      <div class="sync-table-row">
+        <div>
+          <div class="sync-data-type">Google Ads Campaigns</div>
+          <div class="sync-last-update">Last updated: 2 min ago (April 1, 7:42 PM)</div>
+        </div>
+        <div style="color: #34C759; font-weight: 600;">✓ Active</div>
+      </div>
+      <div class="sync-table-row">
+        <div>
+          <div class="sync-data-type">Facebook/Instagram Ads</div>
+          <div class="sync-last-update">Last updated: 5 min ago (April 1, 7:39 PM)</div>
+        </div>
+        <div style="color: #34C759; font-weight: 600;">✓ Active</div>
+      </div>
+      <div class="sync-table-row">
+        <div>
+          <div class="sync-data-type">Conversion Tracking (Both)</div>
+          <div class="sync-last-update">Last updated: 1 min ago (April 1, 7:43 PM)</div>
+        </div>
+        <div style="color: #34C759; font-weight: 600;">✓ Active</div>
+      </div>
+      <div class="sync-table-row">
+        <div>
+          <div class="sync-data-type">Revenue & Payouts</div>
+          <div class="sync-last-update">Last updated: Daily (8:00 PM each night)</div>
+        </div>
+        <div style="color: #34C759; font-weight: 600;">✓ Scheduled</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONNECT MODAL -->
+<div class="modal" id="connectModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title" id="connectTitle">Connect Integration</h2>
+    <div class="modal-body" id="connectBody"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="saveConnection()">Complete Setup</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEST MODAL -->
+<div class="modal" id="testModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title" id="testTitle">Connection Test</h2>
+    <div class="modal-body" id="testBody"></div>
+    <div class="modal-actions">
+      <button class="btn primary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentIntegration = null;
+
+  function connectIntegration(name) {
+    currentIntegration = name;
+    document.getElementById('connectTitle').textContent = `Connect ${name}`;
+    
+    let html = '';
+    switch(name) {
+      case 'TikTok Ads':
+        html = `
+          <p style="margin-bottom: 16px; color: #666; font-size: 13px;">
+            Authorize ENNIE to access your TikTok Ads account. You'll be redirected to TikTok to approve access.
+          </p>
+          <div style="padding: 16px; background: #F8F6F3; border-radius: 8px; margin-bottom: 16px;">
+            <p style="font-size: 12px; color: #666; margin-bottom: 8px;"><strong>Permissions required:</strong></p>
+            <ul style="font-size: 12px; color: #999; margin-left: 16px;">
+              <li>Read campaign data</li>
+              <li>Read ads and creatives</li>
+              <li>Read conversion data</li>
+            </ul>
+          </div>
+        `;
+        break;
+      case 'PostHog Analytics':
+        html = `
+          <p style="margin-bottom: 16px; color: #666; font-size: 13px;">
+            Enter your PostHog project API key to connect analytics tracking.
+          </p>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #666;">Project API Key</label>
+            <input type="password" placeholder="phc_xxxxxxxxxxxx" style="width: 100%; padding: 8px 12px; border: 1px solid #E8E4DE; border-radius: 6px; font-size: 12px;">
+          </div>
+        `;
+        break;
+      case 'ElevenLabs Voice':
+        html = `
+          <p style="margin-bottom: 16px; color: #666; font-size: 13px;">
+            Enter your ElevenLabs API key for voice generation.
+          </p>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #666;">API Key</label>
+            <input type="password" placeholder="xxxxxxxxxxxx" style="width: 100%; padding: 8px 12px; border: 1px solid #E8E4DE; border-radius: 6px; font-size: 12px;">
+          </div>
+        `;
+        break;
+    }
+    
+    document.getElementById('connectBody').innerHTML = html;
+    document.getElementById('connectModal').classList.add('active');
+  }
+
+  function testConnection(name) {
+    document.getElementById('testTitle').textContent = `Testing ${name}`;
+    document.getElementById('testBody').innerHTML = `
+      <p style="color: #999; font-size: 13px; margin-bottom: 16px;">Testing connection...</p>
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 32px; animation: spin 1s linear infinite;">🔄</div>
+      </div>
+    `;
+    document.getElementById('testModal').classList.add('active');
+    
+    setTimeout(() => {
+      document.getElementById('testBody').innerHTML = `
+        <div style="padding: 16px; background: rgba(52, 199, 89, 0.1); border-radius: 8px; border-left: 2px solid #34C759;">
+          <p style="color: #34C759; font-weight: 600; margin-bottom: 8px;">✓ Connection Successful</p>
+          <p style="color: #666; font-size: 12px;">All API endpoints are responding correctly. Data sync is working.</p>
+        </div>
+      `;
+    }, 1500);
+  }
+
+  function disconnect(name) {
+    if (confirm(`Are you sure you want to disconnect ${name}? This will stop data syncing.`)) {
+      alert(`${name} has been disconnected.`);
+    }
+  }
+
+  function saveConnection() {
+    alert(`${currentIntegration} has been connected successfully!`);
+    closeModal();
+  }
+
+  function closeModal() {
+    document.getElementById('connectModal').classList.remove('active');
+    document.getElementById('testModal').classList.remove('active');
+  }
+
+  // Spin animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>

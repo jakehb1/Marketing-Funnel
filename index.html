@@ -376,6 +376,15 @@
         <div class="nav-section-title"> Operations</div>
         <a class="nav-link" onclick="showView('automation')">Patient Funnel Automation</a>
         <a class="nav-link" onclick="showView('ad-ops')">Ad Operations</a>
+        <a class="nav-link" href="metrics.html" target="_blank">Metrics Dashboard</a>
+        <a class="nav-link" href="calendar.html" target="_blank">Campaign Calendar</a>
+        <a class="nav-link" href="integrations.html" target="_blank">Integration Status</a>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="nav-section">
+        <div class="nav-section-title"> Settings</div>
+        <a class="nav-link" href="team-settings.html" target="_blank">Team & Settings</a>
       </div>
 
       <!-- EXTERNAL TOOLS -->
@@ -459,6 +468,34 @@
             <h3>Agent Dashboard</h3>
             <p>Monitor active agents, their tasks, approvals, and real-time metrics.</p>
             <div class="card-meta">5 agents • Live tracking</div>
+          </div>
+        </div>
+
+        <h2 class="section-heading"> Operations & Analytics</h2>
+        <div class="card-grid">
+          <div class="card external" onclick="window.open('metrics.html', '_blank')">
+            <div class="card-icon">📊</div>
+            <h3>Metrics Dashboard</h3>
+            <p>Real-time performance metrics: spend, conversions, ROI, CPA by channel, funnel breakdown.</p>
+            <div class="card-meta">Click to open dashboard</div>
+          </div>
+          <div class="card external" onclick="window.open('calendar.html', '_blank')">
+            <div class="card-icon">📅</div>
+            <h3>Campaign Calendar</h3>
+            <p>Timeline view of all campaigns with launch dates, budgets, and status. Drag-to-reschedule.</p>
+            <div class="card-meta">Month & timeline views</div>
+          </div>
+          <div class="card external" onclick="window.open('integrations.html', '_blank')">
+            <div class="card-icon">🔌</div>
+            <h3>Integration Status</h3>
+            <p>Monitor API connections: Google Ads, Meta, TikTok, PostHog, ElevenLabs. Last sync times.</p>
+            <div class="card-meta">2 connected • 3 available</div>
+          </div>
+          <div class="card external" onclick="window.open('team-settings.html', '_blank')">
+            <div class="card-icon">👥</div>
+            <h3>Team & Settings</h3>
+            <p>Manage team members, API keys, webhooks, notification preferences, and general settings.</p>
+            <div class="card-meta">4 team members</div>
           </div>
         </div>
       </div>

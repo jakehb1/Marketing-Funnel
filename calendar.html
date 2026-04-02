@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaign Calendar - ENNIE Marketing</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F3EE;
+      color: #1A1A2E;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header-left p {
+      font-size: 13px;
+      color: #999;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 13px;
+      color: #7C6BC4;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+      background: white;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid #E8E4DE;
+    }
+
+    .toggle-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .toggle-btn.active {
+      background: #7C6BC4;
+      color: white;
+    }
+
+    /* CALENDAR GRID */
+    .calendar-view {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #E8E4DE;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .calendar-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      padding: 8px 12px;
+      border: 1px solid #E8E4DE;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: #F8F6F3;
+      color: #7C6BC4;
+    }
+
+    /* MONTH CALENDAR */
+    .month-calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+    }
+
+    .day-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+      text-align: center;
+      padding: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      background: #F8F6F3;
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .day:hover {
+      background: #F0EDE8;
+    }
+
+    .day.other-month {
+      background: white;
+      color: #CCC;
+    }
+
+    .day-number {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #666;
+    }
+
+    .day.other-month .day-number {
+      color: #DDD;
+    }
+
+    .day-events {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .event-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* TIMELINE VIEW */
+    .timeline-view {
+      display: none;
+    }
+
+    .timeline-view.active {
+      display: block;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 120px 1fr 150px;
+      gap: 20px;
+      padding: 16px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #E8E4DE;
+      margin-bottom: 12px;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .timeline-item:hover {
+      border-color: #7C6BC4;
+      box-shadow: 0 4px 12px rgba(124, 107, 196, 0.1);
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+    }
+
+    .timeline-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timeline-name {
+      font-weight: 600;
+      color: #1A1A2E;
+      font-size: 13px;
+    }
+
+    .timeline-details {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .timeline-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: fit-content;
+    }
+
+    /* FUNNEL COLORS */
+    .funnel-healer {
+      background: rgba(52, 199, 89, 0.1);
+      color: #34C759;
+      border-left: 2px solid #34C759;
+    }
+
+    .funnel-patient {
+      background: rgba(124, 107, 196, 0.1);
+      color: #7C6BC4;
+      border-left: 2px solid #7C6BC4;
+    }
+
+    .funnel-referral {
+      background: rgba(255, 149, 0, 0.1);
+      color: #FF9500;
+      border-left: 2px solid #FF9500;
+    }
+
+    .funnel-untrained {
+      background: rgba(255, 59, 48, 0.1);
+      color: #FF3B30;
+      border-left: 2px solid #FF3B30;
+    }
+
+    .funnel-owned {
+      background: rgba(10, 132, 255, 0.1);
+      color: #0A84FF;
+      border-left: 2px solid #0A84FF;
+    }
+
+    /* STATUS BADGE */
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-active {
+      background: rgba(52, 199, 89, 0.1);
+      color: #34C759;
+    }
+
+    .status-paused {
+      background: rgba(255, 193, 7, 0.1);
+      color: #FFC107;
+    }
+
+    .status-scheduled {
+      background: rgba(0, 122, 255, 0.1);
+      color: #007AFF;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .modal-field {
+      margin-bottom: 16px;
+    }
+
+    .modal-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 6px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-value {
+      font-size: 14px;
+      color: #1A1A2E;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid #E8E4DE;
+      border-radius: 6px;
+      background: white;
+      color: #666;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #F8F6F3;
+    }
+
+    .btn.primary {
+      background: #7C6BC4;
+      color: white;
+      border-color: #7C6BC4;
+    }
+
+    .btn.primary:hover {
+      background: #6B5BA8;
+    }
+
+    /* LEGEND */
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+      padding: 20px;
+      background: #F8F6F3;
+      border-radius: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .month-calendar {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+      }
+
+      .day {
+        padding: 4px;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .modal-content {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="master-hub.html" class="back-link">← Back to Command Center</a>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>📅 Campaign Calendar</h1>
+      <p>Timeline view of all campaigns with launch dates, budgets, and status</p>
+    </div>
+    <div class="view-toggle">
+      <button class="toggle-btn active" onclick="switchView('month')">Month View</button>
+      <button class="toggle-btn" onclick="switchView('timeline')">Timeline</button>
+    </div>
+  </div>
+
+  <!-- MONTH CALENDAR VIEW -->
+  <div id="month" class="calendar-view">
+    <div class="calendar-header">
+      <h2 id="monthTitle">April 2026</h2>
+      <div class="calendar-nav">
+        <button class="nav-btn" onclick="previousMonth()">← Prev</button>
+        <button class="nav-btn" onclick="todayMonth()">Today</button>
+        <button class="nav-btn" onclick="nextMonth()">Next →</button>
+      </div>
+    </div>
+    <div class="month-calendar" id="monthCalendar"></div>
+  </div>
+
+  <!-- TIMELINE VIEW -->
+  <div id="timeline-container" class="calendar-view timeline-view">
+    <div class="calendar-header">
+      <h2>Campaign Timeline</h2>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-color" style="background: #34C759;"></div>
+      <span>Healer Funnel</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #7C6BC4;"></div>
+      <span>Patient Funnel</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #FF9500;"></div>
+      <span>Referral Funnel</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #FF3B30;"></div>
+      <span>Untrained Funnel</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #0A84FF;"></div>
+      <span>Owned Funnel</span>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGN DETAIL MODAL -->
+<div class="modal" id="campaignModal">
+  <div style="position: relative; width: 100%;">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-content">
+      <h2 class="modal-title" id="modalTitle">Campaign Details</h2>
+      <div id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Close</button>
+        <button class="btn primary" onclick="editCampaign()">Edit Campaign</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentDate = new Date(2026, 3, 1); // April 2026
+  let selectedCampaign = null;
+
+  const campaigns = [
+    {
+      id: 1,
+      name: 'Patient Awareness - Instagram',
+      funnel: 'patient',
+      status: 'active',
+      startDate: new Date(2026, 3, 5),
+      endDate: new Date(2026, 3, 25),
+      budget: '$8,500',
+      spent: '$6,200',
+      conversions: 245
+    },
+    {
+      id: 2,
+      name: 'Healer Recruitment - Google Ads',
+      funnel: 'healer',
+      status: 'active',
+      startDate: new Date(2026, 3, 8),
+      endDate: new Date(2026, 3, 30),
+      budget: '$12,000',
+      spent: '$9,800',
+      conversions: 412
+    },
+    {
+      id: 3,
+      name: 'Referral Program Launch',
+      funnel: 'referral',
+      status: 'scheduled',
+      startDate: new Date(2026, 4, 1),
+      endDate: new Date(2026, 4, 20),
+      budget: '$5,000',
+      spent: '$0',
+      conversions: 0
+    },
+    {
+      id: 4,
+      name: 'Patient Retention - Email',
+      funnel: 'patient',
+      status: 'active',
+      startDate: new Date(2026, 3, 12),
+      endDate: new Date(2026, 5, 12),
+      budget: '$3,200',
+      spent: '$1,600',
+      conversions: 189
+    },
+    {
+      id: 5,
+      name: 'Untrained Healer - Summer Push',
+      funnel: 'untrained',
+      status: 'scheduled',
+      startDate: new Date(2026, 5, 1),
+      endDate: new Date(2026, 7, 31),
+      budget: '$15,000',
+      spent: '$0',
+      conversions: 0
+    }
+  ];
+
+  function renderMonth() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    document.getElementById('monthTitle').textContent = 
+      currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+    
+    let html = '';
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    dayNames.forEach(day => {
+      html += `<div class="day-header">${day}</div>`;
+    });
+    
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const day = daysInPrevMonth - i;
+      html += `<div class="day other-month">
+        <div class="day-number">${day}</div>
+        <div class="day-events"></div>
+      </div>`;
+    }
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const campaignsOnDay = campaigns.filter(c => 
+        date >= c.startDate && date <= c.endDate
+      );
+      
+      let eventHtml = '';
+      campaignsOnDay.forEach(c => {
+        const funnelColor = {
+          healer: '#34C759',
+          patient: '#7C6BC4',
+          referral: '#FF9500',
+          untrained: '#FF3B30',
+          owned: '#0A84FF'
+        }[c.funnel];
+        eventHtml += `<div class="event-dot" style="background: ${funnelColor};" title="${c.name}"></div>`;
+      });
+      
+      html += `<div class="day" onclick="showCampaignDetail(event)">
+        <div class="day-number">${day}</div>
+        <div class="day-events">${eventHtml}</div>
+      </div>`;
+    }
+    
+    for (let day = 1; day <= (42 - firstDay - daysInMonth); day++) {
+      html += `<div class="day other-month">
+        <div class="day-number">${day}</div>
+        <div class="day-events"></div>
+      </div>`;
+    }
+    
+    document.getElementById('monthCalendar').innerHTML = html;
+  }
+
+  function renderTimeline() {
+    const sorted = [...campaigns].sort((a, b) => a.startDate - b.startDate);
+    let html = '';
+    
+    sorted.forEach(c => {
+      const funnelClass = `funnel-${c.funnel}`;
+      const statusBadge = `<span class="status-badge status-${c.status}">${c.status.toUpperCase()}</span>`;
+      
+      html += `<div class="timeline-item ${funnelClass}" onclick="showCampaignDetail(null, ${c.id})">
+        <div class="timeline-date">
+          ${c.startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - 
+          ${c.endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-name">${c.name}</div>
+          <div class="timeline-details">Budget: ${c.budget} • Spent: ${c.spent} • ${c.conversions} conversions</div>
+        </div>
+        <div>${statusBadge}</div>
+      </div>`;
+    });
+    
+    document.getElementById('timeline').innerHTML = html;
+  }
+
+  function switchView(view) {
+    document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const monthView = document.getElementById('month');
+    const timelineView = document.getElementById('timeline-container');
+    
+    if (view === 'month') {
+      monthView.style.display = 'block';
+      timelineView.style.display = 'none';
+      renderMonth();
+    } else {
+      monthView.style.display = 'none';
+      timelineView.style.display = 'block';
+      renderTimeline();
+    }
+  }
+
+  function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderMonth();
+  }
+
+  function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderMonth();
+  }
+
+  function todayMonth() {
+    currentDate = new Date();
+    renderMonth();
+  }
+
+  function showCampaignDetail(e, campaignId) {
+    if (e && e.target.classList.contains('event-dot')) {
+      const title = e.target.title;
+      const campaign = campaigns.find(c => c.name === title);
+      if (campaign) showCampaignDetail(null, campaign.id);
+      return;
+    }
+    
+    selectedCampaign = campaigns.find(c => c.id === campaignId);
+    if (!selectedCampaign) return;
+    
+    const funnelEmoji = {
+      healer: '🌿',
+      patient: '👤',
+      referral: '🤝',
+      untrained: '❓',
+      owned: '🏠'
+    }[selectedCampaign.funnel];
+    
+    document.getElementById('modalTitle').textContent = selectedCampaign.name;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="modal-field">
+        <label class="modal-label">Funnel</label>
+        <div class="modal-value">${funnelEmoji} ${selectedCampaign.funnel.charAt(0).toUpperCase() + selectedCampaign.funnel.slice(1)}</div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Status</label>
+        <div class="modal-value">
+          <span class="status-badge status-${selectedCampaign.status}">${selectedCampaign.status.toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Duration</label>
+        <div class="modal-value">
+          ${selectedCampaign.startDate.toLocaleDateString()} - ${selectedCampaign.endDate.toLocaleDateString()}
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Budget & Spend</label>
+        <div class="modal-value">${selectedCampaign.budget} (${selectedCampaign.spent} spent)</div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Conversions</label>
+        <div class="modal-value">${selectedCampaign.conversions}</div>
+      </div>
+    `;
+    document.getElementById('campaignModal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('campaignModal').classList.remove('active');
+  }
+
+  function editCampaign() {
+    alert(`Edit campaign: ${selectedCampaign.name}\n\nFeature coming soon!`);
+  }
+
+  // Initialize
+  renderMonth();
+</script>
+
+</body>
+</html>
