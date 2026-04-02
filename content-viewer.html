@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Library</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F3EE;
+      color: #1A1A2E;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid #E8E4DE;
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header a {
+      color: #7C6BC4;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    select {
+      padding: 8px 12px;
+      border: 1px solid #E8E4DE;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+    }
+
+    input {
+      padding: 8px 12px;
+      border: 1px solid #E8E4DE;
+      border-radius: 6px;
+      font-size: 13px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .content-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #E8E4DE;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .content-card:hover {
+      border-color: #7C6BC4;
+      box-shadow: 0 4px 12px rgba(124, 107, 196, 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .card-type {
+      display: inline-block;
+      background: #EDE9F9;
+      color: #7C6BC4;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .card-funnel {
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .card-stage {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .card-content {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      max-height: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .card-footer {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #E8E4DE;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #999;
+    }
+
+    .copy-btn {
+      background: #7C6BC4;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .copy-btn:hover {
+      background: #6B5BA8;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    .modal.active {
+      display: block;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 32px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .modal-close:hover {
+      color: #1A1A2E;
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .modal-meta {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #E8E4DE;
+    }
+
+    .modal-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #333;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #7C6BC4;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #6B5BA8;
+    }
+
+    .stats {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 40px;
+      border: 1px solid #E8E4DE;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 600;
+      color: #7C6BC4;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-size: 12px;
+      margin-top: 60px;
+      border-top: 1px solid #E8E4DE;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Content Library</h2>
+  <a href="index.html">← Back to Hub</a>
+</header>
+
+<div class="container">
+  <h1>2,407 Marketing Assets</h1>
+  <p class="subtitle">Production-ready copy, emails, ads, landing pages, and scripts organized by funnel and stage.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="totalCount">2,407</div>
+      <div class="stat-label">Total Assets</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="funnelCount">5</div>
+      <div class="stat-label">Funnels</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="stageCount">29</div>
+      <div class="stat-label">Stages</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <select id="funnelFilter">
+      <option value="">All Funnels</option>
+      <option value="healer">Experienced Healer</option>
+      <option value="untrained">Untrained Potential</option>
+      <option value="patient">Chronic Pain Patient</option>
+      <option value="referral">Referral Loop</option>
+      <option value="owned">Charlie's Owned</option>
+    </select>
+
+    <select id="typeFilter">
+      <option value="">All Types</option>
+      <option value="email">Email</option>
+      <option value="ad">Ad Copy</option>
+      <option value="landing">Landing Page</option>
+      <option value="social">Social Media</option>
+      <option value="sms">SMS</option>
+      <option value="script">Script</option>
+      <option value="subject">Subject Line</option>
+      <option value="cta">CTA</option>
+    </select>
+
+    <input type="text" id="searchInput" placeholder="Search content...">
+  </div>
+
+  <div class="content-grid" id="contentGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-meta">
+      <span id="modalFunnel"></span> • <span id="modalStage"></span> • <span id="modalType"></span>
+    </div>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-text" id="modalText"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>ENNIE Marketing Content Library — 2,407 assets from 27 video transcripts</p>
+  <p style="margin-top: 12px; opacity: 0.5;">All content approved by Charlie before use</p>
+</footer>
+
+<script>
+  let allContent = [];
+  let currentSelected = null;
+
+  // Load content from JSON
+  fetch('comprehensive-content.json')
+    .then(res => res.json())
+    .then(data => {
+      allContent = data.content || [];
+      renderContent(allContent);
+    })
+    .catch(err => console.error('Failed to load content:', err));
+
+  function renderContent(items) {
+    const grid = document.getElementById('contentGrid');
+    grid.innerHTML = '';
+
+    items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'content-card';
+      card.onclick = () => openModal(item);
+
+      const preview = (item.content || item.text || '').substring(0, 80);
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-type">${item.type || 'content'}</span>
+        </div>
+        <div class="card-funnel">${item.funnel || 'General'}</div>
+        <div class="card-stage">${item.stage || 'N/A'}</div>
+        <div class="card-content">${preview}...</div>
+        <div class="card-footer">
+          <span>${preview.length} chars</span>
+          <button class="copy-btn" onclick="event.stopPropagation(); copyContent('${btoa(item.content || item.text || '')}')">Copy</button>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  function openModal(item) {
+    currentSelected = item;
+    document.getElementById('modalFunnel').textContent = item.funnel || 'General';
+    document.getElementById('modalStage').textContent = item.stage || 'N/A';
+    document.getElementById('modalType').textContent = item.type || 'Content';
+    document.getElementById('modalTitle').textContent = item.title || item.type;
+    document.getElementById('modalText').textContent = item.content || item.text || '';
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function closeModal(event) {
+    if (event && event.target.id !== 'modal') return;
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function copyToClipboard() {
+    if (!currentSelected) return;
+    const text = currentSelected.content || currentSelected.text || '';
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Copied to clipboard!');
+    });
+  }
+
+  function copyContent(encoded) {
+    const text = atob(encoded);
+    navigator.clipboard.writeText(text);
+  }
+
+  // Filters
+  document.getElementById('funnelFilter').addEventListener('change', applyFilters);
+  document.getElementById('typeFilter').addEventListener('change', applyFilters);
+  document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+  function applyFilters() {
+    const funnel = document.getElementById('funnelFilter').value;
+    const type = document.getElementById('typeFilter').value;
+    const search = document.getElementById('searchInput').value.toLowerCase();
+
+    const filtered = allContent.filter(item => {
+      const matchFunnel = !funnel || (item.funnel || '').includes(funnel);
+      const matchType = !type || (item.type || '').includes(type);
+      const matchSearch = !search || (item.content || item.text || '').toLowerCase().includes(search) || (item.title || '').toLowerCase().includes(search);
+      return matchFunnel && matchType && matchSearch;
+    });
+
+    renderContent(filtered);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
