@@ -17,35 +17,43 @@
       --patient: #7C6BC4;
       --referral: #C4775A;
       --owned: #5A8FC4;
-      --dark: #1A1A2E;
-      --bg: #F5F3EE;
-      --border: #E8E4DE;
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --safe: #28A745;
       --review: #FFC107;
       --revise: #DC3545;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
+      color: var(--color-text);
       overflow: hidden;
     }
 
     header {
-      background: var(--dark);
-      color: white;
+      background: var(--bg-card);
+      color: var(--color-text);
       padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border-bottom: 1px solid var(--color-border);
       z-index: 100;
     }
 
     header h1 {
       font-size: 18px;
       font-weight: 600;
+      font-family: var(--font-serif);
+      color: var(--color-text);
     }
 
     .controls {
@@ -58,16 +66,16 @@
     .control-group {
       display: flex;
       gap: 8px;
-      background: rgba(255,255,255,0.1);
+      background: transparent;
       padding: 8px 12px;
       border-radius: 6px;
     }
 
     .control-group button {
       padding: 6px 12px;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
+      background: var(--color-border);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
       border-radius: 4px;
       cursor: pointer;
       font-size: 11px;
@@ -76,18 +84,22 @@
     }
 
     .control-group button:hover {
-      background: rgba(255,255,255,0.3);
+      background: var(--color-primary);
+      color: var(--bg-card);
+      border-color: var(--color-primary);
     }
 
     .control-group button.active {
-      background: var(--patient);
+      background: var(--color-primary);
+      color: var(--bg-card);
+      border-color: var(--color-primary);
     }
 
     #canvas {
       display: block;
       width: 100%;
       height: calc(100vh - 60px);
-      background: var(--bg);
+      background: var(--bg-main);
       cursor: grab;
     }
 
@@ -101,12 +113,12 @@
       top: 60px;
       width: 480px;
       height: calc(100vh - 60px);
-      background: white;
-      border-left: 1px solid var(--border);
+      background: var(--bg-card);
+      border-left: 1px solid var(--color-border);
       overflow-y: auto;
       padding: 0;
       z-index: 50;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      box-shadow: -2px 0 8px rgba(0,0,0,0.05);
       transform: translateX(100%);
       transition: transform 0.3s ease;
     }
@@ -118,8 +130,8 @@
     .panel-header {
       position: sticky;
       top: 0;
-      background: var(--dark);
-      color: white;
+      background: var(--color-primary);
+      color: var(--bg-card);
       padding: 20px;
       display: flex;
       justify-content: space-between;
@@ -135,17 +147,18 @@
     .panel-title h2 {
       font-size: 18px;
       margin-bottom: 4px;
+      font-family: var(--font-serif);
     }
 
     .panel-title p {
       font-size: 12px;
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     .panel-close {
       background: none;
       border: none;
-      color: white;
+      color: var(--bg-card);
       font-size: 20px;
       cursor: pointer;
       flex-shrink: 0;
@@ -162,7 +175,7 @@
     .tabs {
       display: flex;
       gap: 0;
-      border-bottom: 2px solid var(--border);
+      border-bottom: 1px solid var(--color-border);
       margin-bottom: 20px;
     }
 
@@ -174,14 +187,14 @@
       cursor: pointer;
       font-size: 11px;
       font-weight: 600;
-      color: #999;
+      color: var(--color-text-secondary);
       border-bottom: 3px solid transparent;
       transition: all 0.2s;
     }
 
     .tabs button.active {
-      color: var(--dark);
-      border-bottom-color: var(--patient);
+      color: var(--color-text);
+      border-bottom-color: var(--color-primary);
     }
 
     .tab-pane {
@@ -199,7 +212,7 @@
     .section h3 {
       font-size: 11px;
       text-transform: uppercase;
-      color: #999;
+      color: var(--color-text-secondary);
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: 0.5px;
@@ -208,7 +221,7 @@
     .section p {
       font-size: 13px;
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text);
       margin-bottom: 8px;
     }
 
@@ -223,13 +236,13 @@
     }
 
     .badge.agent {
-      background: #E3F2FD;
-      color: #1976D2;
+      background: rgba(127, 169, 151, 0.1);
+      color: var(--color-primary);
     }
 
     .badge.voice {
-      background: #F3E5F5;
-      color: #7B1FA2;
+      background: rgba(168, 153, 115, 0.1);
+      color: var(--color-secondary);
     }
 
     .compliance {
@@ -257,7 +270,7 @@
     }
 
     .workflow {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       border-radius: 8px;
       padding: 12px;
       font-size: 12px;
@@ -276,8 +289,8 @@
     }
 
     .workflow-num {
-      background: var(--patient);
-      color: white;
+      background: var(--color-primary);
+      color: var(--bg-card);
       width: 20px;
       height: 20px;
       border-radius: 50%;
@@ -292,12 +305,12 @@
     .workflow-text {
       flex: 1;
       font-size: 12px;
-      color: #333;
+      color: var(--color-text);
     }
 
     .kpi-box {
-      background: white;
-      border: 1px solid var(--border);
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
       border-radius: 6px;
       padding: 12px;
       margin-bottom: 12px;
@@ -306,7 +319,7 @@
     .kpi-label {
       font-size: 10px;
       text-transform: uppercase;
-      color: #999;
+      color: var(--color-text-secondary);
       font-weight: 600;
       margin-bottom: 4px;
     }
@@ -314,26 +327,26 @@
     .kpi-value {
       font-size: 18px;
       font-weight: bold;
-      color: var(--patient);
+      color: var(--color-primary);
       margin-bottom: 4px;
     }
 
     .kpi-note {
       font-size: 11px;
-      color: #666;
+      color: var(--color-text-secondary);
     }
 
     .legend {
       position: fixed;
       bottom: 20px;
       left: 20px;
-      background: white;
-      border: 1px solid var(--border);
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
       border-radius: 8px;
       padding: 12px 16px;
       font-size: 11px;
       z-index: 40;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .legend-section {
@@ -346,7 +359,7 @@
 
     .legend-title {
       font-weight: 600;
-      color: #999;
+      color: var(--color-text-secondary);
       font-size: 10px;
       text-transform: uppercase;
       margin-bottom: 6px;
@@ -385,7 +398,7 @@
 
 <header>
   <div>
-    <h1>🤖 ENNIE Agent-Native Marketing Dashboard</h1>
+    <h1> ENNIE Agent-Native Marketing Dashboard</h1>
   </div>
   <div class="controls">
     <div class="control-group">
@@ -426,7 +439,7 @@
       <h2 id="panelTitle"></h2>
       <p id="panelFunnel"></p>
     </div>
-    <button class="panel-close" onclick="closePanel()">✕</button>
+    <button class="panel-close" onclick="closePanel()">�</button>
   </div>
   <div class="panel-content">
     <div class="tabs">
@@ -444,7 +457,7 @@
       </div>
       <div class="section">
         <h3>Key Message</h3>
-        <p style="font-style: italic; color: #666;" id="keyMsg"></p>
+        <p style="font-style: italic; color: var(--color-text-secondary);" id="keyMsg"></p>
       </div>
       <div class="section">
         <h3>Voice Consistency</h3>
@@ -474,23 +487,23 @@
         <div class="workflow">
           <div class="workflow-step">
             <div class="workflow-num">1</div>
-            <div class="workflow-text"><strong>Ingest</strong> — Pull data from PostHog, Loops, app events</div>
+            <div class="workflow-text"><strong>Ingest</strong>  Pull data from PostHog, Loops, app events</div>
           </div>
           <div class="workflow-step">
             <div class="workflow-num">2</div>
-            <div class="workflow-text"><strong>Reason</strong> — Claude determines next action based on context</div>
+            <div class="workflow-text"><strong>Reason</strong>  Claude determines next action based on context</div>
           </div>
           <div class="workflow-step">
             <div class="workflow-num">3</div>
-            <div class="workflow-text"><strong>Execute</strong> — API calls to Buffer, Loops, Canva, ElevenLabs</div>
+            <div class="workflow-text"><strong>Execute</strong>  API calls to Buffer, Loops, Canva, ElevenLabs</div>
           </div>
           <div class="workflow-step">
             <div class="workflow-num">4</div>
-            <div class="workflow-text"><strong>Log</strong> — Every action recorded for audit & optimization</div>
+            <div class="workflow-text"><strong>Log</strong>  Every action recorded for audit & optimization</div>
           </div>
           <div class="workflow-step">
             <div class="workflow-num">5</div>
-            <div class="workflow-text"><strong>Escalate</strong> — Hit boundary? Route to Slack for review</div>
+            <div class="workflow-text"><strong>Escalate</strong>  Hit boundary? Route to Slack for review</div>
           </div>
         </div>
       </div>
@@ -512,12 +525,12 @@
       <div class="section">
         <h3>Jurisdictions</h3>
         <p style="font-size: 12px; line-height: 1.6;">
-          ✓ Australia<br>
-          ✓ USA<br>
-          ✓ UK<br>
-          ✓ EU<br>
-          ✓ Canada<br>
-          ✓ India (TBD)
+           Australia<br>
+           USA<br>
+           UK<br>
+           EU<br>
+           Canada<br>
+           India (TBD)
         </p>
       </div>
     </div>
@@ -544,11 +557,11 @@
       agent: "Participant Outreach Agent", agentShort: "PO",
       desc: "Cold email, Meta ads, TikTok, Facebook groups. Healer discovers Ennie.",
       keyMsg: "Do they take someone from 10/10 pain to zero within minutes?",
-      voice: "✓ Approved",
+      voice: " Approved",
       agentDesc: "Top-of-funnel hunter. Executes cold outreach campaigns.",
       agentDuties: "Manages email lists, ad targeting, community discovery",
       agentTools: "RocketReach, BookYourData, Buffer, Meta API",
-      trigger: "Daily at 09:00 UTC — pulls new healer leads from RocketReach",
+      trigger: "Daily at 09:00 UTC  pulls new healer leads from RocketReach",
       compliance: "safe",
       complianceNote: "Direct quote from Charlie. No medical claims.",
       metrics: [
@@ -562,11 +575,11 @@
       agent: "Voice Agent", agentShort: "V",
       desc: "Healer lands on page. Charlie's credentials, proof, income potential.",
       keyMsg: "Your ability is real. Get paid for it.",
-      voice: "✓ Charlie-voice",
+      voice: " Charlie-voice",
       agentDesc: "Creates all customer-facing content. Maintains voice consistency.",
       agentDuties: "Landing page copy, website optimization, messaging consistency",
       agentTools: "Webflow, Claude API, ElevenLabs",
-      trigger: "On page load — dynamically personalizes copy based on source",
+      trigger: "On page load  dynamically personalizes copy based on source",
       compliance: "safe",
       complianceNote: "Income claims are factual. No medical claims.",
       metrics: [
@@ -580,11 +593,11 @@
       agent: "Growth Agent", agentShort: "G",
       desc: "Signup. Referral link issued. Welcome email sent.",
       keyMsg: "Top referrers win a trip to learn from Charlie",
-      voice: "✓ Charlie-voice",
+      voice: " Charlie-voice",
       agentDesc: "Manages funnel mechanics and nurture sequences.",
       agentDuties: "Waitlist signup flow, referral link generation, welcome sequence",
       agentTools: "Loops, Viral Loops, PostHog",
-      trigger: "Instant — auto-triggered on signup",
+      trigger: "Instant  auto-triggered on signup",
       compliance: "safe",
       complianceNote: "Referral program terms are clear.",
       metrics: [
@@ -598,7 +611,7 @@
       agent: "Growth Agent", agentShort: "G",
       desc: "8-email sequence over 5 months. Insider updates, referral pushes.",
       keyMsg: "Something real is being built. You're part of it.",
-      voice: "✓ Charlie-voice",
+      voice: " Charlie-voice",
       agentDesc: "Manages email sequences and retention.",
       agentDuties: "Email scheduling, personalization, A/B testing",
       agentTools: "Loops, Klaviyo, PostHog",
@@ -616,7 +629,7 @@
       agent: "Growth Agent", agentShort: "G",
       desc: "Invited to remote healing assessment. Anonymous real-world sessions.",
       keyMsg: "Time to find out if you've got it.",
-      voice: "✓ Approved",
+      voice: " Approved",
       agentDesc: "Manages assessment queue and invitations.",
       agentDuties: "Queue prioritization, invite scheduling, session coordination",
       agentTools: "PostHog, Loops, Ennie app API",
@@ -632,13 +645,13 @@
     {
       id: "h6", name: "Verified", funnel: "Healer", x: 100, y: 450, color: "#6BAE9B",
       agent: "Growth Agent", agentShort: "G",
-      desc: "Consistent outcomes → joins vetted network. Profile goes live.",
+      desc: "Consistent outcomes  joins vetted network. Profile goes live.",
       keyMsg: "You're verified. Your clients are waiting.",
-      voice: "✓ Charlie-voice",
+      voice: " Charlie-voice",
       agentDesc: "Onboards verified healers and manages profiles.",
       agentDuties: "Healer verification, profile publishing, client matching",
       agentTools: "Ennie app, PostHog, Loops",
-      trigger: "Pass assessment → instant verification & profile publication",
+      trigger: "Pass assessment  instant verification & profile publication",
       compliance: "safe",
       complianceNote: "Verified status is outcome-based, not credential-based.",
       metrics: [
@@ -652,11 +665,11 @@
       agent: "Participant Outreach", agentShort: "PO",
       desc: "Completes sessions, earns income. Weekly payouts.",
       keyMsg: "Weekly payouts from international clients",
-      voice: "✓ Approved",
+      voice: " Approved",
       agentDesc: "Drives healer earnings through client matching.",
       agentDuties: "Client matching, session quality, payout processing",
       agentTools: "Stripe, PostHog, Ennie app",
-      trigger: "Continuous — new clients matched daily",
+      trigger: "Continuous  new clients matched daily",
       compliance: "safe",
       complianceNote: "Income is transparent and outcome-based.",
       metrics: [
@@ -672,7 +685,7 @@
       agent: "Voice Agent + Growth", agentShort: "V+G",
       desc: "Google search, Meta ads, chronic pain communities.",
       keyMsg: "2 billion in chronic pain. Solutions aren't working.",
-      voice: "✓ Evidence-first",
+      voice: " Evidence-first",
       agentDesc: "Demand generation for patient side.",
       agentDuties: "SEM, paid social, organic content",
       agentTools: "Google Ads, Buffer, PostHog",
@@ -690,7 +703,7 @@
       agent: "Voice Agent", agentShort: "V",
       desc: "Patient landing page. Empathetic, credible, private.",
       keyMsg: "Tested. Private. No hype.",
-      voice: "✓ Charlie-voice",
+      voice: " Charlie-voice",
       agentDesc: "Converts patient awareness to signups.",
       agentDuties: "Landing page optimization, A/B testing",
       agentTools: "Webflow, VWO, Claude API",
@@ -708,7 +721,7 @@
       agent: "Growth Agent", agentShort: "G",
       desc: "Waitlist signup. Referral link + leaderboard access.",
       keyMsg: "Join early. Move up the queue.",
-      voice: "✓ Approved",
+      voice: " Approved",
       agentDesc: "Patient funnel mechanics.",
       agentDuties: "Signup flow, referral activation, leaderboard",
       agentTools: "Loops, Viral Loops",
@@ -818,11 +831,11 @@
     if (view === 'agents') {
       ctx.fillStyle = '#E3F2FD';
       ctx.fillRect(x - 8, y + 18, 16, 12);
-      ctx.strokeStyle = '#1976D2';
+      ctx.strokeStyle = '#7FA997';
       ctx.lineWidth = 1;
       ctx.strokeRect(x - 8, y + 18, 16, 12);
       
-      ctx.fillStyle = '#1976D2';
+      ctx.fillStyle = '#7FA997';
       ctx.font = '9px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -970,7 +983,7 @@
 
     document.getElementById('trigger').textContent = node.trigger;
 
-    document.getElementById('complianceBadge').textContent = '✓ ' + node.compliance.toUpperCase();
+    document.getElementById('complianceBadge').textContent = ' ' + node.compliance.toUpperCase();
     document.getElementById('complianceBadge').className = 'compliance ' + node.compliance;
     document.getElementById('complianceNote').textContent = node.complianceNote;
 

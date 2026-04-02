@@ -22,30 +22,37 @@
       --referral-light: #FAE8E0;
       --owned: #5A8FC4;
       --owned-light: #DDE9F5;
-      --dark: #1A1A2E;
-      --bg: #F5F3EE;
-      --border: #E8E4DE;
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
+      color: var(--color-text);
     }
 
     header {
-      background: var(--dark);
-      color: white;
+      background: var(--bg-card);
+      color: var(--color-text);
       padding: 32px 48px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border-bottom: 1px solid var(--color-border);
     }
 
     header h1 {
       font-size: 28px;
       font-weight: 600;
+      font-family: var(--font-serif);
     }
 
     header .meta {
@@ -56,7 +63,7 @@
     .nav-tabs {
       display: flex;
       gap: 0;
-      background: white;
+      background: var(--bg-card);
       border-bottom: 2px solid var(--border);
       overflow-x: auto;
       position: sticky;
@@ -73,13 +80,13 @@
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
-      color: #666;
+      color: var(--color-text-secondary);
       border-bottom: 3px solid transparent;
       transition: all 0.2s;
     }
 
     .nav-tabs button.active {
-      color: var(--dark);
+      color: var(--color-primary);
       border-bottom-color: var(--patient);
     }
 
@@ -120,20 +127,20 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
+      background: var(--bg-card);
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
     th {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 12px 16px;
       text-align: left;
       font-weight: 600;
       font-size: 12px;
       text-transform: uppercase;
-      color: #666;
+      color: var(--color-text-secondary);
       border-bottom: 1px solid var(--border);
     }
 
@@ -148,7 +155,7 @@
 
     .quote {
       font-style: italic;
-      color: #333;
+      color: var(--color-text);
       line-height: 1.5;
       max-width: 400px;
     }
@@ -204,7 +211,7 @@
 
     .landing-tabs button {
       padding: 10px 16px;
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 6px;
       cursor: pointer;
@@ -221,7 +228,7 @@
 
     .landing-page {
       display: none;
-      background: white;
+      background: var(--bg-card);
       border-radius: 8px;
       padding: 32px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -238,7 +245,7 @@
 
     .landing-page .subheading {
       font-size: 18px;
-      color: #666;
+      color: var(--color-text-secondary);
       margin-bottom: 24px;
     }
 
@@ -246,7 +253,7 @@
       font-size: 16px;
       line-height: 1.6;
       margin-bottom: 24px;
-      color: #333;
+      color: var(--color-text);
     }
 
     .landing-page .benefits {
@@ -258,7 +265,7 @@
 
     .benefit {
       padding: 16px;
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       border-radius: 8px;
       font-size: 13px;
       line-height: 1.6;
@@ -290,7 +297,7 @@
     }
 
     .email-card {
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 20px;
@@ -329,14 +336,14 @@
     .email-subject {
       font-weight: 600;
       font-size: 14px;
-      color: var(--dark);
+      color: var(--color-primary);
       flex: 1;
       margin: 0 16px;
     }
 
     .email-preview {
       font-size: 12px;
-      color: #666;
+      color: var(--color-text-secondary);
       margin-top: 8px;
     }
 
@@ -370,7 +377,7 @@
     .ad-category h3 {
       font-size: 16px;
       margin-bottom: 16px;
-      color: var(--dark);
+      color: var(--color-primary);
     }
 
     .ad-variants {
@@ -380,7 +387,7 @@
     }
 
     .ad-card {
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
@@ -388,7 +395,7 @@
 
     .ad-card .platform {
       font-size: 11px;
-      color: #999;
+      color: var(--color-text-secondary);
       text-transform: uppercase;
       font-weight: 600;
       margin-bottom: 8px;
@@ -403,14 +410,14 @@
 
     .ad-card .note {
       font-size: 11px;
-      color: #666;
+      color: var(--color-text-secondary);
       font-style: italic;
       margin-bottom: 12px;
     }
 
     /* CONTENT CALENDAR */
     .calendar-week {
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
@@ -419,7 +426,7 @@
 
     .calendar-week h3 {
       margin-bottom: 12px;
-      color: var(--dark);
+      color: var(--color-primary);
     }
 
     .calendar-posts {
@@ -429,7 +436,7 @@
     }
 
     .post-item {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 12px;
       border-radius: 6px;
       font-size: 12px;
@@ -443,13 +450,13 @@
     }
 
     .post-content {
-      color: #333;
+      color: var(--color-text);
       margin-bottom: 6px;
     }
 
     .post-funnel {
       font-size: 11px;
-      color: #666;
+      color: var(--color-text-secondary);
       font-style: italic;
     }
 
@@ -462,7 +469,7 @@
     }
 
     .compliance-card {
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
@@ -477,13 +484,13 @@
 
     .compliance-card .label {
       font-size: 12px;
-      color: #666;
+      color: var(--color-text-secondary);
       text-transform: uppercase;
       font-weight: 600;
     }
 
     .compliance-issues {
-      background: white;
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
@@ -508,7 +515,7 @@
 
     .issue-suggestion {
       font-size: 12px;
-      color: #666;
+      color: var(--color-text-secondary);
       margin-top: 8px;
     }
 
@@ -556,7 +563,7 @@
 
 <header>
   <div>
-    <h1>🌿 ENNIE Marketing Dashboard</h1>
+    <h1> ENNIE Marketing Dashboard</h1>
     <div class="meta">Interactive messaging, copy, and content calendar | Built from 27 client-approved video transcripts</div>
   </div>
 </header>
@@ -587,9 +594,9 @@
       </select>
       <select id="complianceFilter">
         <option value="">All Statuses</option>
-        <option value="safe">✓ Safe</option>
-        <option value="review">⚠ Review</option>
-        <option value="revise">✗ Revise</option>
+        <option value="safe"> Safe</option>
+        <option value="review">� Review</option>
+        <option value="revise"> Revise</option>
       </select>
     </div>
     <table id="messageTable">
@@ -612,26 +619,26 @@
   <div id="landing" class="tab-content">
     <h2 style="margin-bottom: 24px;">Landing Pages (Funnel-Specific Copy)</h2>
     <div class="landing-tabs">
-      <button class="landing-btn active" data-page="healer">🌿 Healer</button>
-      <button class="landing-btn" data-page="untrained">✨ Untrained</button>
-      <button class="landing-btn" data-page="patient">💜 Patient</button>
-      <button class="landing-btn" data-page="referral">🏆 Referral</button>
-      <button class="landing-btn" data-page="owned">⚡ Owned Audience</button>
+      <button class="landing-btn active" data-page="healer"> Healer</button>
+      <button class="landing-btn" data-page="untrained"> Untrained</button>
+      <button class="landing-btn" data-page="patient"> Patient</button>
+      <button class="landing-btn" data-page="referral"> Referral</button>
+      <button class="landing-btn" data-page="owned">� Owned Audience</button>
     </div>
 
     <!-- Healer LP -->
     <div id="healer-page" class="landing-page active">
       <h2>Your Ability Is Real. Get Paid For It.</h2>
       <div class="subheading">Join the Ennie healer network. Test your ability. Earn income.</div>
-      <div class="copy">You've spent years perfecting your craft. Reiki, energy healing, pranic healing — you know it works because you see it in your clients. Now it's time to prove it on a global platform and get compensated fairly for your gift.</div>
+      <div class="copy">You've spent years perfecting your craft. Reiki, energy healing, pranic healing  you know it works because you see it in your clients. Now it's time to prove it on a global platform and get compensated fairly for your gift.</div>
       <div class="benefits">
-        <div class="benefit">✓ <strong>Test Objectively</strong> — Remote healing assessment with real outcomes tracking</div>
-        <div class="benefit">✓ <strong>Get Verified</strong> — Join the vetted Ennie network of proven healers</div>
-        <div class="benefit">✓ <strong>Earn Income</strong> — Weekly payouts from matched clients worldwide</div>
-        <div class="benefit">✓ <strong>Zero Certification Required</strong> — We measure ability, not credentials</div>
+        <div class="benefit"> <strong>Test Objectively</strong>  Remote healing assessment with real outcomes tracking</div>
+        <div class="benefit"> <strong>Get Verified</strong>  Join the vetted Ennie network of proven healers</div>
+        <div class="benefit"> <strong>Earn Income</strong>  Weekly payouts from matched clients worldwide</div>
+        <div class="benefit"> <strong>Zero Certification Required</strong>  We measure ability, not credentials</div>
       </div>
       <button class="cta-button">Join Healer Waitlist</button>
-      <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: #666;">
+      <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--color-text-secondary);">
         <strong>Built by Charlie Goldsmith.</strong> Published hospital studies. Free to join. No fees to healers.
       </div>
     </div>
@@ -639,13 +646,13 @@
     <!-- Untrained LP -->
     <div id="untrained-page" class="landing-page">
       <h2>You Might Have a Gift You've Never Explored.</h2>
-      <div class="subheading">Charlie will teach you for free. Then we'll test if you have it. If you do — you get paid.</div>
+      <div class="subheading">Charlie will teach you for free. Then we'll test if you have it. If you do  you get paid.</div>
       <div class="copy">Some people are born with a healing ability they never discover. We're changing that. Ennie offers free training from Charlie Goldsmith, then a measurable test. If you have the talent, you join our network and start earning immediately.</div>
       <div class="benefits">
-        <div class="benefit">✓ <strong>Free Training</strong> — Charlie teaches you the fundamentals</div>
-        <div class="benefit">✓ <strong>No Experience Needed</strong> — Start from zero</div>
-        <div class="benefit">✓ <strong>Real Test</strong> — Objective outcomes measurement</div>
-        <div class="benefit">✓ <strong>Real Income</strong> — If you pass, you earn</div>
+        <div class="benefit"> <strong>Free Training</strong>  Charlie teaches you the fundamentals</div>
+        <div class="benefit"> <strong>No Experience Needed</strong>  Start from zero</div>
+        <div class="benefit"> <strong>Real Test</strong>  Objective outcomes measurement</div>
+        <div class="benefit"> <strong>Real Income</strong>  If you pass, you earn</div>
       </div>
       <button class="cta-button">Join Untrained Track</button>
     </div>
@@ -654,12 +661,12 @@
     <div id="patient-page" class="landing-page">
       <h2>Chronic Pain. Tested. Private. No Hype.</h2>
       <div class="subheading">Match with verified energy healers. Measurable results. Complete anonymity.</div>
-      <div class="copy">2 billion people live with chronic pain. Conventional medicine often isn't enough. Energy healing has been studied and shown to create measurable relief. On Ennie, you're matched with verified healers and your progress is tracked — no belief required.</div>
+      <div class="copy">2 billion people live with chronic pain. Conventional medicine often isn't enough. Energy healing has been studied and shown to create measurable relief. On Ennie, you're matched with verified healers and your progress is tracked  no belief required.</div>
       <div class="benefits">
-        <div class="benefit">✓ <strong>Verified Healers</strong> — Every healer passed outcome testing</div>
-        <div class="benefit">✓ <strong>Backed by Science</strong> — Built on hospital study protocols</div>
-        <div class="benefit">✓ <strong>Completely Anonymous</strong> — Your privacy is protected</div>
-        <div class="benefit">✓ <strong>Measurable Progress</strong> — Track your pain levels objectively</div>
+        <div class="benefit"> <strong>Verified Healers</strong>  Every healer passed outcome testing</div>
+        <div class="benefit"> <strong>Backed by Science</strong>  Built on hospital study protocols</div>
+        <div class="benefit"> <strong>Completely Anonymous</strong>  Your privacy is protected</div>
+        <div class="benefit"> <strong>Measurable Progress</strong>  Track your pain levels objectively</div>
       </div>
       <button class="cta-button">Join Participant Waitlist</button>
     </div>
@@ -668,12 +675,12 @@
     <div id="referral-page" class="landing-page">
       <h2>Refer & Win. Top Referrers Get A Trip To Meet Charlie.</h2>
       <div class="subheading">Every person you refer moves you up the queue and the leaderboard.</div>
-      <div class="copy">You're already in. You've seen the vision. Now help us build it. Every healer or patient you refer earns you points toward rewards — from priority access to a life-changing trip to learn from or meet Charlie in person.</div>
+      <div class="copy">You're already in. You've seen the vision. Now help us build it. Every healer or patient you refer earns you points toward rewards  from priority access to a life-changing trip to learn from or meet Charlie in person.</div>
       <div class="benefits">
-        <div class="benefit">✓ <strong>Move Up The Queue</strong> — 1 referral = instant priority</div>
-        <div class="benefit">✓ <strong>Unlock Tier Rewards</strong> — 5 refs = Founding status, 15 = Charlie shout-out</div>
-        <div class="benefit">✓ <strong>Win The Grand Prize</strong> — Top referrers get an all-expenses trip</div>
-        <div class="benefit">✓ <strong>See The Leaderboard</strong> — Real-time rankings, weekly updates from Charlie</div>
+        <div class="benefit"> <strong>Move Up The Queue</strong>  1 referral = instant priority</div>
+        <div class="benefit"> <strong>Unlock Tier Rewards</strong>  5 refs = Founding status, 15 = Charlie shout-out</div>
+        <div class="benefit"> <strong>Win The Grand Prize</strong>  Top referrers get an all-expenses trip</div>
+        <div class="benefit"> <strong>See The Leaderboard</strong>  Real-time rankings, weekly updates from Charlie</div>
       </div>
       <button class="cta-button">View Leaderboard & Share</button>
     </div>
@@ -684,10 +691,10 @@
       <div class="subheading">Join the founding community. Influence the platform. Get early access.</div>
       <div class="copy">This is the inside track. Before Ennie launches publicly, founding members shape the platform, unlock early features, and build the healing revolution with Charlie. Whether you're a healer or a patient, this is your moment to be part of something real.</div>
       <div class="benefits">
-        <div class="benefit">✓ <strong>Founding Member Status</strong> — Lifetime recognition & perks</div>
-        <div class="benefit">✓ <strong>Direct Access to Charlie</strong> — Feedback loop & community</div>
-        <div class="benefit">✓ <strong>Early Launch Privileges</strong> — First access when Ennie goes live</div>
-        <div class="benefit">✓ <strong>Shape The Platform</strong> — Your voice influences features</div>
+        <div class="benefit"> <strong>Founding Member Status</strong>  Lifetime recognition & perks</div>
+        <div class="benefit"> <strong>Direct Access to Charlie</strong>  Feedback loop & community</div>
+        <div class="benefit"> <strong>Early Launch Privileges</strong>  First access when Ennie goes live</div>
+        <div class="benefit"> <strong>Shape The Platform</strong>  Your voice influences features</div>
       </div>
       <button class="cta-button">Join Founding Community</button>
     </div>
@@ -698,17 +705,17 @@
     <h2 style="margin-bottom: 24px;">Email Sequences</h2>
 
     <div style="margin-bottom: 32px;">
-      <h3 style="margin-bottom: 16px;">🌿 Healer Nurture Sequence (8 Emails Over 5 Months)</h3>
+      <h3 style="margin-bottom: 16px;"> Healer Nurture Sequence (8 Emails Over 5 Months)</h3>
       <div class="email-list" id="healerEmails"></div>
     </div>
 
     <div style="margin-bottom: 32px;">
-      <h3 style="margin-bottom: 16px;">💜 Patient Nurture Sequence (4 Emails)</h3>
+      <h3 style="margin-bottom: 16px;"> Patient Nurture Sequence (4 Emails)</h3>
       <div class="email-list" id="patientEmails"></div>
     </div>
 
     <div style="margin-bottom: 32px;">
-      <h3 style="margin-bottom: 16px;">✨ Untrained Healer Sequence (4 Emails)</h3>
+      <h3 style="margin-bottom: 16px;"> Untrained Healer Sequence (4 Emails)</h3>
       <div class="email-list" id="untrainedEmails"></div>
     </div>
   </div>
@@ -748,7 +755,7 @@
       quote: "If you ever felt like you had a hidden superpower, we would like to help you find out.",
       theme: "Hidden Potential",
       funnels: ["untrained", "healer"],
-      useCase: "Awareness stage — emotional hook",
+      useCase: "Awareness stage  emotional hook",
       compliance: "safe"
     },
     {
@@ -769,7 +776,7 @@
       quote: "The only way to find out if you actually have healing ability is to practice and see your results and measure them over time.",
       theme: "Measurement Over Credentials",
       funnels: ["healer", "patient"],
-      useCase: "Value proposition — why Ennie is different",
+      useCase: "Value proposition  why Ennie is different",
       compliance: "safe"
     },
     {
@@ -790,7 +797,7 @@
       quote: "When they do studies, they're not necessarily finding the best people in their field because there aren't any current mechanisms to find them.",
       theme: "Ennie Solves a Real Problem",
       funnels: ["healer"],
-      useCase: "Healer landing page — why testing matters",
+      useCase: "Healer landing page  why testing matters",
       compliance: "safe"
     },
     {
@@ -818,13 +825,13 @@
 
 I came across your work in [location/specialty] and wanted to reach out personally.
 
-For the last decade, I've been studying healing ability — measuring it, testing it, publishing on it. And what I've learned is this: traditional certification doesn't tell us much about how good someone actually is.
+For the last decade, I've been studying healing ability  measuring it, testing it, publishing on it. And what I've learned is this: traditional certification doesn't tell us much about how good someone actually is.
 
 What matters is outcomes. Can you move pain? How quickly? How consistently?
 
 That's why we built Ennie.
 
-We're looking for experienced healers like you — people who already know their work creates real change. We want to test that ability objectively, then match you with paying clients worldwide who need exactly what you do.
+We're looking for experienced healers like you  people who already know their work creates real change. We want to test that ability objectively, then match you with paying clients worldwide who need exactly what you do.
 
 It's free to join. No fees. Just a platform that gets serious about measuring and rewarding real ability.
 
@@ -833,7 +840,7 @@ If you're interested, I'd like to send you more details about how it works.
 Let me know,
 Charlie Goldsmith
 
-P.S. — We're giving away founding healer status to the first cohort. You'd be part of that.`
+P.S.  We're giving away founding healer status to the first cohort. You'd be part of that.`
     },
     {
       number: 2,
@@ -903,7 +910,7 @@ Let's build this together.
 
 Charlie
 
-P.S. — We're opening applications this week. I'd love to have you in the founding cohort.`
+P.S.  We're opening applications this week. I'd love to have you in the founding cohort.`
     },
     {
       number: 5,
@@ -987,7 +994,7 @@ This is real. Let's go.
 
 Charlie
 
-P.S. — If you haven't signed up yet, there's still time: [LINK]`
+P.S.  If you haven't signed up yet, there's still time: [LINK]`
     }
   ];
 
@@ -1004,7 +1011,7 @@ You've tried the drugs. The injections. The physical therapy. Maybe some of it h
 
 I built Ennie for exactly this situation.
 
-It's a platform that connects you with verified energy healers — people who've proven they can create measurable change in pain. Real science, real outcomes, complete privacy.
+It's a platform that connects you with verified energy healers  people who've proven they can create measurable change in pain. Real science, real outcomes, complete privacy.
 
 No belief required. Just measurable results.
 
@@ -1164,7 +1171,7 @@ Your assessment is complete.
 
 [IF PASSED: Congratulations. You have genuine healing ability. You're now part of the Ennie verified network. Start earning by [DATE].]
 
-[IF DIDN'T PASS: You don't show the consistency markers yet. But this doesn't mean no ability — it might mean more practice. We're offering a refresher + retake. Let me know.]
+[IF DIDN'T PASS: You don't show the consistency markers yet. But this doesn't mean no ability  it might mean more practice. We're offering a refresher + retake. Let me know.]
 
 Either way, you have access to the healer community and ongoing training.
 
@@ -1216,7 +1223,7 @@ Charlie`
 
 I found your [reiki/energy healing] practice in [LOCATION] and wanted to reach out directly.
 
-I spend most of my time studying healing ability — what works, what doesn't, and why. And I'm building a platform called Ennie that does one thing: finds the best healers and matches them with patients who need them.
+I spend most of my time studying healing ability  what works, what doesn't, and why. And I'm building a platform called Ennie that does one thing: finds the best healers and matches them with patients who need them.
 
 If your results are as good as they look, you should be on it.
 
@@ -1309,7 +1316,7 @@ Charlie
     {
       original: "Energy healing is a medicine in its own right",
       status: "review",
-      suggestion: "Consider: 'Energy healing can provide measurable relief' or 'Energy healing shows promise in outcome studies' — avoids strict medical claims"
+      suggestion: "Consider: 'Energy healing can provide measurable relief' or 'Energy healing shows promise in outcome studies'  avoids strict medical claims"
     },
     {
       original: "The biggest misconceptions about energy healing: one, that it's not real, or two, that it's some sort of fraud",
@@ -1324,7 +1331,7 @@ Charlie
     {
       original: "Earns income from matched clients worldwide",
       status: "review",
-      suggestion: "Add: 'Earnings depend on client matching and healer availability' — manage expectations around income claims"
+      suggestion: "Add: 'Earnings depend on client matching and healer availability'  manage expectations around income claims"
     }
   ];
 
@@ -1343,7 +1350,7 @@ Charlie
           }).join('')}
         </td>
         <td>${item.useCase}</td>
-        <td><span class="compliance ${item.compliance}">${item.compliance === 'safe' ? '✓ Safe' : item.compliance === 'review' ? '⚠ Review' : '✗ Revise'}</span></td>
+        <td><span class="compliance ${item.compliance}">${item.compliance === 'safe' ? ' Safe' : item.compliance === 'review' ? '� Review' : ' Revise'}</span></td>
         <td><button class="copy-btn" onclick="copyText('${item.quote.replace(/'/g, "\\'")}')">Copy</button></td>
       </tr>
     `).join('');
@@ -1419,7 +1426,7 @@ Charlie
             <div class="post-item">
               <div class="post-channel">${post.channel}</div>
               <div class="post-content">${post.content}</div>
-              <div class="post-funnel">→ ${post.funnel}</div>
+              <div class="post-funnel"> ${post.funnel}</div>
             </div>
           `).join('')}
         </div>
@@ -1441,15 +1448,15 @@ Charlie
     summary.innerHTML = `
       <div class="compliance-card">
         <div class="number" style="color: #28A745;">${counts.safe}</div>
-        <div class="label">✓ Safe to Use</div>
+        <div class="label"> Safe to Use</div>
       </div>
       <div class="compliance-card">
         <div class="number" style="color: #FFC107;">${counts.review}</div>
-        <div class="label">⚠ Review Recommended</div>
+        <div class="label">� Review Recommended</div>
       </div>
       <div class="compliance-card">
         <div class="number" style="color: #DC3545;">${counts.revise}</div>
-        <div class="label">✗ Requires Revision</div>
+        <div class="label"> Requires Revision</div>
       </div>
     `;
 

@@ -12,25 +12,27 @@
         }
 
         :root {
-            --primary: #2d7d3d;
-            --primary-light: #4a9f5a;
-            --primary-dark: #1f5a2a;
-            --accent: #e8a87c;
+            --bg-main: #F5F5F0;
+            --bg-card: #FFFFFF;
+            --color-primary: #7FA997;
+            --color-secondary: #A89973;
+            --color-text: #2C2C2C;
+            --color-text-secondary: #6B7280;
+            --color-border: #E8E4DE;
+            --font-serif: Georgia, Garamond, serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --danger: #dc3545;
             --warning: #ffc107;
             --success: #28a745;
             --info: #17a2b8;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --border: #dee2e6;
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
-            --shadow-lg: 0 4px 20px rgba(0,0,0,0.15);
+            --shadow: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-lg: 0 2px 8px rgba(0,0,0,0.05);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
+            font-family: var(--font-sans);
+            background: var(--bg-main);
+            color: var(--color-text);
             line-height: 1.5;
             min-height: 100vh;
         }
@@ -42,7 +44,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--color-primary);
             color: white;
             padding: 25px 30px;
             border-radius: 12px;
@@ -57,6 +59,7 @@
             font-size: 28px;
             font-weight: 700;
             margin: 0;
+            font-family: var(--font-serif);
         }
 
         header p {
@@ -88,9 +91,9 @@
             display: flex;
             gap: 10px;
             margin-bottom: 25px;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--color-border);
             flex-wrap: wrap;
-            background: white;
+            background: var(--bg-card);
             padding: 15px;
             border-radius: 8px;
             box-shadow: var(--shadow);
@@ -103,19 +106,19 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            color: #666;
+            color: var(--color-text-secondary);
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             position: relative;
         }
 
         .nav-tab:hover {
-            color: var(--primary);
+            color: var(--color-primary);
         }
 
         .nav-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            color: var(--color-text);
+            border-bottom-color: var(--color-primary);
         }
 
         .tab-content {
@@ -133,17 +136,17 @@
         }
 
         .card {
-            background: white;
+            background: var(--bg-card);
             border-radius: 8px;
             box-shadow: var(--shadow);
             padding: 20px;
             margin-bottom: 20px;
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid var(--color-primary);
         }
 
         .card.highlight {
-            border-left-color: var(--accent);
-            background: linear-gradient(to right, rgba(232, 168, 124, 0.05), white);
+            border-left-color: var(--color-secondary);
+            background: linear-gradient(to right, rgba(168, 153, 115, 0.05), var(--bg-card));
         }
 
         .card-title {
@@ -250,7 +253,7 @@
 
         button.secondary {
             background: var(--accent);
-            color: #333;
+            color: var(--color-text);
         }
 
         button.secondary:hover {
@@ -388,7 +391,7 @@
 
         .agent-status {
             font-size: 12px;
-            color: #666;
+            color: var(--color-text-secondary);
         }
 
         .agent-metrics {
@@ -506,12 +509,12 @@
 
         .note-meta {
             font-size: 11px;
-            color: #999;
+            color: var(--color-text-secondary);
             margin-bottom: 8px;
         }
 
         .note-text {
-            color: #333;
+            color: var(--color-text);
             font-size: 13px;
             line-height: 1.6;
         }
@@ -526,14 +529,14 @@
 
         .changelog-time {
             font-size: 11px;
-            color: #999;
+            color: var(--color-text-secondary);
             font-weight: 600;
         }
 
         .changelog-text {
             font-size: 13px;
             margin-top: 5px;
-            color: #333;
+            color: var(--color-text);
         }
 
         .approval-workflow {
@@ -586,7 +589,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
+            color: var(--color-text-secondary);
             font-size: 12px;
             overflow: hidden;
             position: relative;
@@ -609,7 +612,7 @@
 
         .creative-meta {
             font-size: 11px;
-            color: #666;
+            color: var(--color-text-secondary);
             margin-bottom: 8px;
         }
 
@@ -708,7 +711,7 @@
             top: 15px;
             right: 15px;
             background: none;
-            color: #666;
+            color: var(--color-text-secondary);
             font-size: 24px;
             cursor: pointer;
             padding: 0;
@@ -732,7 +735,7 @@
 
         .stat-label {
             font-size: 11px;
-            color: #666;
+            color: var(--color-text-secondary);
             text-transform: uppercase;
             margin-bottom: 4px;
         }
@@ -817,7 +820,7 @@
 
         .result-label {
             font-size: 11px;
-            color: #666;
+            color: var(--color-text-secondary);
             text-transform: uppercase;
             margin-bottom: 4px;
         }
@@ -904,7 +907,7 @@
         .no-data {
             text-align: center;
             padding: 40px;
-            color: #999;
+            color: var(--color-text-secondary);
             background: var(--light);
             border-radius: 6px;
             margin: 20px 0;
@@ -915,8 +918,8 @@
     <div class="container">
         <header>
             <div>
-                <h1>🌿 ENNIE Marketing Ops Hub</h1>
-                <p>Unified Command Center • Ad Operations + Funnel Builder + Agent Orchestration</p>
+                <h1> ENNIE Marketing Ops Hub</h1>
+                <p>Unified Command Center � Ad Operations + Funnel Builder + Agent Orchestration</p>
             </div>
             <div class="header-right">
                 <div style="margin-bottom: 10px;">
@@ -928,12 +931,12 @@
         </header>
 
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-            <button class="nav-tab" onclick="switchTab('ads')">📸 Ad Operations</button>
-            <button class="nav-tab" onclick="switchTab('funnel')">🔗 Funnel Builder</button>
-            <button class="nav-tab" onclick="switchTab('agents')">🤖 Agent Orchestration</button>
-            <button class="nav-tab" onclick="switchTab('compliance')">✓ Compliance</button>
-            <button class="nav-tab" onclick="switchTab('collab')">💬 Collaboration</button>
+            <button class="nav-tab active" onclick="switchTab('dashboard')"> Dashboard</button>
+            <button class="nav-tab" onclick="switchTab('ads')"> Ad Operations</button>
+            <button class="nav-tab" onclick="switchTab('funnel')"> Funnel Builder</button>
+            <button class="nav-tab" onclick="switchTab('agents')"> Agent Orchestration</button>
+            <button class="nav-tab" onclick="switchTab('compliance')"> Compliance</button>
+            <button class="nav-tab" onclick="switchTab('collab')"> Collaboration</button>
         </div>
 
         <!-- DASHBOARD -->
@@ -942,42 +945,42 @@
                 <div class="metric-box">
                     <div class="metric-label">Total Spend (30d)</div>
                     <div class="metric-value">$12,450</div>
-                    <div class="metric-change trend-up">↑ 18% vs last month</div>
+                    <div class="metric-change trend-up"> 18% vs last month</div>
                 </div>
                 <div class="metric-box secondary">
                     <div class="metric-label">Total ROAS</div>
                     <div class="metric-value">4.2x</div>
-                    <div class="metric-change trend-up">↑ 0.3x improvement</div>
+                    <div class="metric-change trend-up"> 0.3x improvement</div>
                 </div>
                 <div class="metric-box info">
                     <div class="metric-label">Conversions</div>
                     <div class="metric-value">847</div>
-                    <div class="metric-change trend-up">↑ 24 today</div>
+                    <div class="metric-change trend-up"> 24 today</div>
                 </div>
                 <div class="metric-box success">
                     <div class="metric-label">Avg CPA</div>
                     <div class="metric-value">$14.70</div>
-                    <div class="metric-change trend-down">↓ -$0.80</div>
+                    <div class="metric-change trend-down"> -$0.80</div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">📈 Funnel Performance (Real-time)</div>
+                <div class="card-title">� Funnel Performance (Real-time)</div>
                 <div class="grid grid-3">
                     <div class="stat-item">
                         <div class="stat-label">Awareness</div>
                         <div class="stat-value">24.5K</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 5px;">impressions</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 5px;">impressions</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Consideration</div>
                         <div class="stat-value">3.2K</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 5px;">clicks</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 5px;">clicks</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Conversion</div>
                         <div class="stat-value">847</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 5px;">signups</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 5px;">signups</div>
                     </div>
                 </div>
                 <div class="chart" style="height: 200px;">
@@ -1002,7 +1005,7 @@
 
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">🏆 Top Performing Variants</div>
+                    <div class="card-title"> Top Performing Variants</div>
                     <table>
                         <tr>
                             <th>Variant</th>
@@ -1032,28 +1035,28 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🚀 Recommended Next Actions</div>
+                    <div class="card-title"> Recommended Next Actions</div>
                     <div style="padding: 10px 0;">
                         <div style="background: rgba(40, 167, 69, 0.05); padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--success);">
-                            <div style="font-weight: 600; color: var(--success); font-size: 12px;">✓ Scale V4 by 50%</div>
-                            <div style="font-size: 12px; color: #666; margin-top: 4px;">CTR 3.8% is 2x your baseline. Ready to scale budget.</div>
+                            <div style="font-weight: 600; color: var(--success); font-size: 12px;"> Scale V4 by 50%</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">CTR 3.8% is 2x your baseline. Ready to scale budget.</div>
                         </div>
                         <div style="background: rgba(255, 193, 7, 0.05); padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--warning);">
-                            <div style="font-weight: 600; color: #ff9800; font-size: 12px;">⚠ Review V1 Compliance</div>
-                            <div style="font-size: 12px; color: #666; margin-top: 4px;">V1 flagged for 2 policy violations. Update copy or pause.</div>
+                            <div style="font-weight: 600; color: #ff9800; font-size: 12px;">� Review V1 Compliance</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">V1 flagged for 2 policy violations. Update copy or pause.</div>
                         </div>
                         <div style="background: rgba(23, 162, 184, 0.05); padding: 12px; border-radius: 6px; border-left: 4px solid var(--info);">
                             <div style="font-weight: 600; color: var(--info); font-size: 12px;">i Funnel Stage Optimization</div>
-                            <div style="font-size: 12px; color: #666; margin-top: 4px;">Conversion stage CPA rising. Consider audience refinement.</div>
+                            <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">Conversion stage CPA rising. Consider audience refinement.</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="export-buttons">
-                <button onclick="exportData('csv')">📥 Export as CSV</button>
-                <button onclick="exportData('json')">📥 Export as JSON</button>
-                <button class="secondary" onclick="exportData('pdf')">📄 Export as PDF</button>
+                <button onclick="exportData('csv')"> Export as CSV</button>
+                <button onclick="exportData('json')"> Export as JSON</button>
+                <button class="secondary" onclick="exportData('pdf')"> Export as PDF</button>
             </div>
         </div>
 
@@ -1061,7 +1064,7 @@
         <div id="ads" class="tab-content">
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">📸 Creative Library</div>
+                    <div class="card-title"> Creative Library</div>
                     <div style="margin-bottom: 15px;">
                         <select onchange="filterCreatives(this.value)" style="margin-bottom: 15px;">
                             <option value="all">All Creatives</option>
@@ -1075,7 +1078,7 @@
                         <div class="creative-preview image">Image Ad</div>
                         <div class="creative-info">
                             <div class="creative-title">Ad V4 - "Trust with 30+ Healers"</div>
-                            <div class="creative-meta">Funnel: Awareness • Status: <span class="badge badge-success">Active</span></div>
+                            <div class="creative-meta">Funnel: Awareness � Status: <span class="badge badge-success">Active</span></div>
                             <button class="sm" style="margin-top: 8px;">View Full</button>
                         </div>
                     </div>
@@ -1084,7 +1087,7 @@
                         <div class="creative-preview" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Video Ad</div>
                         <div class="creative-info">
                             <div class="creative-title">Ad V3 - "Discover Healing"</div>
-                            <div class="creative-meta">Funnel: Awareness • Status: <span class="badge badge-info">Testing</span></div>
+                            <div class="creative-meta">Funnel: Awareness � Status: <span class="badge badge-info">Testing</span></div>
                             <button class="sm" style="margin-top: 8px;">View Full</button>
                         </div>
                     </div>
@@ -1093,14 +1096,14 @@
                         <div class="creative-preview" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">Carousel Ad</div>
                         <div class="creative-info">
                             <div class="creative-title">Ad V1 - "Join Our Community"</div>
-                            <div class="creative-meta">Funnel: Nurture • Status: <span class="badge badge-warning">Archive</span></div>
+                            <div class="creative-meta">Funnel: Nurture � Status: <span class="badge badge-warning">Archive</span></div>
                             <button class="sm" style="margin-top: 8px;">View Full</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">✍️ Ad Variant Tester</div>
+                    <div class="card-title"> Ad Variant Tester</div>
                     <div class="form-group">
                         <label>Upload/Paste Copy Variations</label>
                         <textarea placeholder="Paste Ad Copy 1&#10;---&#10;Paste Ad Copy 2&#10;---&#10;Paste Ad Copy 3&#10;&#10;Separate variants with --- on its own line" rows="8" style="font-family: monospace; font-size: 12px;"></textarea>
@@ -1113,32 +1116,32 @@
                             <option>Conversion</option>
                         </select>
                     </div>
-                    <button onclick="testVariants()">🚀 Start A/B Test</button>
+                    <button onclick="testVariants()"> Start A/B Test</button>
                     <button class="secondary" style="margin-top: 10px;" onclick="showModal('variant-results')">View Results</button>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">🛡️ Compliance Checker</div>
+                <div class="card-title">�� Compliance Checker</div>
                 <div style="background: var(--light); padding: 15px; border-radius: 6px; margin-bottom: 15px;">
                     <label>Paste Ad Copy for Review</label>
                     <textarea placeholder="Paste your ad copy here for instant compliance check..." rows="4"></textarea>
                     <button onclick="runCompliance()">Check Compliance</button>
                 </div>
                 <div style="padding: 15px; border-radius: 6px; background: rgba(40, 167, 69, 0.05); border-left: 4px solid var(--success);">
-                    <div style="font-weight: 700; color: var(--success); margin-bottom: 10px;">✓ Safe to Launch</div>
-                    <div style="font-size: 12px; color: #666; line-height: 1.6;">
-                        ✓ Complies with Meta Community Standards<br>
-                        ✓ No Google Ads Policy violations<br>
-                        ✓ Matches Felix's brand voice rules<br>
-                        ✓ Clear CTA present
+                    <div style="font-weight: 700; color: var(--success); margin-bottom: 10px;"> Safe to Launch</div>
+                    <div style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
+                         Complies with Meta Community Standards<br>
+                         No Google Ads Policy violations<br>
+                         Matches Felix's brand voice rules<br>
+                         Clear CTA present
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">📊 Performance by Variant</div>
+                    <div class="card-title"> Performance by Variant</div>
                     <div class="performance-bars">
                         <div class="performance-bar">
                             <div class="performance-label">
@@ -1171,7 +1174,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">📈 A/B Test Results</div>
+                    <div class="card-title">� A/B Test Results</div>
                     <table>
                         <tr>
                             <th>Test</th>
@@ -1206,56 +1209,56 @@
         <div id="funnel" class="tab-content">
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">🔗 Funnel Editor (Drag & Drop)</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Drag stages to reorder. Click to edit.</p>
+                    <div class="card-title"> Funnel Editor (Drag & Drop)</div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Drag stages to reorder. Click to edit.</p>
                     
                     <div id="funnel-stages" style="margin-bottom: 20px;">
                         <div class="funnel-stage" draggable="true">
-                            <div class="funnel-stage-title">📢 Awareness</div>
+                            <div class="funnel-stage-title">� Awareness</div>
                             <div class="funnel-stage-metrics">24.5K impressions</div>
                         </div>
                         <div class="funnel-stage" draggable="true">
-                            <div class="funnel-stage-title">💭 Consideration</div>
+                            <div class="funnel-stage-title"> Consideration</div>
                             <div class="funnel-stage-metrics">3.2K clicks (13.1% CTR)</div>
                         </div>
                         <div class="funnel-stage" draggable="true">
-                            <div class="funnel-stage-title">✅ Conversion</div>
+                            <div class="funnel-stage-title"> Conversion</div>
                             <div class="funnel-stage-metrics">847 signups (26.4% rate)</div>
                         </div>
                         <div class="funnel-stage" draggable="true">
-                            <div class="funnel-stage-title">⭐ Retention</div>
+                            <div class="funnel-stage-title"> Retention</div>
                             <div class="funnel-stage-metrics">720 active (85% retention)</div>
                         </div>
                     </div>
 
                     <button onclick="showModal('add-stage')">+ Add Stage</button>
-                    <button class="secondary" onclick="showModal('funnel-templates')">📋 Load Template</button>
+                    <button class="secondary" onclick="showModal('funnel-templates')">� Load Template</button>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🎯 Funnel Conversion Math</div>
+                    <div class="card-title"> Funnel Conversion Math</div>
                     <div class="stat-row">
                         <div class="stat-item">
                             <div class="stat-label">Total Impressions</div>
                             <div class="stat-value">24.5K</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">→ Clicks</div>
+                            <div class="stat-label"> Clicks</div>
                             <div class="stat-value">3.2K</div>
                         </div>
                     </div>
-                    <div style="text-align: center; margin: 10px 0; color: #666; font-size: 12px;">Conversion: 13.1%</div>
+                    <div style="text-align: center; margin: 10px 0; color: var(--color-text-secondary); font-size: 12px;">Conversion: 13.1%</div>
                     <div class="stat-row">
                         <div class="stat-item">
-                            <div class="stat-label">→ Signups</div>
+                            <div class="stat-label"> Signups</div>
                             <div class="stat-value">847</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-label">→ Retained</div>
+                            <div class="stat-label"> Retained</div>
                             <div class="stat-value">720</div>
                         </div>
                     </div>
-                    <div style="text-align: center; margin: 10px 0; color: #666; font-size: 12px;">Conversion: 26.4% | Retention: 85.0%</div>
+                    <div style="text-align: center; margin: 10px 0; color: var(--color-text-secondary); font-size: 12px;">Conversion: 26.4% | Retention: 85.0%</div>
                     <div style="background: linear-gradient(135deg, var(--info) 0%, #4dd0e1 100%); color: white; padding: 15px; border-radius: 6px; text-align: center; margin-top: 15px;">
                         <div style="font-size: 12px; opacity: 0.9;">Total Bottom Funnel Value</div>
                         <div style="font-size: 24px; font-weight: 700; margin-top: 5px;">$12,450 Revenue</div>
@@ -1264,7 +1267,7 @@
             </div>
 
             <div class="card">
-                <div class="card-title">🤖 Assign Agents to Funnel Stages</div>
+                <div class="card-title"> Assign Agents to Funnel Stages</div>
                 <table>
                     <tr>
                         <th>Stage</th>
@@ -1301,30 +1304,30 @@
 
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">📋 Stage Templates</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Pre-built funnel templates with suggested agents & triggers:</p>
+                    <div class="card-title">� Stage Templates</div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Pre-built funnel templates with suggested agents & triggers:</p>
                     <div style="background: var(--light); padding: 12px; border-radius: 6px; margin-bottom: 10px;">
-                        <div style="font-weight: 600; font-size: 13px;">🌟 SaaS Growth Funnel</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 4px;">4 stages • Ad Bot → Email Bot → Sales → Onboard</div>
+                        <div style="font-weight: 600; font-size: 13px;"> SaaS Growth Funnel</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">4 stages � Ad Bot  Email Bot  Sales  Onboard</div>
                     </div>
                     <div style="background: var(--light); padding: 12px; border-radius: 6px; margin-bottom: 10px;">
-                        <div style="font-weight: 600; font-size: 13px;">🎓 Lead Nurture Funnel</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 4px;">5 stages • Awareness → Interest → Education → Trial → Customer</div>
+                        <div style="font-weight: 600; font-size: 13px;"> Lead Nurture Funnel</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">5 stages � Awareness  Interest  Education  Trial  Customer</div>
                     </div>
                     <div style="background: var(--light); padding: 12px; border-radius: 6px;">
-                        <div style="font-weight: 600; font-size: 13px;">🛍️ E-Commerce Funnel</div>
-                        <div style="font-size: 11px; color: #666; margin-top: 4px;">3 stages • Browse → Cart → Checkout (fast-track)</div>
+                        <div style="font-weight: 600; font-size: 13px;">� E-Commerce Funnel</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 4px;">3 stages � Browse  Cart  Checkout (fast-track)</div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">📤 Export Funnel as Workflow</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Export your current funnel to JSON/YAML for import into your workflow engine:</p>
-                    <button onclick="exportFunnel('json')">📋 Export as JSON</button>
-                    <button onclick="exportFunnel('yaml')" class="secondary">📋 Export as YAML</button>
+                    <div class="card-title"> Export Funnel as Workflow</div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Export your current funnel to JSON/YAML for import into your workflow engine:</p>
+                    <button onclick="exportFunnel('json')">� Export as JSON</button>
+                    <button onclick="exportFunnel('yaml')" class="secondary">� Export as YAML</button>
                     <div style="background: var(--light); padding: 15px; border-radius: 6px; margin-top: 15px; font-size: 12px;">
                         <strong>Workflow Compatibility:</strong>
-                        <div style="margin-top: 8px; color: #666;">✓ Zapier<br>✓ Make.com<br>✓ Custom API<br>✓ Agent Orchestration</div>
+                        <div style="margin-top: 8px; color: var(--color-text-secondary);"> Zapier<br> Make.com<br> Custom API<br> Agent Orchestration</div>
                     </div>
                 </div>
             </div>
@@ -1333,49 +1336,49 @@
         <!-- AGENT ORCHESTRATION -->
         <div id="agents" class="tab-content">
             <div class="card">
-                <div class="card-title">🤖 Active Agents (Real-time)</div>
+                <div class="card-title"> Active Agents (Real-time)</div>
                 <div style="margin-bottom: 20px;">
                     <div class="agent-item">
                         <div class="agent-info">
                             <div class="agent-name">Ad Bot (Meta Ads Manager)</div>
-                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> • Last action: 2 min ago</div>
+                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> � Last action: 2 min ago</div>
                         </div>
                         <div class="agent-metrics">
-                            <button class="sm" onclick="pauseAgent(this)">⏸ Pause</button>
-                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">📋 Logs</button>
+                            <button class="sm" onclick="pauseAgent(this)"> Pause</button>
+                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">� Logs</button>
                         </div>
                     </div>
 
                     <div class="agent-item">
                         <div class="agent-info">
                             <div class="agent-name">Email Bot (Conversion Sequences)</div>
-                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> • Last action: 15 sec ago</div>
+                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> � Last action: 15 sec ago</div>
                         </div>
                         <div class="agent-metrics">
-                            <button class="sm" onclick="pauseAgent(this)">⏸ Pause</button>
-                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">📋 Logs</button>
+                            <button class="sm" onclick="pauseAgent(this)"> Pause</button>
+                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">� Logs</button>
                         </div>
                     </div>
 
                     <div class="agent-item paused">
                         <div class="agent-info">
                             <div class="agent-name">SMS Bot (Weekend Campaigns)</div>
-                            <div class="agent-status">Status: <span style="color: var(--warning); font-weight: 600;">Paused</span> • Resumed by: Felix @ 10:30am</div>
+                            <div class="agent-status">Status: <span style="color: var(--warning); font-weight: 600;">Paused</span> � Resumed by: Felix @ 10:30am</div>
                         </div>
                         <div class="agent-metrics">
-                            <button class="sm success" onclick="resumeAgent(this)">▶ Resume</button>
-                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">📋 Logs</button>
+                            <button class="sm success" onclick="resumeAgent(this)">� Resume</button>
+                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">� Logs</button>
                         </div>
                     </div>
 
                     <div class="agent-item">
                         <div class="agent-info">
                             <div class="agent-name">Nurture Bot (Long-tail Sequences)</div>
-                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> • Last action: 1 hr ago</div>
+                            <div class="agent-status">Status: <span style="color: var(--success); font-weight: 600;">Running</span> � Last action: 1 hr ago</div>
                         </div>
                         <div class="agent-metrics">
-                            <button class="sm" onclick="pauseAgent(this)">⏸ Pause</button>
-                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">📋 Logs</button>
+                            <button class="sm" onclick="pauseAgent(this)"> Pause</button>
+                            <button class="sm" style="margin-left: 5px;" onclick="viewAgentLogs(this)">� Logs</button>
                         </div>
                     </div>
                 </div>
@@ -1383,7 +1386,7 @@
 
             <div class="grid grid-3">
                 <div class="card">
-                    <div class="card-title">📊 Agent Performance</div>
+                    <div class="card-title"> Agent Performance</div>
                     <table style="font-size: 12px;">
                         <tr>
                             <th>Agent</th>
@@ -1414,7 +1417,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🎯 Agent Metrics (Today)</div>
+                    <div class="card-title"> Agent Metrics (Today)</div>
                     <div class="stat-row">
                         <div class="stat-item">
                             <div class="stat-label">Emails Sent</div>
@@ -1438,22 +1441,22 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">⚠️ Escalations (Pending)</div>
+                    <div class="card-title">� Escalations (Pending)</div>
                     <div style="background: rgba(220, 53, 69, 0.05); padding: 12px; border-radius: 6px; margin-bottom: 10px; border-left: 4px solid var(--danger);">
                         <div style="font-size: 12px; font-weight: 600; color: var(--danger); margin-bottom: 5px;">High Bounce Rate</div>
-                        <div style="font-size: 11px; color: #666;">SMS Bot detected 8.2% bounce rate. Review lists?</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary);">SMS Bot detected 8.2% bounce rate. Review lists?</div>
                         <button class="sm danger" style="margin-top: 8px;">Review</button>
                     </div>
                     <div style="background: rgba(255, 193, 7, 0.05); padding: 12px; border-radius: 6px; border-left: 4px solid var(--warning);">
                         <div style="font-size: 12px; font-weight: 600; color: #ff9800; margin-bottom: 5px;">Manual Review Needed</div>
-                        <div style="font-size: 11px; color: #666;">Email Bot queued 24 emails. Awaiting Jess approval.</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary);">Email Bot queued 24 emails. Awaiting Jess approval.</div>
                         <button class="sm secondary" style="margin-top: 8px;">Approve</button>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">📋 Recent Agent Logs (Last 10 Actions)</div>
+                <div class="card-title">� Recent Agent Logs (Last 10 Actions)</div>
                 <table style="font-size: 12px;">
                     <tr>
                         <th>Time</th>
@@ -1465,61 +1468,61 @@
                         <td>11:24am</td>
                         <td><strong>Email Bot</strong></td>
                         <td>Sent welcome sequence to 342 new signups</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>11:18am</td>
                         <td><strong>Ad Bot</strong></td>
                         <td>Deployed V4 variant to 15K daily budget</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>11:05am</td>
                         <td><strong>Nurture Bot</strong></td>
                         <td>Updated audience segment (engaged users)</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>10:52am</td>
                         <td><strong>SMS Bot</strong></td>
                         <td>Paused by Felix - review bounce rate</td>
-                        <td><span class="badge badge-warning">⏸ Paused</span></td>
+                        <td><span class="badge badge-warning"> Paused</span></td>
                     </tr>
                     <tr>
                         <td>10:40am</td>
                         <td><strong>Email Bot</strong></td>
                         <td>Queued 24 emails for Jess review</td>
-                        <td><span class="badge badge-info">⧗ Pending</span></td>
+                        <td><span class="badge badge-info"> Pending</span></td>
                     </tr>
                     <tr>
                         <td>10:30am</td>
                         <td><strong>SMS Bot</strong></td>
                         <td>Sent holiday campaign (1,240 SMS)</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>10:18am</td>
                         <td><strong>Ad Bot</strong></td>
                         <td>A/B test initiated (V3 vs V4)</td>
-                        <td><span class="badge badge-info">⧗ Running</span></td>
+                        <td><span class="badge badge-info"> Running</span></td>
                     </tr>
                     <tr>
                         <td>10:05am</td>
                         <td><strong>Nurture Bot</strong></td>
                         <td>Segmentation rule updated</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>09:50am</td>
                         <td><strong>Email Bot</strong></td>
                         <td>Triggered nurture sequence on 156 users</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                     <tr>
                         <td>09:35am</td>
                         <td><strong>Ad Bot</strong></td>
                         <td>Performance report generated</td>
-                        <td><span class="badge badge-success">✓ Success</span></td>
+                        <td><span class="badge badge-success"> Success</span></td>
                     </tr>
                 </table>
             </div>
@@ -1528,8 +1531,8 @@
         <!-- COMPLIANCE -->
         <div id="compliance" class="tab-content">
             <div class="card">
-                <div class="card-title">✓ Compliance Center</div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Review queue for ad copy & email copy. Flagged against Meta/Google guidelines + Felix's brand rules.</p>
+                <div class="card-title"> Compliance Center</div>
+                <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Review queue for ad copy & email copy. Flagged against Meta/Google guidelines + Felix's brand rules.</p>
 
                 <div style="margin-bottom: 15px;">
                     <select onchange="filterCompliance(this.value)" style="margin-bottom: 15px;">
@@ -1541,18 +1544,18 @@
                 </div>
 
                 <div class="compliance-item safe">
-                    <div class="compliance-score safe">✓ SAFE</div>
+                    <div class="compliance-score safe"> SAFE</div>
                     <div class="compliance-text">
                         <strong>Ad V4 - "Trust with 30+ Healers"</strong><br>
                         <em>"Join a community of 30+ verified healers. Find your perfect match today."</em>
                     </div>
                     <div class="compliance-flags">
-                        ✓ Meta compliant • ✓ Google compliant • ✓ Brand aligned • ✓ Clear CTA
+                         Meta compliant �  Google compliant �  Brand aligned �  Clear CTA
                     </div>
                 </div>
 
                 <div class="compliance-item review">
-                    <div class="compliance-score review">⚠ REVIEW</div>
+                    <div class="compliance-score review">� REVIEW</div>
                     <div class="compliance-text">
                         <strong>Email V2 - Nurture Sequence Day 3</strong><br>
                         <em>"This alternative therapy could change your life..."</em>
@@ -1562,12 +1565,12 @@
                         <span class="flag">Testimonial - verify source</span>
                     </div>
                     <div class="suggested-reword">
-                        <strong>💡 Suggested rewording:</strong> "This wellness approach has helped thousands of people..."
+                        <strong>� Suggested rewording:</strong> "This wellness approach has helped thousands of people..."
                     </div>
                 </div>
 
                 <div class="compliance-item revise">
-                    <div class="compliance-score revise">🚫 REVISE</div>
+                    <div class="compliance-score revise">� REVISE</div>
                     <div class="compliance-text">
                         <strong>Ad V1 - "Cure Your Ailments"</strong><br>
                         <em>"Our healers can cure any medical condition. Guaranteed results."</em>
@@ -1579,12 +1582,12 @@
                         <span class="flag">Google policy violation #2</span>
                     </div>
                     <div class="suggested-reword">
-                        <strong>💡 Suggested rewording:</strong> "Explore holistic wellness approaches with our certified practitioners. Results vary by individual."
+                        <strong>� Suggested rewording:</strong> "Explore holistic wellness approaches with our certified practitioners. Results vary by individual."
                     </div>
                 </div>
 
                 <div class="compliance-item review">
-                    <div class="compliance-score review">⚠ REVIEW</div>
+                    <div class="compliance-score review">� REVIEW</div>
                     <div class="compliance-text">
                         <strong>SMS Campaign - "Limited Time"</strong><br>
                         <em>"Only 3 spots left! Join today or miss out forever."</em>
@@ -1594,14 +1597,14 @@
                         <span class="flag">Urgency language - review Felix rules</span>
                     </div>
                     <div class="suggested-reword">
-                        <strong>💡 Suggested rewording:</strong> "A few spots available this month. Book your session."
+                        <strong>� Suggested rewording:</strong> "A few spots available this month. Book your session."
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">📊 Compliance Summary</div>
+                    <div class="card-title"> Compliance Summary</div>
                     <div class="stat-row">
                         <div class="stat-item" style="border-left-color: var(--success);">
                             <div class="stat-label">Safe to Launch</div>
@@ -1625,32 +1628,32 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">🔍 Compliance Rules</div>
+                    <div class="card-title"> Compliance Rules</div>
                     <div style="font-size: 12px; line-height: 1.7;">
                         <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
                             <strong>Meta Ads Policy</strong><br>
-                            • No medical claims<br>
-                            • No unsubstantiated claims<br>
-                            • Clear business identity
+                            � No medical claims<br>
+                            � No unsubstantiated claims<br>
+                            � Clear business identity
                         </div>
                         <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
                             <strong>Google Ads Policy</strong><br>
-                            • Substantiation required<br>
-                            • No misleading testimonials<br>
-                            • Clear regulatory compliance
+                            � Substantiation required<br>
+                            � No misleading testimonials<br>
+                            � Clear regulatory compliance
                         </div>
                         <div>
                             <strong>Felix's Brand Rules</strong><br>
-                            • Wellness language only<br>
-                            • Positive, never fear-based<br>
-                            • Verify healer claims
+                            � Wellness language only<br>
+                            � Positive, never fear-based<br>
+                            � Verify healer claims
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">📜 Approval Archive</div>
+                <div class="card-title"> Approval Archive</div>
                 <table style="font-size: 12px;">
                     <tr>
                         <th>Item</th>
@@ -1689,40 +1692,40 @@
         <!-- COLLABORATION -->
         <div id="collab" class="tab-content">
             <div class="card">
-                <div class="card-title">💬 Collaboration Hub</div>
-                <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Central place for team notes, approvals, and handoff tracking.</p>
+                <div class="card-title"> Collaboration Hub</div>
+                <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Central place for team notes, approvals, and handoff tracking.</p>
             </div>
 
             <div class="grid grid-2">
                 <div class="card">
-                    <div class="card-title">📝 Shared Notes</div>
+                    <div class="card-title"> Shared Notes</div>
                     <div style="margin-bottom: 15px;">
                         <button onclick="showModal('add-note')" style="width: 100%; text-align: left;">+ Add Note</button>
                     </div>
 
                     <div class="collaboration-note">
-                        <div class="note-meta">Jess • Today @ 11:15am</div>
+                        <div class="note-meta">Jess � Today @ 11:15am</div>
                         <div class="note-text">
                             Testing V4 across all channels. Already seeing +80% CTR lift. Recommend scaling budget by 50% tomorrow if performance holds.
                         </div>
                     </div>
 
                     <div class="collaboration-note">
-                        <div class="note-meta">Felix • Today @ 10:50am</div>
+                        <div class="note-meta">Felix � Today @ 10:50am</div>
                         <div class="note-text">
                             Approved V4 copy. Fully compliant. Brand voice is perfect. Ready for full launch.
                         </div>
                     </div>
 
                     <div class="collaboration-note">
-                        <div class="note-meta">Agent System • Today @ 10:30am</div>
+                        <div class="note-meta">Agent System � Today @ 10:30am</div>
                         <div class="note-text">
                             Email Bot queued 24 follow-up emails for Jess review before sending.
                         </div>
                     </div>
 
                     <div class="collaboration-note">
-                        <div class="note-meta">Jess • Yesterday @ 4:20pm</div>
+                        <div class="note-meta">Jess � Yesterday @ 4:20pm</div>
                         <div class="note-text">
                             V3 test complete. CTR 3.2% (good but not as good as V4). Archiving to safe library for future reference.
                         </div>
@@ -1730,22 +1733,22 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-title">✅ Approval Workflow</div>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">Current approvals in flight:</p>
+                    <div class="card-title"> Approval Workflow</div>
+                    <p style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 15px;">Current approvals in flight:</p>
 
                     <div class="approval-workflow">
-                        <div class="workflow-step completed">✓ Jess Tests</div>
-                        <div class="arrow">→</div>
+                        <div class="workflow-step completed"> Jess Tests</div>
+                        <div class="arrow"></div>
                         <div class="workflow-step active">Felix Reviews</div>
-                        <div class="arrow">→</div>
+                        <div class="arrow"></div>
                         <div class="workflow-step">Agent Executes</div>
                     </div>
 
                     <div style="background: var(--light); padding: 12px; border-radius: 6px; margin-bottom: 10px;">
-                        <div style="font-weight: 600; font-size: 12px; margin-bottom: 8px;">📋 Item: Email V2 Day 3</div>
-                        <div style="font-size: 11px; color: #666; line-height: 1.6;">
-                            Jess tested ✓<br>
-                            Felix reviewing (⧗ 2hr ago)<br>
+                        <div style="font-weight: 600; font-size: 12px; margin-bottom: 8px;">� Item: Email V2 Day 3</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); line-height: 1.6;">
+                            Jess tested <br>
+                            Felix reviewing ( 2hr ago)<br>
                             Recommended: Small rewording on health claim line
                         </div>
                         <button class="sm" style="margin-top: 8px;">Approve as-is</button>
@@ -1753,19 +1756,19 @@
                     </div>
 
                     <div style="background: var(--light); padding: 12px; border-radius: 6px;">
-                        <div style="font-weight: 600; font-size: 12px; margin-bottom: 8px;">📋 Item: SMS Campaign</div>
-                        <div style="font-size: 11px; color: #666; line-height: 1.6;">
-                            Jess tested ✓<br>
-                            Felix approved ✓<br>
+                        <div style="font-weight: 600; font-size: 12px; margin-bottom: 8px;">� Item: SMS Campaign</div>
+                        <div style="font-size: 11px; color: var(--color-text-secondary); line-height: 1.6;">
+                            Jess tested <br>
+                            Felix approved <br>
                             Ready to execute (awaiting Agent launch command)
                         </div>
-                        <button class="sm success">▶ Launch Now</button>
+                        <button class="sm success">� Launch Now</button>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-title">📊 Handoff Tracking (Ad → Funnel → Agent)</div>
+                <div class="card-title"> Handoff Tracking (Ad  Funnel  Agent)</div>
                 <table style="font-size: 12px;">
                     <tr>
                         <th>Item</th>
@@ -1777,31 +1780,31 @@
                         <td><strong>Ad V4 "Trust"</strong></td>
                         <td>Today, 9:00am</td>
                         <td><span class="badge badge-success">Live</span></td>
-                        <td><span style="font-size: 10px; color: #666;">Jess → Felix ✓ → Awareness Stage ✓</span></td>
+                        <td><span style="font-size: 10px; color: var(--color-text-secondary);">Jess  Felix   Awareness Stage </span></td>
                     </tr>
                     <tr>
                         <td><strong>Email Sequence D1</strong></td>
                         <td>Yesterday, 2:30pm</td>
                         <td><span class="badge badge-success">Live</span></td>
-                        <td><span style="font-size: 10px; color: #666;">Jess → Felix ✓ → Consideration Stage ✓</span></td>
+                        <td><span style="font-size: 10px; color: var(--color-text-secondary);">Jess  Felix   Consideration Stage </span></td>
                     </tr>
                     <tr>
                         <td><strong>SMS Holiday</strong></td>
                         <td>Mar 28, 1:00pm</td>
                         <td><span class="badge badge-success">Live</span></td>
-                        <td><span style="font-size: 10px; color: #666;">Jess → Felix ✓ → Retention Stage ✓</span></td>
+                        <td><span style="font-size: 10px; color: var(--color-text-secondary);">Jess  Felix   Retention Stage </span></td>
                     </tr>
                     <tr>
                         <td><strong>Email V2 Day 3</strong></td>
                         <td>Today, 8:30am</td>
                         <td><span class="badge badge-warning">Pending Felix</span></td>
-                        <td><span style="font-size: 10px; color: #666;">Jess ✓ → Felix (reviewing) → Consideration</span></td>
+                        <td><span style="font-size: 10px; color: var(--color-text-secondary);">Jess   Felix (reviewing)  Consideration</span></td>
                     </tr>
                 </table>
             </div>
 
             <div class="card">
-                <div class="card-title">📜 Change Log (Audit Trail)</div>
+                <div class="card-title"> Change Log (Audit Trail)</div>
                 <table style="font-size: 12px;">
                     <tr>
                         <th>Time</th>
@@ -1878,18 +1881,18 @@
     <div id="modal-variant-results" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">A/B Test Results</h2>
-            <button class="modal-close" onclick="closeModal('variant-results')">×</button>
+            <button class="modal-close" onclick="closeModal('variant-results')">�</button>
             
             <div class="variant-result">
                 <div class="result-metric">
                     <div class="result-label">V4 - "Trust" Copy</div>
                     <div class="result-value">3.8%</div>
-                    <div style="font-size: 11px; color: var(--success); margin-top: 5px;">🏆 WINNER</div>
+                    <div style="font-size: 11px; color: var(--success); margin-top: 5px;"> WINNER</div>
                 </div>
                 <div class="result-metric">
                     <div class="result-label">CTR</div>
                     <div class="result-value">3.8%</div>
-                    <div style="font-size: 11px; margin-top: 5px; color: #666;">vs 2.1% baseline</div>
+                    <div style="font-size: 11px; margin-top: 5px; color: var(--color-text-secondary);">vs 2.1% baseline</div>
                 </div>
                 <div class="result-metric">
                     <div class="result-label">CPA</div>
@@ -1899,7 +1902,7 @@
                 <div class="result-metric">
                     <div class="result-label">Confidence</div>
                     <div class="result-value">95%+</div>
-                    <div style="font-size: 11px; margin-top: 5px; color: #666;">Statistically significant</div>
+                    <div style="font-size: 11px; margin-top: 5px; color: var(--color-text-secondary);">Statistically significant</div>
                 </div>
             </div>
 
@@ -1914,7 +1917,7 @@
     <div id="modal-add-stage" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Add Funnel Stage</h2>
-            <button class="modal-close" onclick="closeModal('add-stage')">×</button>
+            <button class="modal-close" onclick="closeModal('add-stage')">�</button>
             
             <div class="form-group">
                 <label>Stage Name</label>
@@ -1945,20 +1948,20 @@
     <div id="modal-funnel-templates" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Load Funnel Template</h2>
-            <button class="modal-close" onclick="closeModal('funnel-templates')">×</button>
+            <button class="modal-close" onclick="closeModal('funnel-templates')">�</button>
             
             <div style="margin-bottom: 15px;">
                 <div style="background: var(--light); padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;" onclick="closeModal('funnel-templates')">
-                    <strong>🌟 SaaS Growth Funnel</strong><br>
-                    <span style="font-size: 12px; color: #666;">4 stages • Ad Bot → Email Bot → Sales → Onboard</span>
+                    <strong> SaaS Growth Funnel</strong><br>
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">4 stages � Ad Bot  Email Bot  Sales  Onboard</span>
                 </div>
                 <div style="background: var(--light); padding: 15px; border-radius: 6px; margin-bottom: 10px; cursor: pointer;" onclick="closeModal('funnel-templates')">
-                    <strong>🎓 Lead Nurture Funnel</strong><br>
-                    <span style="font-size: 12px; color: #666;">5 stages • Awareness → Interest → Education → Trial → Customer</span>
+                    <strong> Lead Nurture Funnel</strong><br>
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">5 stages � Awareness  Interest  Education  Trial  Customer</span>
                 </div>
                 <div style="background: var(--light); padding: 15px; border-radius: 6px; cursor: pointer;" onclick="closeModal('funnel-templates')">
-                    <strong>🛍️ E-Commerce Funnel</strong><br>
-                    <span style="font-size: 12px; color: #666;">3 stages • Browse → Cart → Checkout (fast-track)</span>
+                    <strong>� E-Commerce Funnel</strong><br>
+                    <span style="font-size: 12px; color: var(--color-text-secondary);">3 stages � Browse  Cart  Checkout (fast-track)</span>
                 </div>
             </div>
         </div>
@@ -1967,7 +1970,7 @@
     <div id="modal-add-note" class="modal">
         <div class="modal-content">
             <h2 class="modal-title">Add Collaboration Note</h2>
-            <button class="modal-close" onclick="closeModal('add-note')">×</button>
+            <button class="modal-close" onclick="closeModal('add-note')">�</button>
             
             <div class="form-group">
                 <label>Your Note</label>
@@ -2006,41 +2009,41 @@
         // Agent controls
         function pauseAgent(btn) {
             btn.parentElement.parentElement.classList.add('paused');
-            btn.textContent = '▶ Resume';
+            btn.textContent = '� Resume';
             btn.classList.add('success');
             btn.onclick = () => resumeAgent(btn);
         }
 
         function resumeAgent(btn) {
             btn.parentElement.parentElement.classList.remove('paused');
-            btn.textContent = '⏸ Pause';
+            btn.textContent = ' Pause';
             btn.classList.remove('success');
             btn.onclick = () => pauseAgent(btn);
         }
 
         function viewAgentLogs(btn) {
-            alert('📋 Recent logs for this agent:\n\n✓ 10:24am - Task completed\n✓ 10:18am - Action executed\n✓ 10:12am - API call successful\n⧗ 10:05am - Waiting for approval');
+            alert('� Recent logs for this agent:\n\n 10:24am - Task completed\n 10:18am - Action executed\n 10:12am - API call successful\n 10:05am - Waiting for approval');
         }
 
         // Compliance checker
         function runCompliance() {
-            alert('✓ Compliance check complete!\n\nResults:\n✓ No Meta policy violations\n✓ No Google policy violations\n✓ Brand voice aligned\n\nStatus: Safe to Launch');
+            alert(' Compliance check complete!\n\nResults:\n No Meta policy violations\n No Google policy violations\n Brand voice aligned\n\nStatus: Safe to Launch');
         }
 
         // Ad variant tester
         function testVariants() {
-            alert('🚀 A/B test initiated!\n\nVariants queued for testing:\n1. "Trust with 30+ Healers"\n2. "Discover Your Healer"\n3. "Join Our Wellness Community"\n\nRunning for: 7 days or 500 conversions (whichever comes first)');
+            alert(' A/B test initiated!\n\nVariants queued for testing:\n1. "Trust with 30+ Healers"\n2. "Discover Your Healer"\n3. "Join Our Wellness Community"\n\nRunning for: 7 days or 500 conversions (whichever comes first)');
         }
 
         // Export functions
         function exportData(format) {
             let filename = `ennie-marketing-report.${format}`;
             if (format === 'pdf') filename = 'ennie-marketing-report.pdf';
-            alert(`📥 Exporting as ${format.toUpperCase()}...\n\nFile: ${filename}\nSize: ~2.4 MB\nStatus: Ready to download`);
+            alert(` Exporting as ${format.toUpperCase()}...\n\nFile: ${filename}\nSize: ~2.4 MB\nStatus: Ready to download`);
         }
 
         function exportFunnel(format) {
-            alert(`📋 Exporting funnel as ${format.toUpperCase()}...\n\nFile: funnel-config.${format}\nStatus: Ready to download`);
+            alert(`� Exporting funnel as ${format.toUpperCase()}...\n\nFile: funnel-config.${format}\nStatus: Ready to download`);
         }
 
         // Filter functions

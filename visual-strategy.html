@@ -5,24 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENNIE Marketing Strategy - Visual</title>
   <style>
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-accent: #DC2626;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
-      --color-warning: #F59E0B;
+      --color-border: #E8E4DE;
       
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      /* Typography */
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
+      --font-size-h2: 24px;
+      --font-size-h3: 18px;
+      --font-size-body: 14px;
+      
+      /* Spacing */
       --spacing-lg: 16px;
       --spacing-xl: 20px;
       --spacing-2xl: 24px;
       --spacing-3xl: 32px;
       
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      
       --transition-base: all 0.2s ease;
     }
 
@@ -33,8 +43,8 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
     }
 
@@ -67,10 +77,12 @@
     }
 
     h1 {
-      font-size: 32px;
+      font-family: var(--font-serif);
+      font-size: var(--font-size-h1);
       font-weight: 600;
       margin-bottom: var(--spacing-3xl);
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .funnel-row {
@@ -89,9 +101,11 @@
     }
 
     .funnel-title h2 {
+      font-family: var(--font-serif);
       font-size: 22px;
       font-weight: 600;
       letter-spacing: -0.3px;
+      color: var(--color-text);
     }
 
     .funnel-title .desc {
@@ -122,7 +136,8 @@
 
     .stage:hover {
       border-color: var(--color-primary);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
     }
 
     .stage-name {
@@ -139,6 +154,7 @@
     }
 
     .stage-value {
+      font-family: var(--font-serif);
       font-size: 18px;
       font-weight: 600;
       color: var(--color-primary);
@@ -178,8 +194,8 @@
 <body>
 
 <header>
-  <h2 style="margin: 0;">📊 Marketing Strategy Visualization</h2>
-  <a href="master-hub.html">← Back to Command Center</a>
+  <h2 style="margin: 0; font-family: var(--font-serif); color: var(--color-text);"> Marketing Strategy Visualization</h2>
+  <a href="master-hub.html"> Back to Command Center</a>
 </header>
 
 <div class="container">
@@ -187,7 +203,7 @@
 
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">🌟</div>
+      <div class="funnel-icon"></div>
       <h2>Healer Recruitment Funnel</h2>
       <div class="desc">Find and onboard energy healers to the platform. Primary funnel for supply.</div>
     </div>
@@ -195,7 +211,7 @@
       <div class="stage">
         <div class="stage-name">Awareness</div>
         <div class="stage-value">50k</div>
-        <div class="stage-metric">Instagram • Google Ads</div>
+        <div class="stage-metric">Instagram � Google Ads</div>
       </div>
       <div class="stage">
         <div class="stage-name">Interest</div>
@@ -232,7 +248,7 @@
 
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">💚</div>
+      <div class="funnel-icon"></div>
       <h2>Patient Discovery Funnel</h2>
       <div class="desc">Help patients find the perfect healer. Fully automated, 1M target.</div>
     </div>
@@ -240,7 +256,7 @@
       <div class="stage">
         <div class="stage-name">Awareness</div>
         <div class="stage-value">400k</div>
-        <div class="stage-metric">TikTok • Instagram</div>
+        <div class="stage-metric">TikTok � Instagram</div>
       </div>
       <div class="stage">
         <div class="stage-name">Interest</div>
@@ -277,7 +293,7 @@
 
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">🤝</div>
+      <div class="funnel-icon"></div>
       <h2>Referral Program Funnel</h2>
       <div class="desc">Viral growth through existing users. Incentivized referrals.</div>
     </div>
@@ -322,7 +338,7 @@
 
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">🏫</div>
+      <div class="funnel-icon">�</div>
       <h2>Untrained Healer Funnel</h2>
       <div class="desc">Educate and onboard healers without formal training. Lower barrier to entry.</div>
     </div>
@@ -330,7 +346,7 @@
       <div class="stage">
         <div class="stage-name">Awareness</div>
         <div class="stage-value">25k</div>
-        <div class="stage-metric">YouTube • Ads</div>
+        <div class="stage-metric">YouTube � Ads</div>
       </div>
       <div class="stage">
         <div class="stage-name">Interest</div>
@@ -367,7 +383,7 @@
 
   <div class="funnel-row">
     <div class="funnel-title">
-      <div class="funnel-icon">📱</div>
+      <div class="funnel-icon"></div>
       <h2>Owned Media Funnel</h2>
       <div class="desc">Leverage existing audiences. Email, SMS, push notifications, blog traffic.</div>
     </div>

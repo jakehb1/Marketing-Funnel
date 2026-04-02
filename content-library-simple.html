@@ -5,22 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Content Library</title>
   <style>
+    /* WARM MINIMAL WELLNESS AESTHETIC */
     :root {
-      --bg-neutral: #FAFBFC;
+      /* Color Palette */
+      --bg-main: #F5F5F0;
       --bg-card: #FFFFFF;
-      --color-primary: #2563EB;
-      --color-text: #1F2937;
+      --color-primary: #7FA997;
+      --color-accent: #A89973;
+      --color-text: #2C2C2C;
       --color-text-secondary: #6B7280;
-      --color-border: #E5E7EB;
-      --color-success: #10B981;
+      --color-border: #E8E4DE;
+      --color-success: #7FA997;
       
-      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      /* Typography */
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-h1: 36px;
+      --font-size-h2: 24px;
+      --font-size-h3: 18px;
+      --font-size-body: 14px;
+      --font-size-caption: 12px;
+      
+      /* Spacing */
       --spacing-lg: 16px;
       --spacing-xl: 20px;
       --spacing-2xl: 24px;
       --spacing-3xl: 32px;
       
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      /* Shadows - subtle */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      
       --transition-base: all 0.2s ease;
     }
 
@@ -31,8 +45,8 @@
     }
 
     body {
-      font-family: var(--font-family);
-      background: var(--bg-neutral);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
       color: var(--color-text);
     }
 
@@ -65,10 +79,12 @@
     }
 
     h1 {
-      font-size: 32px;
+      font-family: var(--font-serif);
+      font-size: var(--font-size-h1);
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: -0.5px;
+      color: var(--color-text);
     }
 
     .subtitle {
@@ -78,7 +94,7 @@
     }
 
     .info-box {
-      background: linear-gradient(135deg, #2563EB08 0%, #2563EB04 100%);
+      background: rgba(127, 169, 151, 0.04);
       border-radius: 8px;
       padding: var(--spacing-2xl);
       margin-bottom: var(--spacing-3xl);
@@ -86,6 +102,7 @@
     }
 
     .info-box h2 {
+      font-family: var(--font-serif);
       font-size: 18px;
       margin-bottom: var(--spacing-lg);
       color: var(--color-primary);
@@ -95,6 +112,7 @@
     .info-box p {
       line-height: 1.6;
       color: var(--color-text-secondary);
+      font-size: 14px;
     }
 
     .asset-type {
@@ -102,6 +120,7 @@
     }
 
     .asset-type h3 {
+      font-family: var(--font-serif);
       font-size: 18px;
       font-weight: 600;
       margin-bottom: var(--spacing-xl);
@@ -126,7 +145,8 @@
 
     .asset-card:hover {
       border-color: var(--color-primary);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
     }
 
     .asset-icon {
@@ -175,7 +195,7 @@
     }
 
     .copy-btn:hover {
-      background: #1d4ed8;
+      background: #6d8f7f;
     }
 
     .search-box {
@@ -190,14 +210,15 @@
       border: 1px solid var(--color-border);
       border-radius: 6px;
       font-size: 14px;
-      font-family: var(--font-family);
+      font-family: var(--font-sans);
       transition: var(--transition-base);
+      color: var(--color-text);
     }
 
     .search-box input:focus {
       outline: none;
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      box-shadow: 0 0 0 3px rgba(127, 169, 151, 0.1);
     }
 
     @media (max-width: 768px) {
@@ -222,8 +243,8 @@
 <body>
 
 <header>
-  <h2 style="margin: 0;">📋 Content Library</h2>
-  <a href="master-hub.html">← Back to Command Center</a>
+  <h2 style="margin: 0; font-family: var(--font-serif); color: var(--color-text);">� Content Library</h2>
+  <a href="master-hub.html"> Back to Command Center</a>
 </header>
 
 <div class="container">
@@ -235,15 +256,15 @@
   </div>
 
   <div class="info-box">
-    <h2>📚 All Assets Organized by Funnel & Stage</h2>
+    <h2>All Assets Organized by Funnel & Stage</h2>
     <p>Every asset is production-ready, personalized, and tested. Copy any asset below to use immediately in campaigns. Assets are organized by funnel (Healer, Patient, Referral, Untrained, Owned) and funnel stage (Awareness, Interest, Signup, etc.).</p>
   </div>
 
   <div class="asset-type">
-    <h3>📧 Email Copy (287 assets)</h3>
+    <h3> Email Copy (287 assets)</h3>
     <div class="asset-grid">
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Healer Awareness Email #1</div>
         <div class="asset-description">Subject line optimized for energy healing practitioners. CTR 24%.</div>
         <div class="asset-meta">
@@ -254,7 +275,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Patient Interest Nurture #3</div>
         <div class="asset-description">Follow-up email for patients who clicked but didn't book. Booking rate: 8%.</div>
         <div class="asset-meta">
@@ -265,7 +286,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Referral Activation Email</div>
         <div class="asset-description">Triggers when patient creates account. Ref rate: 12%. Immediate value prop.</div>
         <div class="asset-meta">
@@ -276,7 +297,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Course Completion Congratulations</div>
         <div class="asset-description">Untrained healers completing certification. Onboard rate: 80%.</div>
         <div class="asset-meta">
@@ -287,7 +308,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Session Reminder Email</div>
         <div class="asset-description">24-hour reminder before scheduled sessions. Cancellation rate: -3%.</div>
         <div class="asset-meta">
@@ -298,7 +319,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📧</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Re-Engagement Healer Promo</div>
         <div class="asset-description">Win-back campaign for inactive healers. Reactivation: 22%.</div>
         <div class="asset-meta">
@@ -311,10 +332,10 @@
   </div>
 
   <div class="asset-type">
-    <h3>🎯 Ad Copy & Headlines (412 assets)</h3>
+    <h3> Ad Copy & Headlines (412 assets)</h3>
     <div class="asset-grid">
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Google Ads Healer Recruitment #1</div>
         <div class="asset-description">Lead gen copy for energy healers. CTR 6.2%, CPC $0.45.</div>
         <div class="asset-meta">
@@ -325,7 +346,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Instagram Story Swipe-Up Patient</div>
         <div class="asset-description">Swipe-up CTA for finding healers. CTR 8.1%, CAC $2.30.</div>
         <div class="asset-meta">
@@ -336,7 +357,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">TikTok Hook - Healer Transformation</div>
         <div class="asset-description">3-second hook for TikTok video ads. Video completion: 71%.</div>
         <div class="asset-meta">
@@ -347,7 +368,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Pinterest Ad - Finding Your Healer</div>
         <div class="asset-description">Educational content ad for Pinterest. CTR 5.8%, CPM $3.</div>
         <div class="asset-meta">
@@ -358,7 +379,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Facebook Carousel Ad - 5 Healing Modalities</div>
         <div class="asset-description">Multi-card ad highlighting different healing types. CTR 7.2%.</div>
         <div class="asset-meta">
@@ -369,7 +390,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">🎯</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Untrained Healer Course Promo</div>
         <div class="asset-description">Enroll copy for certification course. Enrollment rate: 39%.</div>
         <div class="asset-meta">
@@ -382,10 +403,10 @@
   </div>
 
   <div class="asset-type">
-    <h3>📱 Social Media Captions (580 assets)</h3>
+    <h3> Social Media Captions (580 assets)</h3>
     <div class="asset-grid">
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Instagram Post - Meet A Healer #4</div>
         <div class="asset-description">Spotlight post of featured healer. Engagement: 11.2%, Saves: 28.</div>
         <div class="asset-meta">
@@ -396,7 +417,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">TikTok Caption - Energy Healing 101</div>
         <div class="asset-description">Educational content caption. Avg views: 18k, Shares: 340.</div>
         <div class="asset-meta">
@@ -407,7 +428,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">LinkedIn Post - Healer Marketplace Founder</div>
         <div class="asset-description">Thought leadership about wellness platforms. Engagement: 8.3%.</div>
         <div class="asset-meta">
@@ -418,7 +439,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Twitter Thread - Reiki vs Sound Healing</div>
         <div class="asset-description">Educational thread comparing modalities. Impressions: 42k.</div>
         <div class="asset-meta">
@@ -429,7 +450,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Pinterest Pin Description - Chakra Healing</div>
         <div class="asset-description">SEO-optimized pin description. Saves: 1.2k, Clicks: 340.</div>
         <div class="asset-meta">
@@ -440,7 +461,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📱</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">YouTube Community Post - Healer Spotlight</div>
         <div class="asset-description">Community post driving engagement. Interaction rate: 14%.</div>
         <div class="asset-meta">
@@ -453,10 +474,10 @@
   </div>
 
   <div class="asset-type">
-    <h3>📄 Landing Pages & SMS (520 assets)</h3>
+    <h3> Landing Pages & SMS (520 assets)</h3>
     <div class="asset-grid">
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Healer Signup Landing Page HTML</div>
         <div class="asset-description">Full responsive landing page. Conversion rate: 14.2%.</div>
         <div class="asset-meta">
@@ -467,7 +488,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">SMS - Book Your First Session</div>
         <div class="asset-description">SMS campaign for new patients. CTR: 18%, Click rate: 12%.</div>
         <div class="asset-meta">
@@ -478,7 +499,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Lead Magnet - 7-Day Healing Guide PDF</div>
         <div class="asset-description">Downloadable PDF for lead capture. Download rate: 31%.</div>
         <div class="asset-meta">
@@ -489,7 +510,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">SMS - Healer Booking Notification</div>
         <div class="asset-description">Order confirmation SMS. Read rate: 98%, Conversion: 7%.</div>
         <div class="asset-meta">
@@ -500,7 +521,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">Webinar Landing Page - Intro to Energy</div>
         <div class="asset-description">Webinar signup page. Signup rate: 22%, Attendees: 68%.</div>
         <div class="asset-meta">
@@ -511,7 +532,7 @@
       </div>
 
       <div class="asset-card">
-        <div class="asset-icon">📄</div>
+        <div class="asset-icon"></div>
         <div class="asset-title">SMS - Referral Bonus Reminder</div>
         <div class="asset-description">Nudge to claim referral reward. Claim rate: 34%.</div>
         <div class="asset-meta">

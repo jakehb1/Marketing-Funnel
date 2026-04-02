@@ -11,15 +11,27 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #F5F3EE;
-      color: #1A1A2E;
+      font-family: var(--font-sans);
+      background: var(--bg-main);
+      color: var(--color-text);
     }
 
     header {
-      background: white;
-      border-bottom: 1px solid #E8E4DE;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--color-border);
       padding: 20px 32px;
       display: flex;
       justify-content: space-between;
@@ -27,7 +39,7 @@
     }
 
     header a {
-      color: #7C6BC4;
+      color: var(--color-primary);
       text-decoration: none;
       font-weight: 600;
       font-size: 14px;
@@ -46,7 +58,7 @@
     }
 
     .subtitle {
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 14px;
       margin-bottom: 32px;
     }
@@ -63,7 +75,7 @@
       border: 1px solid #E8E4DE;
       border-radius: 6px;
       font-size: 13px;
-      background: white;
+      background: var(--bg-card);
       cursor: pointer;
     }
 
@@ -84,7 +96,7 @@
     }
 
     .content-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: 12px;
       padding: 20px;
       border: 1px solid #E8E4DE;
@@ -117,21 +129,21 @@
 
     .card-funnel {
       font-size: 11px;
-      color: #999;
+      color: var(--color-text-secondary);
       text-transform: uppercase;
       font-weight: 600;
     }
 
     .card-stage {
       font-size: 13px;
-      color: #666;
+      color: var(--color-text-secondary);
       margin-bottom: 12px;
     }
 
     .card-content {
       font-size: 13px;
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text);
       max-height: 120px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -148,7 +160,7 @@
       justify-content: space-between;
       align-items: center;
       font-size: 11px;
-      color: #999;
+      color: var(--color-text-secondary);
     }
 
     .copy-btn {
@@ -184,7 +196,7 @@
     }
 
     .modal-content {
-      background: white;
+      background: var(--bg-card);
       border-radius: 12px;
       max-width: 700px;
       margin: 40px auto;
@@ -199,11 +211,11 @@
       border: none;
       font-size: 24px;
       cursor: pointer;
-      color: #999;
+      color: var(--color-text-secondary);
     }
 
     .modal-close:hover {
-      color: #1A1A2E;
+      color: #2C2C2C;
     }
 
     .modal h2 {
@@ -213,7 +225,7 @@
 
     .modal-meta {
       font-size: 12px;
-      color: #999;
+      color: var(--color-text-secondary);
       margin-bottom: 20px;
       padding-bottom: 12px;
       border-bottom: 1px solid #E8E4DE;
@@ -222,7 +234,7 @@
     .modal-text {
       font-size: 14px;
       line-height: 1.8;
-      color: #333;
+      color: var(--color-text);
       margin-bottom: 20px;
       white-space: pre-wrap;
     }
@@ -252,7 +264,7 @@
     }
 
     .stats {
-      background: white;
+      background: var(--bg-card);
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 40px;
@@ -274,7 +286,7 @@
 
     .stat-label {
       font-size: 12px;
-      color: #999;
+      color: var(--color-text-secondary);
       margin-top: 4px;
       text-transform: uppercase;
     }
@@ -282,7 +294,7 @@
     footer {
       text-align: center;
       padding: 40px;
-      color: #999;
+      color: var(--color-text-secondary);
       font-size: 12px;
       margin-top: 60px;
       border-top: 1px solid #E8E4DE;
@@ -293,7 +305,7 @@
 
 <header>
   <h2>Content Library</h2>
-  <a href="index.html">← Back to Hub</a>
+  <a href="index.html"> Back to Hub</a>
 </header>
 
 <div class="container">
@@ -346,9 +358,9 @@
 <!-- MODAL -->
 <div id="modal" class="modal" onclick="closeModal(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-close" onclick="closeModal()">�</button>
     <div class="modal-meta">
-      <span id="modalFunnel"></span> • <span id="modalStage"></span> • <span id="modalType"></span>
+      <span id="modalFunnel"></span> � <span id="modalStage"></span> � <span id="modalType"></span>
     </div>
     <h2 id="modalTitle"></h2>
     <div class="modal-text" id="modalText"></div>
@@ -359,7 +371,7 @@
 </div>
 
 <footer>
-  <p>ENNIE Marketing Content Library — 2,407 assets from 27 video transcripts</p>
+  <p>ENNIE Marketing Content Library  2,407 assets from 27 video transcripts</p>
   <p style="margin-top: 12px; opacity: 0.5;">All content approved by Charlie before use</p>
 </footer>
 

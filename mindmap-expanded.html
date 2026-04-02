@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ENNIE Marketing Funnel Map — Full Content</title>
+  <title>ENNIE Marketing Funnel Map  Full Content</title>
   <style>
     * {
       margin: 0;
@@ -17,32 +17,39 @@
       --patient: #7C6BC4;
       --referral: #C4775A;
       --owned: #5A8FC4;
-      --dark: #1A1A2E;
-      --bg: #F5F3EE;
-      --border: #E8E4DE;
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+      font-family: var(--font-sans);
+      background: var(--bg-main);
+      color: var(--color-text);
       overflow: hidden;
     }
 
     header {
-      background: var(--dark);
-      color: white;
+      background: var(--bg-card);
+      color: var(--color-text);
       padding: 16px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border-bottom: 1px solid var(--color-border);
       z-index: 100;
     }
 
     header h1 {
       font-size: 20px;
       font-weight: 600;
+      font-family: var(--font-serif);
     }
 
     .controls {
@@ -162,7 +169,7 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
-      color: #999;
+      color: var(--color-text-secondary);
       border-bottom: 3px solid transparent;
       transition: all 0.2s;
     }
@@ -191,7 +198,7 @@
     .section h3 {
       font-size: 12px;
       text-transform: uppercase;
-      color: #999;
+      color: var(--color-text-secondary);
       font-weight: 600;
       margin-bottom: 8px;
       letter-spacing: 0.5px;
@@ -200,12 +207,12 @@
     .section p {
       font-size: 13px;
       line-height: 1.6;
-      color: #333;
+      color: var(--color-text);
       margin-bottom: 8px;
     }
 
     .quote {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 12px;
       border-left: 3px solid var(--patient);
       font-style: italic;
@@ -217,13 +224,13 @@
     }
 
     .copy-box {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 12px;
       border-radius: 6px;
       font-family: 'Monaco', monospace;
       font-size: 11px;
       line-height: 1.5;
-      color: #333;
+      color: var(--color-text);
       margin-bottom: 12px;
       word-wrap: break-word;
       position: relative;
@@ -232,7 +239,7 @@
     .copy-box-label {
       font-size: 10px;
       text-transform: uppercase;
-      color: #999;
+      color: var(--color-text-secondary);
       font-weight: 600;
       margin-bottom: 6px;
       letter-spacing: 0.5px;
@@ -323,7 +330,7 @@
       border-radius: 6px;
       padding: 10px 14px;
       font-size: 11px;
-      color: #666;
+      color: var(--color-text-secondary);
       z-index: 40;
       max-width: 200px;
     }
@@ -333,7 +340,7 @@
 
 <header>
   <div>
-    <h1>🌿 ENNIE Funnel Map + Scripts</h1>
+    <h1> ENNIE Funnel Map + Scripts</h1>
   </div>
   <div class="controls">
     <div class="control-group">
@@ -369,7 +376,7 @@
       <h2 id="panelTitle"></h2>
       <span id="panelFunnel" class="badge"></span>
     </div>
-    <button class="panel-close" onclick="closePanel()">✕</button>
+    <button class="panel-close" onclick="closePanel()">�</button>
   </div>
   <div class="panel-content">
     <div class="tabs">
@@ -387,7 +394,7 @@
       </div>
       <div class="section">
         <h3>Key Message</h3>
-        <p style="font-style: italic; color: #666;" id="keyMsg"></p>
+        <p style="font-style: italic; color: var(--color-text-secondary);" id="keyMsg"></p>
       </div>
       <div class="section">
         <h3>Conversion Rate</h3>
@@ -444,7 +451,7 @@
       lpCopy: "You've spent years perfecting your craft. We want to test your ability objectively and match you with clients worldwide.",
       cta: "Join Healer Waitlist",
       emails: [
-        { subject: "Subject: Your ability is real. Time to prove it.", body: "Hi [Name],\n\nI found you because of your healing practice. For the last decade, I've been studying healing ability — measuring it, testing it, publishing on it.\n\nWhat matters is outcomes. Can you move pain? How quickly? How consistently?\n\nThat's why we built Ennie.\n\nCharlieGoldsmith" }
+        { subject: "Subject: Your ability is real. Time to prove it.", body: "Hi [Name],\n\nI found you because of your healing practice. For the last decade, I've been studying healing ability  measuring it, testing it, publishing on it.\n\nWhat matters is outcomes. Can you move pain? How quickly? How consistently?\n\nThat's why we built Ennie.\n\nCharlieGoldsmith" }
       ],
       ads: [
         { platform: "Meta", copy: "Your ability is real. Now prove it. Ennie tests healers on outcomes, not credentials." },
@@ -462,7 +469,7 @@
       keyMsg: "Your ability is real. Get paid for it.",
       convRate: "~35% sign up",
       lpHeadline: "Your Ability Is Real. Get Paid For It.",
-      lpCopy: "Join the Ennie healer network. Test your ability. Earn income. We test healers on measurable outcomes, not credentials. You know your work creates change — now it can be measured and rewarded globally.",
+      lpCopy: "Join the Ennie healer network. Test your ability. Earn income. We test healers on measurable outcomes, not credentials. You know your work creates change  now it can be measured and rewarded globally.",
       cta: "Join Healer Waitlist",
       emails: [],
       ads: [
@@ -480,7 +487,7 @@
       keyMsg: "Top referrers win a trip to learn from Charlie",
       convRate: "Day 0",
       lpHeadline: "Welcome to Ennie",
-      lpCopy: "You're in. You've just been added to the healer waitlist. Here's your referral link — share it and move up the priority queue. Top referrers get an all-expenses trip to learn from Charlie in person.",
+      lpCopy: "You're in. You've just been added to the healer waitlist. Here's your referral link  share it and move up the priority queue. Top referrers get an all-expenses trip to learn from Charlie in person.",
       cta: "View Your Referral Link",
       emails: [
         { subject: "Subject: Welcome to Ennie + your referral link", body: "Hi [Name],\n\nYou're in the healer waitlist. Here's what happens next:\n\n1. Share your referral link with other healers\n2. Every person you refer moves both of you up the priority queue\n3. Top referrers win a trip to learn from me in person\n\nLet's build this together.\nCharlie" }
@@ -517,10 +524,10 @@
       keyMsg: "Time to find out if you've got it.",
       convRate: "~70% accept invite",
       lpHeadline: "Your Assessment Is Ready",
-      lpCopy: "Time to prove your ability. Take the Ennie healing assessment — remote, anonymous, real patients. We measure your outcomes objectively.",
+      lpCopy: "Time to prove your ability. Take the Ennie healing assessment  remote, anonymous, real patients. We measure your outcomes objectively.",
       cta: "Download App & Start Assessment",
       emails: [
-        { subject: "Subject: Assessment invite — Your test is ready", body: "Hi [Name],\n\nYou're invited to the Ennie healing assessment. Here's what happens:\n\n1. Download the app\n2. Complete remote healing sessions with real clients\n3. We measure outcomes objectively\n4. Consistent results = join the vetted network\n\nReady?\n\nCharlie" }
+        { subject: "Subject: Assessment invite  Your test is ready", body: "Hi [Name],\n\nYou're invited to the Ennie healing assessment. Here's what happens:\n\n1. Download the app\n2. Complete remote healing sessions with real clients\n3. We measure outcomes objectively\n4. Consistent results = join the vetted network\n\nReady?\n\nCharlie" }
       ],
       ads: [],
       quotes: [
@@ -550,7 +557,7 @@
       stage: "Get Paid",
       desc: "Healer completes sessions, earns income, builds reputation. Career path begins.",
       keyMsg: "Weekly payouts from international clients",
-      convRate: "🎯 Goal achieved",
+      convRate: " Goal achieved",
       lpHeadline: "You're Earning",
       lpCopy: "Your first client matched. Your first session completed. Your first payout pending. This is the beginning of your new income stream.",
       cta: "Track Earnings",
@@ -868,7 +875,7 @@
         `;
       });
     } else {
-      emailHtml = '<p style="color: #999;">No email copy for this stage.</p>';
+      emailHtml = '<p style="color: var(--color-text-secondary);">No email copy for this stage.</p>';
     }
     document.getElementById('emailContent').innerHTML = emailHtml;
 
@@ -887,7 +894,7 @@
         `;
       });
     } else {
-      adHtml = '<p style="color: #999;">No ad copy for this stage.</p>';
+      adHtml = '<p style="color: var(--color-text-secondary);">No ad copy for this stage.</p>';
     }
     document.getElementById('adContent').innerHTML = adHtml;
 

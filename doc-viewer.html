@@ -6,6 +6,19 @@
   <title>ENNIE Documentation</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
+    :root {
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -15,11 +28,11 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #F5F3EE;
-      color: #1A1A2E;
+      color: #2C2C2C;
     }
 
     header {
-      background: white;
+      background: var(--bg-card);
       border-bottom: 1px solid #E8E4DE;
       padding: 16px 32px;
       display: flex;
@@ -43,7 +56,7 @@
       top: 64px;
       width: 280px;
       height: calc(100vh - 64px);
-      background: white;
+      background: var(--bg-card);
       border-right: 1px solid #E8E4DE;
       overflow-y: auto;
       padding: 24px 0;
@@ -58,7 +71,7 @@
       font-size: 11px;
       text-transform: uppercase;
       font-weight: 600;
-      color: #999;
+      color: var(--color-text-secondary);
       margin-bottom: 12px;
       letter-spacing: 0.5px;
     }
@@ -67,7 +80,7 @@
       display: block;
       padding: 10px 20px;
       font-size: 13px;
-      color: #666;
+      color: var(--color-text-secondary);
       text-decoration: none;
       border-left: 2px solid transparent;
       transition: all 0.2s;
@@ -75,7 +88,7 @@
     }
 
     .sidebar-link:hover {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       color: #7C6BC4;
     }
 
@@ -93,7 +106,7 @@
 
     .doc {
       display: none;
-      background: white;
+      background: var(--bg-card);
       border-radius: 12px;
       padding: 40px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -126,7 +139,7 @@
     .doc p {
       line-height: 1.7;
       margin-bottom: 16px;
-      color: #333;
+      color: var(--color-text);
     }
 
     .doc ul, .doc ol {
@@ -139,7 +152,7 @@
     }
 
     .doc code {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 2px 6px;
       border-radius: 3px;
       font-family: 'Monaco', monospace;
@@ -147,7 +160,7 @@
     }
 
     .doc pre {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       padding: 16px;
       border-radius: 8px;
       overflow-x: auto;
@@ -158,7 +171,7 @@
     .doc pre code {
       background: none;
       padding: 0;
-      color: #333;
+      color: var(--color-text);
       font-size: 11px;
     }
 
@@ -175,7 +188,7 @@
     }
 
     .doc th {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       font-weight: 600;
     }
 
@@ -183,7 +196,7 @@
       border-left: 3px solid #7C6BC4;
       padding-left: 16px;
       margin: 16px 0;
-      color: #666;
+      color: var(--color-text-secondary);
       font-style: italic;
     }
 
@@ -199,7 +212,7 @@
     .loading {
       text-align: center;
       padding: 40px;
-      color: #999;
+      color: var(--color-text-secondary);
     }
 
     .error {
@@ -239,33 +252,33 @@
 <body>
 
 <header>
-  <a href="index.html">← Back to Hub</a>
+  <a href="index.html"> Back to Hub</a>
   <h2 style="margin: 0;">Documentation</h2>
 </header>
 
 <div class="sidebar">
   <div class="sidebar-section">
-    <div class="sidebar-title">📖 Getting Started</div>
+    <div class="sidebar-title"> Getting Started</div>
     <a class="sidebar-link" onclick="loadDoc('START-HERE.md')">START-HERE</a>
     <a class="sidebar-link" onclick="loadDoc('AUTOMATION-DEPLOYMENT-SUMMARY.md')">Automation Summary</a>
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-title">🤖 Automation</div>
+    <div class="sidebar-title"> Automation</div>
     <a class="sidebar-link" onclick="loadDoc('patient-funnel-automation-playbook.md')">Automation Playbook</a>
     <a class="sidebar-link" onclick="loadDoc('patient-funnel-data-integration-map.md')">Data Integration Map</a>
     <a class="sidebar-link" onclick="loadDoc('README-AUTOMATION.md')">Quick Reference</a>
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-title">📚 Content Library</div>
+    <div class="sidebar-title"> Content Library</div>
     <a class="sidebar-link" onclick="loadJson('comprehensive-content.json')">All Assets (2,407)</a>
     <a class="sidebar-link" onclick="loadDoc('CONTENT_LIBRARY_README.md')">How to Use</a>
     <a class="sidebar-link" onclick="loadDoc('CONTENT_INDEX.md')">Index</a>
   </div>
 
   <div class="sidebar-section">
-    <div class="sidebar-title">⚙️ Agent Configs</div>
+    <div class="sidebar-title"> Agent Configs</div>
     <a class="sidebar-link" onclick="loadJson('agent-configs/patient-awareness-agent.json')">Awareness Agent</a>
     <a class="sidebar-link" onclick="loadJson('agent-configs/patient-nurture-agent.json')">Nurture Agent</a>
     <a class="sidebar-link" onclick="loadJson('agent-configs/patient-matching-agent.json')">Matching Agent</a>

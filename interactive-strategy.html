@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENNIE Interactive Strategy</title>
   <style>
+    :root {
+      --bg-main: #F5F5F0;
+      --bg-card: #FFFFFF;
+      --color-primary: #7FA997;
+      --color-secondary: #A89973;
+      --color-text: #2C2C2C;
+      --color-text-secondary: #6B7280;
+      --color-border: #E8E4DE;
+      --font-serif: Georgia, Garamond, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -14,11 +27,11 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #F5F3EE;
-      color: #1A1A2E;
+      color: #2C2C2C;
     }
 
     header {
-      background: white;
+      background: var(--bg-card);
       border-bottom: 1px solid #E8E4DE;
       padding: 20px 32px;
       display: flex;
@@ -92,7 +105,7 @@
     }
 
     .stage.active {
-      border-color: #1A1A2E;
+      border-color: #2C2C2C;
       transform: translateY(-4px);
       box-shadow: 0 12px 20px rgba(0,0,0,0.2);
     }
@@ -143,7 +156,7 @@
     }
 
     .modal-content {
-      background: white;
+      background: var(--bg-card);
       border-radius: 16px;
       max-width: 900px;
       margin: 40px auto;
@@ -159,11 +172,11 @@
       border: none;
       font-size: 28px;
       cursor: pointer;
-      color: #999;
+      color: var(--color-text-secondary);
     }
 
     .modal-close:hover {
-      color: #1A1A2E;
+      color: #2C2C2C;
     }
 
     .modal-header {
@@ -207,7 +220,7 @@
     }
 
     .workflow-step {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       border-radius: 8px;
       padding: 16px;
       text-align: center;
@@ -239,7 +252,7 @@
     }
 
     .metric-item {
-      background: #F8F6F3;
+      background: rgba(127, 169, 151, 0.05);
       border-radius: 8px;
       padding: 12px;
     }
@@ -247,7 +260,7 @@
     .metric-label {
       font-size: 10px;
       text-transform: uppercase;
-      color: #999;
+      color: var(--color-text-secondary);
       font-weight: 600;
       margin-bottom: 6px;
     }
@@ -273,7 +286,7 @@
     footer {
       text-align: center;
       padding: 40px;
-      color: #999;
+      color: var(--color-text-secondary);
       font-size: 12px;
       margin-top: 60px;
       border-top: 1px solid #E8E4DE;
@@ -300,7 +313,7 @@
 
 <header>
   <h2>ENNIE Interactive Strategy</h2>
-  <a href="index.html">← Back to Hub</a>
+  <a href="index.html"> Back to Hub</a>
 </header>
 
 <div class="container">
@@ -308,47 +321,47 @@
 
   <!-- AD OPERATIONS AUTOMATION -->
   <div style="background: linear-gradient(135deg, #EDE9F9 0%, #F0EDF7 100%); border-radius: 12px; padding: 32px; margin-bottom: 60px; border: 2px solid #7C6BC4;">
-    <h2 style="font-size: 24px; margin-bottom: 20px;">🤖 Ad Operations Automation</h2>
-    <p style="color: #666; line-height: 1.7; margin-bottom: 20px;">
+    <h2 style="font-size: 24px; margin-bottom: 20px;"> Ad Operations Automation</h2>
+    <p style="color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 20px;">
       <strong>Growth Agent + Voice Agent + Paid Ads Agent</strong> autonomously manage multi-platform ad campaigns across Meta (Facebook/Instagram), Google Ads, TikTok, and Pinterest. The system continuously A/B tests, optimizes spend, and feeds results back into the funnel.
     </p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-      <div style="background: white; padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
+      <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
         <div style="font-size: 12px; text-transform: uppercase; color: #7C6BC4; font-weight: 600; margin-bottom: 8px;">Facebook/Instagram</div>
-        <p style="font-size: 12px; color: #666; line-height: 1.6;">
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
           <strong>Budget:</strong> £12k/mo<br>
           <strong>Audiences:</strong> Chronic pain groups, wellness interests, lookalikes<br>
           <strong>Agent:</strong> Paid Ads Agent cycles through 5 ad variations every 3 days
         </p>
       </div>
-      <div style="background: white; padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
+      <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
         <div style="font-size: 12px; text-transform: uppercase; color: #7C6BC4; font-weight: 600; margin-bottom: 8px;">Google Ads</div>
-        <p style="font-size: 12px; color: #666; line-height: 1.6;">
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
           <strong>Budget:</strong> £15k/mo<br>
           <strong>Keywords:</strong> chronic pain relief, energy healing, alternative medicine<br>
           <strong>Agent:</strong> Bid optimization + keyword expansion daily
         </p>
       </div>
-      <div style="background: white; padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
+      <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
         <div style="font-size: 12px; text-transform: uppercase; color: #7C6BC4; font-weight: 600; margin-bottom: 8px;">TikTok</div>
-        <p style="font-size: 12px; color: #666; line-height: 1.6;">
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
           <strong>Budget:</strong> £8k/mo<br>
           <strong>Creative:</strong> Viral hooks, user testimonials, Charlie clips<br>
           <strong>Agent:</strong> Tests 10 variations, pauses underperformers
         </p>
       </div>
-      <div style="background: white; padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
+      <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #7C6BC4;">
         <div style="font-size: 12px; text-transform: uppercase; color: #7C6BC4; font-weight: 600; margin-bottom: 8px;">Pinterest</div>
-        <p style="font-size: 12px; color: #666; line-height: 1.6;">
+        <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.6;">
           <strong>Budget:</strong> £5k/mo<br>
           <strong>Pins:</strong> Wellness, self-care, healing journey content<br>
           <strong>Agent:</strong> Auto-cycles designs weekly
         </p>
       </div>
     </div>
-    <div style="margin-top: 20px; background: white; padding: 16px; border-radius: 8px; border: 1px solid #E8E4DE;">
-      <div style="font-size: 12px; text-transform: uppercase; color: #999; font-weight: 600; margin-bottom: 12px;">Daily Agent Loop</div>
-      <p style="font-size: 12px; color: #666; line-height: 1.8;">
+    <div style="margin-top: 20px; background: var(--bg-card); padding: 16px; border-radius: 8px; border: 1px solid #E8E4DE;">
+      <div style="font-size: 12px; text-transform: uppercase; color: var(--color-text-secondary); font-weight: 600; margin-bottom: 12px;">Daily Agent Loop</div>
+      <p style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.8;">
         <strong>06:00 UTC:</strong> Paid Ads Agent checks PostHog metrics from yesterday<br>
         <strong>06:15 UTC:</strong> Stops underperformers (&lt;2% CTR), scales winners (&gt;4% CTR)<br>
         <strong>06:30 UTC:</strong> Voice Agent generates 3 new ad copy variations<br>
@@ -363,61 +376,61 @@
   <div class="funnel-row">
     <div class="funnel-title">
       <h2> Chronic Pain Patient Funnel</h2>
-      <div style="margin-left: auto; font-size: 13px; color: #666;">Click any stage to see workflow →</div>
+      <div style="margin-left: auto; font-size: 13px; color: var(--color-text-secondary);">Click any stage to see workflow </div>
     </div>
     <div class="funnel-stages patient">
       <div class="stage" onclick="showWorkflow('patient', 1, 'Awareness', 'Google Ads, Meta, communities discover ENNIE', '3.2% CTR expected', '1.2M impressions')">
         <div class="stage-number">1</div>
         <div class="stage-name">Awareness</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 2, 'Landing', 'Evidence-based page builds credibility', '25% conversion', 'Patient funnel-specific copy')">
         <div class="stage-number">2</div>
         <div class="stage-name">Landing</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 3, 'Nurture', '4-email credibility sequence', '52% open rate', 'Email 1, 7, 14, 30')">
         <div class="stage-number">3</div>
         <div class="stage-name">Nurture</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 4, 'Early Access', 'Matched with verified healer', 'Instant matching', 'App session created')">
         <div class="stage-number">4</div>
         <div class="stage-name">Early Access</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 5, 'Session', 'Remote healing from verified healer', '40% repeat booking', 'Outcomes tracked')">
         <div class="stage-number">5</div>
         <div class="stage-name">Session</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 6, 'Retention', 'Follow-ups + repeat booking automation', '60% 30-day retention', 'Churn prevention')">
         <div class="stage-number">6</div>
         <div class="stage-name">Retention</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
       <div class="stage" onclick="showWorkflow('patient', 7, 'Paying', 'Subscription + lifetime value', '£22k/mo revenue', 'Referral loop activated')">
         <div class="stage-number">7</div>
         <div class="stage-name">Paying</div>
-        <div style="font-size: 11px;">Click to explore →</div>
+        <div style="font-size: 11px;">Click to explore </div>
       </div>
     </div>
   </div>
 
-  <p style="text-align: center; margin-top: 40px; color: #666; font-size: 14px;">
-    💡 Try clicking the stages above to see the detailed workflow, triggers, agents involved, and metrics for each stage.
+  <p style="text-align: center; margin-top: 40px; color: var(--color-text-secondary); font-size: 14px;">
+    � Try clicking the stages above to see the detailed workflow, triggers, agents involved, and metrics for each stage.
   </p>
 </div>
 
 <!-- WORKFLOW MODAL -->
 <div id="workflowModal" class="modal" onclick="closeWorkflow(event)">
   <div class="modal-content" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeWorkflow()">✕</button>
+    <button class="modal-close" onclick="closeWorkflow()">�</button>
     
     <div class="modal-header">
       <span id="modalStageNum" style="font-size: 32px;"></span>
       <div>
-        <div style="font-size: 12px; color: #999;">Stage</div>
+        <div style="font-size: 12px; color: var(--color-text-secondary);">Stage</div>
         <h2 id="modalStageName" class="modal-stage-name" style="margin: 0;"></h2>
       </div>
     </div>
@@ -451,14 +464,14 @@
 
     <!-- TRIGGER -->
     <div class="workflow-section">
-      <h3>⚡ Trigger</h3>
+      <h3>� Trigger</h3>
       <div id="modalTrigger" class="trigger-box"></div>
     </div>
 
     <!-- DESCRIPTION -->
     <div class="workflow-section">
       <h3> What Happens</h3>
-      <p id="modalDescription" style="line-height: 1.7; color: #666;"></p>
+      <p id="modalDescription" style="line-height: 1.7; color: var(--color-text-secondary);"></p>
     </div>
 
     <!-- METRICS -->
@@ -478,26 +491,26 @@
 
     <!-- AGENTS INVOLVED -->
     <div class="workflow-section">
-      <h3>🤖 Agents Involved</h3>
-      <div style="background: #F8F6F3; padding: 16px; border-radius: 8px;">
+      <h3> Agents Involved</h3>
+      <div style="background: rgba(127, 169, 151, 0.05); padding: 16px; border-radius: 8px;">
         <p style="font-size: 13px; line-height: 1.6;">
-          <strong>Growth Agent</strong> — Manages funnel progression, email sequences, and user state<br>
-          <strong>Voice Agent</strong> — Creates all messaging and copy in Charlie's voice<br>
-          <strong>Participant Outreach</strong> — Handles acquisition and matching
+          <strong>Growth Agent</strong>  Manages funnel progression, email sequences, and user state<br>
+          <strong>Voice Agent</strong>  Creates all messaging and copy in Charlie's voice<br>
+          <strong>Participant Outreach</strong>  Handles acquisition and matching
         </p>
       </div>
     </div>
 
     <!-- NEXT STEP -->
     <div class="workflow-section">
-      <h3>➡ Next Stage</h3>
-      <p id="modalNextStep" style="font-size: 13px; color: #666; line-height: 1.6;"></p>
+      <h3>�� Next Stage</h3>
+      <p id="modalNextStep" style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;"></p>
     </div>
   </div>
 </div>
 
 <footer>
-  <p>ENNIE Interactive Strategy — End-to-end workflow visualization for the Patient Funnel automation system</p>
+  <p>ENNIE Interactive Strategy  End-to-end workflow visualization for the Patient Funnel automation system</p>
   <p style="margin-top: 12px; opacity: 0.5;">All 7 stages are interactive. See the full automation playbook in the hub's documentation.</p>
 </footer>
 
@@ -507,7 +520,7 @@
       1: {
         name: "Awareness",
         description: "Patients discover ENNIE through targeted channels. High-intent search: \"chronic pain\" + \"alternative solutions.\" Cold audience via Meta retargeting.",
-        trigger: "Daily at 06:00 UTC — Growth Agent checks PostHog for new leads, triggers ad spending allocation",
+        trigger: "Daily at 06:00 UTC  Growth Agent checks PostHog for new leads, triggers ad spending allocation",
         metric1: "1.2M impressions/mo",
         metric2: "3.2% CTR",
         nextStep: "Qualified clicks land on Evidence-based Landing Page. Conversion funnel begins."
@@ -515,7 +528,7 @@
       2: {
         name: "Landing",
         description: "Evidence-based copy emphasizes science, credibility, and privacy. Charlie's credentials front-and-center. Focus on measurable results over hype.",
-        trigger: "Real-time personalization — Growth Agent adjusts headline based on traffic source (Google vs Meta vs Organic)",
+        trigger: "Real-time personalization  Growth Agent adjusts headline based on traffic source (Google vs Meta vs Organic)",
         metric1: "25% signup",
         metric2: "32% bounce rate",
         nextStep: "Converts to waitlist. Automated welcome email sent immediately. Referral link activated."
@@ -523,7 +536,7 @@
       3: {
         name: "Nurture",
         description: "4-email sequence builds credibility. Email 1: How sessions work. Email 2: Science behind healing. Email 3: Patient story (social proof). Email 4: Early access offer.",
-        trigger: "Scheduled emails at Day 1, 7, 14, 30 — Loops integration triggers emails automatically",
+        trigger: "Scheduled emails at Day 1, 7, 14, 30  Loops integration triggers emails automatically",
         metric1: "52% open rate",
         metric2: "18% click-through",
         nextStep: "Top engagers move to Early Access. Others stay in nurture loop or drop off (churn prevention triggered)."
@@ -531,7 +544,7 @@
       4: {
         name: "Early Access",
         description: "Intake form collected (pain type, severity, history). Matching algorithm pairs with best-fit healer. Session booked instantly on app.",
-        trigger: "Event-driven — When patient clicks \"Book Now,\" matching agent runs immediately",
+        trigger: "Event-driven  When patient clicks \"Book Now,\" matching agent runs immediately",
         metric1: "2.1 days",
         metric2: "90% book",
         nextStep: "Session scheduled. Confirmation email sent. Healer notified. 24-hour reminder."
@@ -539,7 +552,7 @@
       5: {
         name: "Session",
         description: "Anonymous remote healing session via app. Outcomes tracked: pain level before/after, session duration, healer rating. Data feeds optimization loops.",
-        trigger: "Session scheduled time — App sends join reminder 15 mins before",
+        trigger: "Session scheduled time  App sends join reminder 15 mins before",
         metric1: "40% repeat",
         metric2: "4.2/5 healer rating",
         nextStep: "Post-session: Outcome survey. If pain reduced, upsell next session. If churn risk detected, special offer triggered."
@@ -547,7 +560,7 @@
       6: {
         name: "Retention",
         description: "Follow-up sequence encourages re-booking. Churn prevention: if 7 days inactive, \"We miss you\" email + 20% discount. Referral rewards activated.",
-        trigger: "Every 7 days of inactivity — Retention Agent checks user state in PostHog",
+        trigger: "Every 7 days of inactivity  Retention Agent checks user state in PostHog",
         metric1: "60% 30-day",
         metric2: "£150 LTV",
         nextStep: "Paying customer or churned. If paying: loyalty loop. If churn: re-engagement campaign launched."
@@ -555,7 +568,7 @@
       7: {
         name: "Paying",
         description: "Subscription active. Weekly sessions booked. Revenue flowing to healers (70%) and platform (30%). Referral program earns them free sessions.",
-        trigger: "Continuous — Subscription renewal every 30 days. Healer matching algorithm optimizes for repeat bookings",
+        trigger: "Continuous  Subscription renewal every 30 days. Healer matching algorithm optimizes for repeat bookings",
         metric1: "£22k/mo",
         metric2: "3.2 sessions/mo",
         nextStep: "Lifetime value grows. Referral rewards unlock. Customer becomes brand advocate. Loop closes."
