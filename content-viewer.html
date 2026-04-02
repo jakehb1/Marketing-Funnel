@@ -367,14 +367,19 @@
   let allContent = [];
   let currentSelected = null;
 
-  // Load content from JSON (try both paths)
-  const jsonUrl = window.location.hostname.includes('marketing-funnel') 
-    ? 'https://marketing-funnel-production-150b.up.railway.app/comprehensive-content.json'
-    : 'comprehensive-content.json';
+  // Load content from JSON
+  const jsonUrl = 'https://marketing-funnel-production-150b.up.railway.app/comprehensive-content.json';
+  
+  console.log('Loading from:', jsonUrl);
 
   fetch(jsonUrl)
-    .then(res => res.json())
+    .then(res => {
+      console.log('Response status:', res.status);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
     .then(data => {
+      console.log('Data loaded, items:', Object.keys(data).length);
       // Convert nested JSON to flat array
       const flat = [];
       Object.keys(data).forEach(funnel => {
@@ -443,12 +448,21 @@
       });
       
       allContent = flat;
+      console.log('Flattened content items:', flat.length);
       document.getElementById('totalCount').textContent = flat.length;
       renderContent(allContent);
     })
     .catch(err => {
       console.error('Failed to load content:', err);
-      document.getElementById('contentGrid').innerHTML = '<p style="color: red;">Failed to load content. Make sure comprehensive-content.json is in the same directory.</p>';
+      const errorMsg = `Failed to load content: ${err.message}`;
+      console.error(errorMsg);
+      document.getElementById('contentGrid').innerHTML = `
+        <div style="padding: 20px; background: #ffebee; border-radius: 8px; color: #c62828;">
+          <strong>Error loading content:</strong><br>
+          ${err.message}<br><br>
+          <small>Check browser console for details.</small>
+        </div>
+      `;
     });
 
   function renderContent(items) {
