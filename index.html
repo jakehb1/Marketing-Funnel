@@ -5,23 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ENNIE Marketing Command Center</title>
   <style>
-    /* WARM MINIMAL WELLNESS AESTHETIC */
+    /* CSS ROOT VARIABLES */
     :root {
-      /* Color Palette */
-      --bg-main: #F5F5F0;
+      /* Colors */
+      --bg-neutral: #FAFBFC;
       --bg-card: #FFFFFF;
-      --color-primary: #7FA997;
-      --color-accent: #A89973;
-      --color-text: #2C2C2C;
+      --color-primary: #2563EB;
+      --color-accent: #DC2626;
+      --color-text: #1F2937;
       --color-text-secondary: #6B7280;
-      --color-border: #E8E4DE;
-      --color-success: #7FA997;
-      --color-warning: #A89973;
+      --color-border: #E5E7EB;
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
       
       /* Typography */
-      --font-serif: Georgia, Garamond, serif;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-size-h1: 36px;
+      --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      --font-size-h1: 32px;
       --font-size-h2: 24px;
       --font-size-h3: 18px;
       --font-size-body: 14px;
@@ -45,9 +44,10 @@
       --spacing-4xl: 40px;
       --spacing-5xl: 48px;
       
-      /* Shadows - subtle */
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+      /* Shadows */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
       
       /* Transitions */
       --transition-base: all 0.2s ease;
@@ -60,8 +60,8 @@
     }
 
     body {
-      font-family: var(--font-sans);
-      background: var(--bg-main);
+      font-family: var(--font-family);
+      background: var(--bg-neutral);
       color: var(--color-text);
       overflow: hidden;
     }
@@ -82,15 +82,14 @@
     }
 
     .sidebar-header {
-      padding: var(--spacing-3xl) var(--spacing-xl);
+      padding: var(--spacing-xl);
       border-bottom: 1px solid var(--color-border);
     }
 
     .sidebar-header h1 {
-      font-family: var(--font-serif);
-      font-size: 24px;
+      font-size: 18px;
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
       color: var(--color-text);
       letter-spacing: -0.5px;
     }
@@ -98,16 +97,15 @@
     .sidebar-header p {
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
-      line-height: 1.5;
     }
 
     .sidebar-nav {
       flex: 1;
-      padding: var(--spacing-2xl) 0;
+      padding: var(--spacing-xl) 0;
     }
 
     .nav-section {
-      margin-bottom: var(--spacing-3xl);
+      margin-bottom: var(--spacing-2xl);
     }
 
     .nav-section-title {
@@ -117,7 +115,7 @@
       color: var(--color-text-secondary);
       font-weight: var(--font-weight-header);
       letter-spacing: 0.5px;
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
     }
 
     .nav-link {
@@ -126,19 +124,18 @@
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
       text-decoration: none;
-      border-left: 3px solid transparent;
+      border-left: 2px solid transparent;
       cursor: pointer;
       transition: var(--transition-base);
     }
 
     .nav-link:hover {
-      background: var(--bg-main);
+      background: var(--bg-neutral);
       color: var(--color-primary);
-      border-left-color: var(--color-primary);
     }
 
     .nav-link.active {
-      background: rgba(127, 169, 151, 0.08);
+      background: rgba(37, 99, 235, 0.05);
       border-left-color: var(--color-primary);
       color: var(--color-primary);
       font-weight: var(--font-weight-semibold);
@@ -155,7 +152,7 @@
     .header {
       background: var(--bg-card);
       border-bottom: 1px solid var(--color-border);
-      padding: var(--spacing-2xl) var(--spacing-3xl);
+      padding: var(--spacing-xl) var(--spacing-3xl);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -163,11 +160,9 @@
     }
 
     .header h2 {
-      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
       letter-spacing: -0.5px;
-      color: var(--color-text);
     }
 
     .header-info {
@@ -181,7 +176,7 @@
     .content {
       flex: 1;
       overflow-y: auto;
-      padding: var(--spacing-4xl) var(--spacing-3xl);
+      padding: var(--spacing-3xl);
     }
 
     .view {
@@ -194,40 +189,37 @@
 
     /* HERO */
     .hero {
-      margin-bottom: var(--spacing-4xl);
-      padding: var(--spacing-4xl) var(--spacing-3xl);
-      background: rgba(127, 169, 151, 0.04);
+      margin-bottom: var(--spacing-3xl);
+      padding: var(--spacing-3xl);
+      background: linear-gradient(135deg, #2563EB08 0%, #2563EB04 100%);
       border: 1px solid var(--color-border);
       border-radius: 8px;
     }
 
     .hero h1 {
-      font-family: var(--font-serif);
       font-size: var(--font-size-h1);
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
       letter-spacing: -0.5px;
-      color: var(--color-text);
     }
 
     .hero p {
       font-size: var(--font-size-body);
       color: var(--color-text-secondary);
       line-height: var(--line-height-body);
-      max-width: 600px;
     }
 
     /* METRICS GRID */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: var(--spacing-2xl);
-      margin: var(--spacing-4xl) 0;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--spacing-lg);
+      margin: var(--spacing-3xl) 0;
     }
 
     .metric {
       background: var(--bg-card);
-      padding: var(--spacing-2xl);
+      padding: var(--spacing-lg);
       border-radius: 8px;
       border: 1px solid var(--color-border);
     }
@@ -237,13 +229,12 @@
       text-transform: uppercase;
       color: var(--color-text-secondary);
       font-weight: var(--font-weight-header);
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
       letter-spacing: 0.5px;
     }
 
     .metric-value {
-      font-family: var(--font-serif);
-      font-size: 32px;
+      font-size: 28px;
       font-weight: var(--font-weight-header);
       color: var(--color-primary);
       letter-spacing: -0.5px;
@@ -252,9 +243,9 @@
     /* CARDS */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-2xl);
-      margin-bottom: var(--spacing-4xl);
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-xl);
+      margin-bottom: var(--spacing-3xl);
     }
 
     .card {
@@ -273,21 +264,19 @@
     .card:hover {
       border-color: var(--color-primary);
       box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .card-icon {
       font-size: 32px;
-      margin-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
     }
 
     .card h3 {
-      font-family: var(--font-serif);
       font-size: var(--font-size-h3);
       font-weight: var(--font-weight-header);
       margin-bottom: var(--spacing-md);
       letter-spacing: -0.3px;
-      color: var(--color-text);
     }
 
     .card p {
@@ -300,13 +289,17 @@
     .card-meta {
       font-size: var(--font-size-caption);
       color: var(--color-text-secondary);
-      margin-top: var(--spacing-lg);
+      margin-top: var(--spacing-md);
+    }
+
+    .card.external {
+      position: relative;
     }
 
     .card.external::after {
-      content: "";
+      content: "↗";
       position: absolute;
-      top: var(--spacing-lg);
+      top: var(--spacing-md);
       right: var(--spacing-lg);
       font-size: 18px;
       opacity: 0.4;
@@ -314,15 +307,161 @@
 
     /* SECTION HEADING */
     .section-heading {
-      font-family: var(--font-serif);
       font-size: var(--font-size-h2);
       font-weight: var(--font-weight-header);
-      margin: var(--spacing-4xl) 0 var(--spacing-2xl) 0;
+      margin: var(--spacing-3xl) 0 var(--spacing-xl) 0;
       display: flex;
       align-items: center;
       gap: var(--spacing-md);
       letter-spacing: -0.5px;
+    }
+
+    /* STATS DASHBOARD STYLES */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-xl);
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: var(--spacing-2xl);
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: var(--transition-base);
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-border);
+      transition: var(--transition-base);
+    }
+
+    .stat-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .stat-card:hover::before {
+      background: var(--color-primary);
+    }
+
+    .stat-card.status-healthy::before {
+      background: var(--color-success);
+    }
+
+    .stat-card.status-warning::before {
+      background: var(--color-warning);
+    }
+
+    .stat-card.status-error::before {
+      background: #EF4444;
+    }
+
+    .stat-label {
+      font-size: var(--font-size-caption);
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-header);
+      letter-spacing: 0.5px;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
       color: var(--color-text);
+      letter-spacing: -0.8px;
+      font-family: 'Georgia', 'Garamond', serif;
+      margin-bottom: var(--spacing-md);
+      line-height: 1.2;
+    }
+
+    .stat-sublabel {
+      font-size: var(--font-size-caption);
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-regular);
+      margin-bottom: var(--spacing-md);
+      min-height: 32px;
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: var(--font-weight-semibold);
+      padding: 4px 8px;
+      border-radius: 4px;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .stat-badge.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--color-success);
+    }
+
+    .stat-badge.warning {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--color-warning);
+    }
+
+    .stat-badge.error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #EF4444;
+    }
+
+    .stat-badge.neutral {
+      background: rgba(107, 114, 128, 0.1);
+      color: var(--color-text-secondary);
+    }
+
+    .stat-details {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      margin-top: auto;
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .stat-details-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .stat-details-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .stats-category {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    .stats-category-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+      font-weight: var(--font-weight-header);
+      letter-spacing: 0.5px;
+      margin-bottom: var(--spacing-lg);
+      padding-left: 4px;
     }
 
     /* MOBILE HAMBURGER */
@@ -345,9 +484,8 @@
     }
 
     .hamburger:hover {
-      background: var(--bg-main);
+      background: var(--bg-neutral);
       border-color: var(--color-primary);
-      color: var(--color-primary);
     }
 
     /* RESPONSIVE */
@@ -357,7 +495,11 @@
       }
 
       .card-grid {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
@@ -381,7 +523,7 @@
         border-right: 1px solid var(--color-border);
         z-index: 1999;
         transition: left 0.3s ease;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
       }
 
       .sidebar.mobile-open {
@@ -409,16 +551,28 @@
         grid-template-columns: 1fr;
       }
 
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
       .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .stat-value {
+        font-size: 28px;
+      }
+
+      .stat-card {
+        padding: var(--spacing-lg);
+      }
+
       .hero {
-        padding: var(--spacing-2xl);
+        padding: var(--spacing-xl);
       }
 
       .hero h1 {
-        font-size: 28px;
+        font-size: 24px;
       }
     }
 
@@ -427,12 +581,28 @@
         grid-template-columns: 1fr;
       }
 
-      .hero h1 {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-value {
         font-size: 24px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .hero h1 {
+        font-size: 20px;
       }
 
       .card h3 {
         font-size: 16px;
+      }
+
+      .stats-category-title {
+        font-size: 11px;
       }
     }
   </style>
@@ -440,7 +610,7 @@
 <body>
 
 <div class="container">
-  <button class="hamburger" id="hamburger"></button>
+  <button class="hamburger" id="hamburger">☰</button>
 
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -517,68 +687,287 @@
           </div>
         </div>
 
-        <h2 class="section-heading">Quick Access</h2>
-        <div class="card-grid">
-          <div class="card" onclick="showView('funnels')">
-            <div class="card-icon">�</div>
-            <h3>View All Funnels</h3>
-            <p>Interactive visualization of 5 marketing funnels with stage breakdowns.</p>
-            <div class="card-meta">5 funnels � 7 stages each</div>
+        <h2 class="section-heading">Operations Overview</h2>
+
+        <!-- DM Campaign Stats -->
+        <div class="stats-category">
+          <div class="stats-category-title">📧 DM Campaign Stats</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy" onclick="showView('agents')">
+              <div class="stat-label">Total DMs Sent (This Week)</div>
+              <div class="stat-value">247</div>
+              <div class="stat-sublabel">Up 12% from last week</div>
+              <div class="stat-badge success">✓ On Track</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Target:</span> <strong>200</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-warning" onclick="showView('agents')">
+              <div class="stat-label">Pending Responses</div>
+              <div class="stat-value">84</div>
+              <div class="stat-sublabel">Awaiting healer replies</div>
+              <div class="stat-badge warning">⚠ Monitor</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Avg Response Time:</span> <strong>6h 22m</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-error" onclick="showView('agents')">
+              <div class="stat-label">Failed/Blocked</div>
+              <div class="stat-value">12</div>
+              <div class="stat-sublabel">Accounts not available</div>
+              <div class="stat-badge error">⚠ Action Needed</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Rate:</span> <strong>4.6%</strong></div>
+              </div>
+            </div>
           </div>
-          <div class="card" onclick="showView('video-manager')">
-            <div class="card-icon"></div>
-            <h3>Video Manager</h3>
-            <p>Upload videos, auto-transcribe, get approval from Charlie, use for content.</p>
-            <div class="card-meta">Whisper transcription</div>
+        </div>
+
+        <!-- Content & Approval -->
+        <div class="stats-category">
+          <div class="stats-category-title">✓ Content & Approval</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy" onclick="showView('content-library')">
+              <div class="stat-label">Assets Deployed</div>
+              <div class="stat-value">2,407</div>
+              <div class="stat-sublabel">Production-ready content</div>
+              <div class="stat-badge success">✓ Approved</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>From Transcripts:</span> <strong>27</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-warning" onclick="showView('approvals')">
+              <div class="stat-label">Pending Approval (Charlie)</div>
+              <div class="stat-value">8</div>
+              <div class="stat-sublabel">Awaiting review</div>
+              <div class="stat-badge warning">⏳ In Review</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Avg Pending:</span> <strong>2.4 days</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('approvals')">
+              <div class="stat-label">Approval Rate %</div>
+              <div class="stat-value">94.2%</div>
+              <div class="stat-sublabel">Of all submissions</div>
+              <div class="stat-badge success">✓ Healthy</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Approved:</span> <strong>3,847</strong></div>
+              </div>
+            </div>
           </div>
-          <div class="card" onclick="showView('content-library')">
-            <div class="card-icon">�</div>
-            <h3>Content Library</h3>
-            <p>2,407 production-ready marketing assets. Emails, ads, landing pages, SMS.</p>
-            <div class="card-meta">Organized by funnel</div>
+        </div>
+
+        <!-- Video Processing -->
+        <div class="stats-category">
+          <div class="stats-category-title">🎥 Video Processing</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy" onclick="showView('video-manager')">
+              <div class="stat-label">Videos Processed (This Week)</div>
+              <div class="stat-value">12</div>
+              <div class="stat-sublabel">Transcribed & ready</div>
+              <div class="stat-badge success">✓ Complete</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Total:</span> <strong>27 videos</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('video-manager')">
+              <div class="stat-label">Avg Transcription Time</div>
+              <div class="stat-value">3.2m</div>
+              <div class="stat-sublabel">Per video (Whisper)</div>
+              <div class="stat-badge success">✓ Fast</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Latest:</span> <strong>2.8m</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-neutral" onclick="showView('video-manager')">
+              <div class="stat-label">Pending Upload</div>
+              <div class="stat-value">3</div>
+              <div class="stat-sublabel">In pipeline</div>
+              <div class="stat-badge neutral">– Scheduled</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>ETA:</span> <strong>Today</strong></div>
+              </div>
+            </div>
           </div>
-          <div class="card" onclick="showView('approvals')">
-            <div class="card-icon"></div>
-            <h3>Charlie's Approvals</h3>
-            <p>Charlie reviews and approves all content before agents use it. PIN: 12345</p>
-            <div class="card-meta">Pending � Approved � Rejected</div>
+        </div>
+
+        <!-- Agent Dashboard -->
+        <div class="stats-category">
+          <div class="stats-category-title">⚙️ Agent Dashboard</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy" onclick="showView('agents')">
+              <div class="stat-label">Active Agents</div>
+              <div class="stat-value">5</div>
+              <div class="stat-sublabel">All operational</div>
+              <div class="stat-badge success">✓ Running</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Growth • Voice • Matching</span></div>
+                <div class="stat-details-row"><span>Retention • Paid Ads</span></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('agents')">
+              <div class="stat-label">Tasks Completed (This Week)</div>
+              <div class="stat-value">432</div>
+              <div class="stat-sublabel">Across all agents</div>
+              <div class="stat-badge success">✓ On Track</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Daily Avg:</span> <strong>86.4</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('agents')">
+              <div class="stat-label">Avg Task Duration</div>
+              <div class="stat-value">4.7m</div>
+              <div class="stat-sublabel">Per task</div>
+              <div class="stat-badge success">✓ Optimal</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Range:</span> <strong>1.2m - 18.4m</strong></div>
+              </div>
+            </div>
           </div>
-          <div class="card" onclick="showView('automation')">
-            <div class="card-icon"></div>
-            <h3>Patient Funnel Automation</h3>
-            <p>Fully automated 7-stage funnel. Awareness  Paying customer. 95% autonomous.</p>
-            <div class="card-meta">Growth Agent � Voice Agent</div>
+        </div>
+
+        <!-- Ad Operations -->
+        <div class="stats-category">
+          <div class="stats-category-title">📢 Ad Operations</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy" onclick="showView('ad-ops')">
+              <div class="stat-label">Campaigns Running</div>
+              <div class="stat-value">18</div>
+              <div class="stat-sublabel">Active across platforms</div>
+              <div class="stat-badge success">✓ Live</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>FB: 5 • GA: 7 • TT: 4 • PI: 2</span></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('ad-ops')">
+              <div class="stat-label">Total Ad Spend (This Week)</div>
+              <div class="stat-value">£8,420</div>
+              <div class="stat-sublabel">Across all platforms</div>
+              <div class="stat-badge success">✓ On Budget</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Budget:</span> <strong>£40k/mo</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy" onclick="showView('ad-ops')">
+              <div class="stat-label">ROAS (Avg)</div>
+              <div class="stat-value">3.84x</div>
+              <div class="stat-sublabel">Return on ad spend</div>
+              <div class="stat-badge success">✓ Strong</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Best Performer:</span> <strong>Meta 4.2x</strong></div>
+              </div>
+            </div>
           </div>
-          <div class="card" onclick="showView('agents')">
-            <div class="card-icon"></div>
-            <h3>Agent Dashboard</h3>
-            <p>Monitor active agents, their tasks, approvals, and real-time metrics.</p>
-            <div class="card-meta">5 agents � Live tracking</div>
+        </div>
+
+        <!-- API Health -->
+        <div class="stats-category">
+          <div class="stats-category-title">🔌 API Health</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy">
+              <div class="stat-label">Google Ads</div>
+              <div class="stat-value">Connected</div>
+              <div class="stat-sublabel">API v17.1</div>
+              <div class="stat-badge success">✓ Active</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Last Sync:</span> <strong>2 mins ago</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">Meta (FB/IG)</div>
+              <div class="stat-value">Connected</div>
+              <div class="stat-sublabel">Graph API v19.0</div>
+              <div class="stat-badge success">✓ Active</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Last Sync:</span> <strong>1 min ago</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">TikTok Ads</div>
+              <div class="stat-value">Connected</div>
+              <div class="stat-sublabel">API v1.1</div>
+              <div class="stat-badge success">✓ Active</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Last Sync:</span> <strong>5 mins ago</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">PostHog Analytics</div>
+              <div class="stat-value">Connected</div>
+              <div class="stat-sublabel">Event Capture</div>
+              <div class="stat-badge success">✓ Active</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Events/min:</span> <strong>342</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">ElevenLabs TTS</div>
+              <div class="stat-value">Connected</div>
+              <div class="stat-sublabel">Voice API</div>
+              <div class="stat-badge success">✓ Active</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Last Use:</span> <strong>3 hours ago</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- System Health -->
+        <div class="stats-category">
+          <div class="stats-category-title">🔧 System Health</div>
+          <div class="stats-grid">
+            <div class="stat-card status-healthy">
+              <div class="stat-label">Last Sync</div>
+              <div class="stat-value">Now</div>
+              <div class="stat-sublabel">Apr 2, 9:20 AM PDT</div>
+              <div class="stat-badge success">✓ Real-time</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Interval:</span> <strong>Every 5 mins</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">Database Status</div>
+              <div class="stat-value">Healthy</div>
+              <div class="stat-sublabel">All systems operational</div>
+              <div class="stat-badge success">✓ Normal</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Uptime:</span> <strong>99.94%</strong></div>
+              </div>
+            </div>
+            <div class="stat-card status-healthy">
+              <div class="stat-label">Video Manager</div>
+              <div class="stat-value">Healthy</div>
+              <div class="stat-sublabel">Processing operational</div>
+              <div class="stat-badge success">✓ Normal</div>
+              <div class="stat-details">
+                <div class="stat-details-row"><span>Queue:</span> <strong>3 pending</strong></div>
+              </div>
+            </div>
           </div>
         </div>
 
         <h2 class="section-heading">Operations & Analytics</h2>
         <div class="card-grid">
           <div class="card external" onclick="window.open('metrics.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">📊</div>
             <h3>Metrics Dashboard</h3>
             <p>Real-time performance metrics: spend, conversions, ROI, CPA by channel, funnel breakdown.</p>
             <div class="card-meta">Click to open dashboard</div>
           </div>
           <div class="card external" onclick="window.open('calendar.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">📅</div>
             <h3>Campaign Calendar</h3>
             <p>Timeline view of all campaigns with launch dates, budgets, and status. Drag-to-reschedule.</p>
             <div class="card-meta">Month & timeline views</div>
           </div>
           <div class="card external" onclick="window.open('integrations.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">🔌</div>
             <h3>Integration Status</h3>
             <p>Monitor API connections: Google Ads, Meta, TikTok, PostHog, ElevenLabs. Last sync times.</p>
-            <div class="card-meta">2 connected � 3 available</div>
+            <div class="card-meta">2 connected • 3 available</div>
           </div>
           <div class="card external" onclick="window.open('team-settings.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">👥</div>
             <h3>Team & Settings</h3>
             <p>Manage team members, API keys, webhooks, notification preferences, and general settings.</p>
             <div class="card-meta">4 team members</div>
@@ -587,10 +976,10 @@
       </div>
 
       <div id="funnels" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� All 5 Marketing Funnels</h1>
+        <h1 style="margin-bottom: var(--spacing-2xl);">📈 All 5 Marketing Funnels</h1>
         <div class="card-grid">
           <div class="card external" onclick="window.open('visual-strategy.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">🎯</div>
             <h3>Visual Strategy</h3>
             <p>See all 5 funnels with stages, metrics, and execution plan.</p>
             <div class="card-meta">Click stages for details</div>
@@ -599,17 +988,17 @@
       </div>
 
       <div id="video-manager" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Video Manager</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Upload videos, auto-transcribe with Whisper, submit for Charlie's approval, access approved transcripts for ad copy.</p>
+        <h1 style="margin-bottom: var(--spacing-2xl);">🎥 Video Manager</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Upload videos, auto-transcribe with Whisper, submit for Charlie's approval, access approved transcripts for ad copy.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/'">
-            <div class="card-icon"></div>
+            <div class="card-icon">⬆️</div>
             <h3>Upload & Manage Videos</h3>
             <p>Upload videos, track transcription status, view approved videos.</p>
-            <div class="card-meta">Whisper transcription � Auto-approval requests</div>
+            <div class="card-meta">Whisper transcription • Auto-approval requests</div>
           </div>
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/approval'">
-            <div class="card-icon"></div>
+            <div class="card-icon">✓</div>
             <h3>Approval Dashboard (Charlie)</h3>
             <p>Charlie's PIN-protected dashboard. Approve or reject videos with feedback.</p>
             <div class="card-meta">PIN: 12345</div>
@@ -618,37 +1007,37 @@
       </div>
 
       <div id="approvals" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Content Approval System</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Charlie reviews all content (videos, ads, emails) before agents can use it.</p>
+        <h1 style="margin-bottom: var(--spacing-2xl);">✓ Content Approval System</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Charlie reviews all content (videos, ads, emails) before agents can use it.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='https://desirable-energy-production.up.railway.app/approval'">
-            <div class="card-icon"></div>
+            <div class="card-icon">🔐</div>
             <h3>Charlie's Approval Portal</h3>
             <p>Review pending content. Approve or reject with detailed feedback notes.</p>
-            <div class="card-meta">PIN-protected � Real-time updates</div>
+            <div class="card-meta">PIN-protected • Real-time updates</div>
           </div>
         </div>
       </div>
 
       <div id="content-library" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� Content Library</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">2,407 production-ready marketing assets from 27 video transcripts. All organized by funnel and stage.</p>
+        <h1 style="margin-bottom: var(--spacing-2xl);">📋 Content Library</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">2,407 production-ready marketing assets from 27 video transcripts. All organized by funnel and stage.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.location.href='content-library-simple.html'">
-            <div class="card-icon">�</div>
+            <div class="card-icon">📋</div>
             <h3>View All Assets</h3>
             <p>Browse 2,407 marketing assets. Emails, ads, landing pages, social captions, SMS.</p>
-            <div class="card-meta">JSON viewer � Searchable</div>
+            <div class="card-meta">JSON viewer • Searchable</div>
           </div>
         </div>
       </div>
 
       <div id="documentation" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Documentation</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Complete guides for setup, deployment, automation, and agent orchestration.</p>
+        <h1 style="margin-bottom: var(--spacing-2xl);">📚 Documentation</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Complete guides for setup, deployment, automation, and agent orchestration.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">📖</div>
             <h3>Full Documentation</h3>
             <p>All guides, playbooks, and references. Automation playbook, data integration, deployment.</p>
             <div class="card-meta">15+ documents</div>
@@ -657,17 +1046,17 @@
       </div>
 
       <div id="automation" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Patient Funnel Automation</h1>
-        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary); max-width: 600px;">Complete runbook for 7-stage patient funnel automation. Fully autonomous with agent orchestration.</p>
+        <h1 style="margin-bottom: var(--spacing-2xl);">🤖 Patient Funnel Automation</h1>
+        <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Complete runbook for 7-stage patient funnel automation. Fully autonomous with agent orchestration.</p>
         <div class="card-grid">
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">📄</div>
             <h3>Automation Playbook</h3>
             <p>68KB complete runbook. Triggers, workflows, metrics, deployment timeline.</p>
             <div class="card-meta">Week 1-4 deployment</div>
           </div>
           <div class="card external" onclick="window.open('doc-viewer.html', '_blank')">
-            <div class="card-icon"></div>
+            <div class="card-icon">🔗</div>
             <h3>Data Integration Map</h3>
             <p>36KB integration guide. APIs, schemas, PostHog events, monitoring.</p>
             <div class="card-meta">Real-time feedback loops</div>
@@ -676,53 +1065,53 @@
       </div>
 
       <div id="ad-ops" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);">� Ad Operations Automation</h1>
+        <h1 style="margin-bottom: var(--spacing-2xl);">📢 Ad Operations Automation</h1>
         <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Agents autonomously manage campaigns across Meta, Google, TikTok, Pinterest. Daily optimization.</p>
         <div class="hero">
-          <h3 style="font-family: var(--font-serif); font-size: var(--font-size-h3); margin-bottom: var(--spacing-lg); color: var(--color-text);">Multi-Platform Campaign Management</h3>
-          <p style="margin: var(--spacing-lg) 0 0 0; line-height: var(--line-height-body); color: var(--color-text-secondary);">
-            <strong style="color: var(--color-text);">Facebook/Instagram:</strong> £12k/mo � 5 ad variations cycled every 3 days<br>
-            <strong style="color: var(--color-text);">Google Ads:</strong> £15k/mo � Bid optimization + keyword expansion<br>
-            <strong style="color: var(--color-text);">TikTok:</strong> £8k/mo � 10 creative variations tested<br>
-            <strong style="color: var(--color-text);">Pinterest:</strong> £5k/mo � Auto-cycle designs weekly<br><br>
-            <strong style="color: var(--color-text);">Daily Agent Loop:</strong> 06:00 check metrics  06:15 stop/scale  06:30 generate copy  07:00 deploy  evening human review
+          <h3 style="font-size: var(--font-size-h3); margin-bottom: var(--spacing-lg);">Multi-Platform Campaign Management</h3>
+          <p style="margin: var(--spacing-lg) 0 0 0; line-height: var(--line-height-body);">
+            <strong>Facebook/Instagram:</strong> £12k/mo • 5 ad variations cycled every 3 days<br>
+            <strong>Google Ads:</strong> £15k/mo • Bid optimization + keyword expansion<br>
+            <strong>TikTok:</strong> £8k/mo • 10 creative variations tested<br>
+            <strong>Pinterest:</strong> £5k/mo • Auto-cycle designs weekly<br><br>
+            <strong>Daily Agent Loop:</strong> 06:00 check metrics → 06:15 stop/scale → 06:30 generate copy → 07:00 deploy → evening human review
           </p>
         </div>
       </div>
 
       <div id="agents" class="view">
-        <h1 style="font-family: var(--font-serif); margin-bottom: var(--spacing-2xl); color: var(--color-text);"> Agent Dashboard</h1>
+        <h1 style="margin-bottom: var(--spacing-2xl);">⚙️ Agent Dashboard</h1>
         <p style="margin-bottom: var(--spacing-2xl); color: var(--color-text-secondary);">Monitor all agents, their tasks, approvals, and real-time metrics.</p>
         <div class="card-grid">
           <div class="card">
-            <div class="card-icon">�</div>
+            <div class="card-icon">📈</div>
             <h3>Growth Agent</h3>
             <p>Manages funnel progression, email sequences, user state tracking.</p>
-            <div class="card-meta">Active � 5 tasks</div>
+            <div class="card-meta">Active • 5 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon"></div>
+            <div class="card-icon">🎙️</div>
             <h3>Voice Agent</h3>
             <p>Generates all messaging and copy in Charlie's voice via ElevenLabs.</p>
-            <div class="card-meta">Active � 3 tasks</div>
+            <div class="card-meta">Active • 3 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon"></div>
+            <div class="card-icon">🔗</div>
             <h3>Matching Agent</h3>
             <p>Matches patients with best-fit healers based on compatibility and availability.</p>
-            <div class="card-meta">Active � 12 tasks</div>
+            <div class="card-meta">Active • 12 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon"></div>
+            <div class="card-icon">💝</div>
             <h3>Retention Agent</h3>
             <p>Follow-ups, churn prevention, loyalty rewards, re-engagement campaigns.</p>
-            <div class="card-meta">Active � 8 tasks</div>
+            <div class="card-meta">Active • 8 tasks</div>
           </div>
           <div class="card">
-            <div class="card-icon"></div>
+            <div class="card-icon">💰</div>
             <h3>Paid Ads Agent</h3>
             <p>Multi-platform ad optimization (Meta, Google, TikTok, Pinterest).</p>
-            <div class="card-meta">Active � 4 campaigns</div>
+            <div class="card-meta">Active • 4 campaigns</div>
           </div>
         </div>
       </div>
@@ -753,14 +1142,14 @@
 
     if (window.innerWidth <= 768) {
       document.getElementById('sidebar').classList.remove('mobile-open');
-      document.getElementById('hamburger').textContent = '';
+      document.getElementById('hamburger').textContent = '☰';
     }
   }
 
   document.getElementById('hamburger').addEventListener('click', function() {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('mobile-open');
-    this.textContent = sidebar.classList.contains('mobile-open') ? '�' : '';
+    this.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
   });
 
   document.addEventListener('click', function(event) {
@@ -768,7 +1157,7 @@
     const hamburger = document.getElementById('hamburger');
     if (!sidebar.contains(event.target) && !hamburger.contains(event.target)) {
       sidebar.classList.remove('mobile-open');
-      hamburger.textContent = '';
+      hamburger.textContent = '☰';
     }
   });
 </script>
