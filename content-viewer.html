@@ -367,8 +367,12 @@
   let allContent = [];
   let currentSelected = null;
 
-  // Load content from JSON
-  fetch('comprehensive-content.json')
+  // Load content from JSON (try both paths)
+  const jsonUrl = window.location.hostname.includes('marketing-funnel') 
+    ? 'https://marketing-funnel-production-150b.up.railway.app/comprehensive-content.json'
+    : 'comprehensive-content.json';
+
+  fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
       // Convert nested JSON to flat array
