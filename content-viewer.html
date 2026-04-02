@@ -371,10 +371,81 @@
   fetch('comprehensive-content.json')
     .then(res => res.json())
     .then(data => {
-      allContent = data.content || [];
+      // Convert nested JSON to flat array
+      const flat = [];
+      Object.keys(data).forEach(funnel => {
+        const funnelKey = funnel.replace(/_/g, ' ');
+        Object.keys(data[funnel]).forEach(stage => {
+          const stageData = data[funnel][stage];
+          
+          // Extract all content types
+          if (stageData.emails) {
+            stageData.emails.forEach((email, idx) => {
+              flat.push({
+                funnel: funnelKey,
+                stage: stage,
+                type: 'Email',
+                title: email.subject || `Email ${idx + 1}`,
+                content: email.body || '',
+                subject: email.subject
+              });
+            });
+          }
+          if (stageData.ads) {
+            Object.keys(stageData.ads).forEach(platform => {
+              stageData.ads[platform].forEach((ad, idx) => {
+                flat.push({
+                  funnel: funnelKey,
+                  stage: stage,
+                  type: `Ad (${platform})`,
+                  title: ad.headline || `Ad ${idx + 1}`,
+                  content: ad.body || ad.copy || ''
+                });
+              });
+            });
+          }
+          if (stageData.landing_page) {
+            flat.push({
+              funnel: funnelKey,
+              stage: stage,
+              type: 'Landing Page',
+              title: stageData.landing_page.title || 'Landing Page',
+              content: stageData.landing_page.body || stageData.landing_page.copy || ''
+            });
+          }
+          if (stageData.sms) {
+            stageData.sms.forEach((sms, idx) => {
+              flat.push({
+                funnel: funnelKey,
+                stage: stage,
+                type: 'SMS',
+                title: `SMS ${idx + 1}`,
+                content: sms.message || sms.body || ''
+              });
+            });
+          }
+          if (stageData.scripts) {
+            stageData.scripts.forEach((script, idx) => {
+              flat.push({
+                funnel: funnelKey,
+                stage: stage,
+                type: 'Script',
+                title: script.title || `Script ${idx + 1}`,
+                content: script.dialogue || script.text || ''
+              });
+            });
+          }
+        });
+      });
+      
+      allContent = flat;
+      document.getElementById('totalCount').textContent = flat.length;
       renderContent(allContent);
     })
-    .catch(err => console.error('Failed to load content:', err));
+    .catch(err => {
+      console.error('Failed to load content:', err);
+      document.getElementById('contentGrid').innerHTML = '<p style="color: red;">Failed to load content. Make sure comprehensive-content.json is in the same directory.</p>';
+    });
 
   function renderContent(items) {
     const grid = document.getElementById('contentGrid');
